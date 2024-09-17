@@ -10,6 +10,7 @@ import '../../../model/product_model/product_model.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
+import '../../../view_model/add_main_size_view_model.dart';
 import '../../../view_model/edit_product_view_model.dart';
 import '../../../view_model/general_view_model.dart';
 import '../../../view_model/product_view_model.dart';
@@ -98,7 +99,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
           ),
           DataCell(
             CustomTitle(
-              text: product.mainCategoryName,
+              text: product.categoryName,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -116,6 +117,24 @@ class _ProductsRecordState extends State<ProductsRecord> {
               maxLines: 1,
             ),
           ),
+          DataCell(
+            CustomTitle(
+              text: product.components,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          DataCell(CustomTitle(
+            text: "${product.price} د.ع",
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: AppColors.c016,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )),
           DataCell(
             Row(
               children: [
@@ -436,82 +455,129 @@ class _ProductsRecordState extends State<ProductsRecord> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CustomTitle(
-                        text: "سجل الأقسام الفرعية",
+                        text: "سجل المنتاج",
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: AppColors.c016,
                       ),
-                      SizedBox(
-                        width: getSize(context).width * 0.3,
-                        child: CustomTextField(
-                          controller: productViewModel.searchController,
-                          hintText: 'بحث',
-                          hintTextColor: AppColors.c912,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 14),
-                          fillColor: AppColors.c991,
-                          keyboardType: TextInputType.number,
-                          focusBorderColor: Colors.transparent,
-                          borderColor: Colors.transparent,
-                          suffixIcon: productViewModel
-                                  .searchQuery.isNotEmpty
-                              ? Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.only(end: 5),
-                                  child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          productViewModel.searchController
-                                              .clear();
-                                          productViewModel.searchQuery = "";
-                                        });
-                                        Provider.of<ProductViewModel>(
-                                                context,
-                                                listen: false)
-                                            .getProducts(context, "0", true);
-                                      },
-                                      icon: const Icon(
-                                        Icons.close,
-                                        size: 25,
-                                        color: AppColors.c912,
-                                      )),
-                                )
-                              : null,
-                          prefixIcon: SizedBox(
-                            width: 40,
-                            child: Container(
-                              margin: const EdgeInsetsDirectional.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: AppColors.mainColor,
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: getSize(context).width * 0.3,
+                            child: CustomTextField(
+                              controller: productViewModel.searchController,
+                              hintText: 'بحث',
+                              hintTextColor: AppColors.c912,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 14),
+                              fillColor: AppColors.c991,
+                              keyboardType: TextInputType.number,
+                              focusBorderColor: Colors.transparent,
+                              borderColor: Colors.transparent,
+                              suffixIcon: productViewModel
+                                      .searchQuery.isNotEmpty
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.only(end: 5),
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              productViewModel.searchController
+                                                  .clear();
+                                              productViewModel.searchQuery = "";
+                                            });
+                                            Provider.of<ProductViewModel>(
+                                                    context,
+                                                    listen: false)
+                                                .getProducts(context, "0", true);
+                                          },
+                                          icon: const Icon(
+                                            Icons.close,
+                                            size: 25,
+                                            color: AppColors.c912,
+                                          )),
+                                    )
+                                  : null,
+                              prefixIcon: SizedBox(
+                                width: 40,
+                                child: Container(
+                                  margin: const EdgeInsetsDirectional.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.mainColor,
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/icons/search-normal.webp",
+                                      scale: 3.5,
+                                    ),
+                                  ),
+                                ),
                               ),
-                              child: Center(
-                                child: Image.asset(
-                                  "assets/icons/search-normal.webp",
-                                  scale: 3.5,
+                              onChanged: (val) {
+                                setState(() {
+                                  productViewModel.searchQuery = val;
+                                });
+                                if (productViewModel.searchQuery.isNotEmpty) {
+                                  Provider.of<ProductViewModel>(context,
+                                          listen: false)
+                                      .searchProducts(
+                                          context,
+                                          productViewModel.searchQuery,
+                                          "0",
+                                          false);
+                                } else {
+                                  Provider.of<ProductViewModel>(context,
+                                          listen: false)
+                                      .getProducts(context, "0", true);
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 10,),
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                Provider.of<AddMainSizeViewModel>(context,
+                                    listen: false)
+                                    .clearData();
+                                Provider.of<GeneralViewModel>(context, listen: false)
+                                    .updateSelectedIndex(index: ADDMAINSIZE_INDEX);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColors.mainColor,
+                                ),
+                                height: 45,
+                                width: 120,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      size: 18,
+                                      color: AppColors.c555,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    CustomTitle(
+                                      text: "إضافة حجم",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.c555,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          onChanged: (val) {
-                            setState(() {
-                              productViewModel.searchQuery = val;
-                            });
-                            if (productViewModel.searchQuery.isNotEmpty) {
-                              Provider.of<ProductViewModel>(context,
-                                      listen: false)
-                                  .searchProducts(
-                                      context,
-                                      productViewModel.searchQuery,
-                                      "0",
-                                      false);
-                            } else {
-                              Provider.of<ProductViewModel>(context,
-                                      listen: false)
-                                  .getProducts(context, "0", true);
-                            }
-                          },
-                        ),
+                        ],
                       )
                     ],
                   )
@@ -602,6 +668,49 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                       .getProducts(context, "0", true);
                                 }
                               },
+                            ),
+                          ),
+                          const SizedBox(width: 10,),
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                Provider.of<AddMainSizeViewModel>(context,
+                                    listen: false)
+                                    .clearData();
+                                Provider.of<GeneralViewModel>(context, listen: false)
+                                    .updateSelectedIndex(index: ADDMAINSIZE_INDEX);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColors.mainColor,
+                                ),
+                                height: 45,
+                                width: 120,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      size: 18,
+                                      color: AppColors.c555,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    CustomTitle(
+                                      text: "إضافة حجم رئيسي",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.c555,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -834,6 +943,26 @@ class _ProductsRecordState extends State<ProductsRecord> {
           DataColumn(
             label: CustomTitle(
               text: "المنتج",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "المكونات",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "السعر",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,

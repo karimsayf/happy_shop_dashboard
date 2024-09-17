@@ -42,9 +42,9 @@ class AddEmployeeViewModel extends ChangeNotifier{
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
           },
           data:{
-            "name": name.text,
-            "username": username.text,
-            "password": password.text,
+            "name": name.text.trim(),
+            "username": username.text.trim(),
+            "password": password.text.trim(),
           })
           .then((addEmployeeResponse) {
         print(addEmployeeResponse);

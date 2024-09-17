@@ -15,6 +15,7 @@ class AddProductViewModel with ChangeNotifier {
   final TextEditingController name = TextEditingController();
   final TextEditingController sectionName = TextEditingController();
   final TextEditingController price = TextEditingController();
+  final TextEditingController components = TextEditingController();
   PlatformFile? file;
   bool loading = false;
   String? sectionId;
@@ -25,6 +26,7 @@ class AddProductViewModel with ChangeNotifier {
     sectionName.clear();
     sectionId = null;
     price.clear();
+    components.clear();
     notifyListeners();
   }
 
@@ -39,13 +41,13 @@ class AddProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future addMainSize(BuildContext context) async {
+  Future addProduct(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .postData(
-          apiUrl: "$baseUrl/api/v1/categories",
+          apiUrl: "$baseUrl/api/product/$sectionId",
           headers: {
             'Authorization':
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -54,13 +56,15 @@ class AddProductViewModel with ChangeNotifier {
             "name": name.text.trim(),
             "photo": MultipartFile.fromBytes(file!.bytes!,
                 filename: file!.xFile.name),
-            "parentCategoryId": sectionId,
+            "components": components.text.trim(),
             "price" : price.text.trim()
           }))
           .then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
+          showCustomToast(context, "تم اضافة المنتج بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: PRODUCTS_INDEX);
           notifyListeners();

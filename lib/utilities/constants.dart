@@ -1,6 +1,6 @@
 const String stcFontStr = 'STC';
 
-const String baseUrl = 'https://178.79.141.190/menu';
+const String baseUrl = 'https://demo.technolanes.com/menu';
 
 const int HOME_INDEX= 0;
 const int SECTIONS_INDEX= 1;

@@ -15,7 +15,7 @@ class EmployeeModel {
 
   factory EmployeeModel.fromJason(Map<String, dynamic> employee) {
     return EmployeeModel(
-      id: employee["id"] ?? "",
+      id: employee["id"].toString(),
       name: employee["name"] ?? "",
       username: employee["username"] ?? "",
       status: employee["status"],

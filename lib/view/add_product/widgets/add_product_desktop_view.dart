@@ -92,6 +92,17 @@ class _AddProductDesktopViewState extends State<AddProductDesktopView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: addProductViewModel.components,
+                          generalTextFieldValidator:
+                          Validator(context).validateField,
+                          hintText: 'المكونات',
+                          hintTextColor: AppColors.c912,
+                        )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -128,7 +139,7 @@ class _AddProductDesktopViewState extends State<AddProductDesktopView> {
               children: [
                 InkWell(
                   onTap: addProductViewModel.loading ? (){} :  () async{
-                    await Provider.of<AddProductViewModel>(context,listen: false).addMainSize(context);
+                    await Provider.of<AddProductViewModel>(context,listen: false).addProduct(context);
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(

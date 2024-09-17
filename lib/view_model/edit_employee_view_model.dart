@@ -53,15 +53,15 @@ class EditEmployeeViewModel extends ChangeNotifier{
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
           },
           data:{
-            "name": name.text,
-            "username": username.text,
-            "password": password.text,
+            "name": name.text.trim(),
+            "username": username.text.trim(),
+            "password": password.text.trim(),
           })
           .then((addEmployeeResponse) {
         print(addEmployeeResponse);
         if (addEmployeeResponse["status"] == "success") {
           loading = false;
-          showCustomToast(context, "تم تعديل موظف بنجاح",
+          showCustomToast(context, "تم تعديل الموظف بنجاح",
               "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: EMPLOYEES_INDEX);

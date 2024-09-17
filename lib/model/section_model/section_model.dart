@@ -10,7 +10,7 @@ class SectionModel {
 
   factory SectionModel.fromJason(Map<String, dynamic> subsection) {
     return SectionModel(
-      id: subsection["id"],
+      id: subsection["id"].toString(),
       name: subsection["name"] ?? "",
       photo: subsection["photo"] ?? "",
     );

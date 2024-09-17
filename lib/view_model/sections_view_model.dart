@@ -64,7 +64,7 @@ class SectionsViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
 
-        apiUrl: "$baseUrl/api/v1/categories?page=$page&size=10",
+        apiUrl: "$baseUrl/api/category?page=$page&size=10",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -99,21 +99,6 @@ class SectionsViewModel with ChangeNotifier {
               "assets/icons/alert-circle.webp", AppColors.c999);
         }
       }
-    }).catchError((error) {
-      if (error is DioException) {
-        print('DioError in requestOrder: ${error.message}');
-        setSectionsHomeLoading(false);
-        setSectionsLoading(false);
-        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-            "assets/icons/alert-circle.webp", AppColors.c999);
-      } else {
-        // Handle other errors
-        print('Error in requestOrder: $error');
-        setSectionsHomeLoading(false);
-        setSectionsLoading(false);
-        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-            "assets/icons/alert-circle.webp", AppColors.c999);
-      }
     });
   }
 
@@ -126,7 +111,7 @@ class SectionsViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
 
-        apiUrl: "$baseUrl/api/v1/categories?page=$page&size=10",
+        apiUrl: "$baseUrl/api/category?page=$page&size=10",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -187,7 +172,7 @@ class SectionsViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
         apiUrl:
-        "$baseUrl/api/v1/categories/name?name=$query&page=$page&size=10",
+        "$baseUrl/api/category/search?name=$query&page=$page&size=10",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -241,7 +226,7 @@ class SectionsViewModel with ChangeNotifier {
   Future deleteSection(BuildContext context, String subsectionId) async {
     setDeleteSubSectionsLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-      apiUrl: "$baseUrl/api/v1/categories/$subsectionId",
+      apiUrl: "$baseUrl/api/category/$subsectionId",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'

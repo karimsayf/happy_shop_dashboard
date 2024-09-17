@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/edit_item_desktop_view.dart';
-import 'widgets/edit_item_mobile_view.dart';
+import 'widgets/edit_product_size_desktop_view.dart';
+import 'widgets/edit_product_size_mobile_view.dart';
 
 class EditProductSize extends StatefulWidget {
   final String pageState;

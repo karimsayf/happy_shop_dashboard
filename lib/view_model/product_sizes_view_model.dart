@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components/custom_toast.dart';
-import '../model/size_model/size_model.dart';
+import '../model/product_size_model/product_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
@@ -11,7 +11,7 @@ import 'product_view_model.dart';
 import 'user_view_model.dart';
 
 class ProductSizesViewModel with ChangeNotifier {
-  List<SizeModel> sizes = [];
+  List<ProductSizeModel> productSizes = [];
   int totalSizes = 0;
   bool isSizesHomeLoading = true;
   bool isSizesLoading = true;
@@ -44,7 +44,7 @@ class ProductSizesViewModel with ChangeNotifier {
   }
 
   void clearItems() {
-    sizes.clear();
+    productSizes.clear();
     notifyListeners();
   }
 
@@ -55,13 +55,13 @@ class ProductSizesViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future getSizesHome(BuildContext context, String subcategoryId,String page) async {
+  Future getSizesHome(BuildContext context, String productId,String page) async {
     setSizesHomeLoading(true);
     clearItems();
     clearData();
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/items/subcategory/$subcategoryId?page=$page&size=10")
+        apiUrl: "$baseUrl/api/product/$productId/sizes?page=$page&size=10")
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
         for (int i = 0;
@@ -69,10 +69,10 @@ class ProductSizesViewModel with ChangeNotifier {
             getItemsResponse["data"]["content"]
                 .length;
         i++) {
-          sizes.add(SizeModel.fromJason(
+          productSizes.add(ProductSizeModel.fromJason(
               getItemsResponse["data"]["content"][i]));
         }
-        if (sizes.isEmpty) {
+        if (productSizes.isEmpty) {
           sizesEmpty = true;
         } else {
           sizesEmpty = false;
@@ -108,7 +108,7 @@ class ProductSizesViewModel with ChangeNotifier {
     });
   }
 
-  Future getSizes(BuildContext context, String subcategoryId, String page,bool clear) async {
+  Future getSizes(BuildContext context, String productId, String page,bool clear) async {
     setSizesLoading(true);
     clearItems();
     if(clear)
@@ -117,7 +117,7 @@ class ProductSizesViewModel with ChangeNotifier {
     }
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/items/subcategory/$subcategoryId?page=$page&size=10")
+        apiUrl: "$baseUrl/api/product/$productId/sizes?page=$page&size=10")
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
         for (int i = 0;
@@ -125,10 +125,10 @@ class ProductSizesViewModel with ChangeNotifier {
             getItemsResponse["data"]["content"]
                 .length;
         i++) {
-          sizes.add(SizeModel.fromJason(
+          productSizes.add(ProductSizeModel.fromJason(
               getItemsResponse["data"]["content"][i]));
         }
-        if (sizes.isEmpty) {
+        if (productSizes.isEmpty) {
           sizesEmpty = true;
         } else {
           sizesEmpty = false;
@@ -160,10 +160,10 @@ class ProductSizesViewModel with ChangeNotifier {
     });
   }
 
-  Future deleteSize(BuildContext context, String itemId) async {
+  Future deleteSize(BuildContext context, String sizeId) async {
     setDeleteItemLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .deleteData(apiUrl: "$baseUrl/api/v1/items/$itemId",
+        .deleteData(apiUrl: "$baseUrl/api/product/size/$sizeId",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -173,7 +173,7 @@ class ProductSizesViewModel with ChangeNotifier {
       if (deleteItemResponse["status"] == "success") {
         setDeleteItemLoading(false);
         Navigator.pop(context);
-        showCustomToast(context,"تم حذف القسم بنجاح","assets/icons/check_c.webp",AppColors.c368);
+        showCustomToast(context,"تم حذف الحجم و السعر بنجاح","assets/icons/check_c.webp",AppColors.c368);
         getSizes(context, Provider.of<ProductViewModel>(context, listen: false).selectedProductId, "0",true);
       } else {
         setDeleteItemLoading(false);

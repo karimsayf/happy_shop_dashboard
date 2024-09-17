@@ -9,7 +9,7 @@ class SectionsMobileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        SectionsRecord(flag: true,)
+        SectionsRecord(flag: false,)
       ],
     );
   }

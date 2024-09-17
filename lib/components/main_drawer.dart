@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import '../utilities/constants.dart';
 import '../view/auth/authentication.dart';
 import '../view_model/general_view_model.dart';
@@ -45,10 +44,12 @@ class _MainDrawerState extends State<MainDrawer> {
                 children: [
                   Image.asset(
                     "assets/icons/app_logo.webp",
-                    scale: 3.2,
+                    scale: 4.0,
                     fit: BoxFit.contain,
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const Row(
                     children: [
                       CustomTitle(
@@ -73,9 +74,12 @@ class _MainDrawerState extends State<MainDrawer> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: Provider.of<GeneralViewModel>(context, listen: true)
-                              .selectedIndex == HOME_INDEX ? AppColors.mainColor
-                              .withOpacity(0.1) : Colors.transparent,
+                          color: Provider.of<GeneralViewModel>(context,
+                                          listen: true)
+                                      .selectedIndex ==
+                                  HOME_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -83,21 +87,29 @@ class _MainDrawerState extends State<MainDrawer> {
                             Image.asset(
                               "assets/icons/element-4.webp",
                               scale: 4.5,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == HOME_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      HOME_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
-                            const SizedBox(width: 15,),
+                            const SizedBox(
+                              width: 15,
+                            ),
                             CustomTitle(
                               text: "الرئيسية",
                               fontSize: 18,
-                              fontWeight: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == HOME_INDEX
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      HOME_INDEX
                                   ? FontWeight.w700
                                   : FontWeight.w400,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == HOME_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      HOME_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
@@ -111,7 +123,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     child: GestureDetector(
                       onTap: () {
                         Provider.of<GeneralViewModel>(context, listen: false)
-                            .updateMainScreen(SECTIONS_INDEX, "الأقسام الرئيسية");
+                            .updateMainScreen(SECTIONS_INDEX, "الأقسام");
                       },
                       child: Container(
                         height: 40,
@@ -120,9 +132,12 @@ class _MainDrawerState extends State<MainDrawer> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: Provider.of<GeneralViewModel>(context, listen: true)
-                              .selectedIndex == SECTIONS_INDEX ? AppColors.mainColor
-                              .withOpacity(0.1) : Colors.transparent,
+                          color: Provider.of<GeneralViewModel>(context,
+                                          listen: true)
+                                      .selectedIndex ==
+                                  SECTIONS_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -130,21 +145,87 @@ class _MainDrawerState extends State<MainDrawer> {
                             Image.asset(
                               "assets/icons/layer.webp",
                               scale: 4.5,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == SECTIONS_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      SECTIONS_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
-                            const SizedBox(width: 10,),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             CustomTitle(
                               text: "الأقسام",
                               fontSize: 18,
-                              fontWeight: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == SECTIONS_INDEX
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      SECTIONS_INDEX
                                   ? FontWeight.w700
                                   : FontWeight.w400,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == SECTIONS_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      SECTIONS_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Provider.of<GeneralViewModel>(context, listen: false)
+                            .updateMainScreen(PRODUCTS_INDEX, "المنتجات");
+                      },
+                      child: Container(
+                        height: 40,
+                        width: getSize(context).width,
+                        margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Provider.of<GeneralViewModel>(context,
+                                          listen: true)
+                                      .selectedIndex ==
+                                  PRODUCTS_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/icons/layer.webp",
+                              scale: 4.5,
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      PRODUCTS_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            CustomTitle(
+                              text: "المنتجات",
+                              fontSize: 18,
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      PRODUCTS_INDEX
+                                  ? FontWeight.w700
+                                  : FontWeight.w400,
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      PRODUCTS_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
@@ -167,9 +248,12 @@ class _MainDrawerState extends State<MainDrawer> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: Provider.of<GeneralViewModel>(context, listen: true)
-                              .selectedIndex == EMPLOYEES_INDEX ? AppColors.mainColor
-                              .withOpacity(0.1) : Colors.transparent,
+                          color: Provider.of<GeneralViewModel>(context,
+                                          listen: true)
+                                      .selectedIndex ==
+                                  EMPLOYEES_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -177,21 +261,29 @@ class _MainDrawerState extends State<MainDrawer> {
                             Image.asset(
                               "assets/icons/profile-2user.webp",
                               scale: 4.5,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == EMPLOYEES_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      EMPLOYEES_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
-                            const SizedBox(width: 10,),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             CustomTitle(
                               text: "الموظفين",
                               fontSize: 18,
-                              fontWeight: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == EMPLOYEES_INDEX
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      EMPLOYEES_INDEX
                                   ? FontWeight.w700
                                   : FontWeight.w400,
-                              color: Provider.of<GeneralViewModel>(context, listen: true)
-                                  .selectedIndex == EMPLOYEES_INDEX
+                              color: Provider.of<GeneralViewModel>(context,
+                                              listen: true)
+                                          .selectedIndex ==
+                                      EMPLOYEES_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),
@@ -205,7 +297,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () {
-                         signOut();
+                        signOut();
                       },
                       child: Container(
                         height: 40,
@@ -224,7 +316,9 @@ class _MainDrawerState extends State<MainDrawer> {
                                   scale: 4.5,
                                   fit: BoxFit.contain,
                                 ),
-                                const SizedBox(width: 10,),
+                                const SizedBox(
+                                  width: 10,
+                                ),
                                 const CustomTitle(
                                   text: "تسجيل الخروج ",
                                   fontSize: 18,
@@ -237,8 +331,7 @@ class _MainDrawerState extends State<MainDrawer> {
                               visible: signingOut,
                               replacement: const SizedBox(),
                               child: const CustomCircularProgressIndicator(
-                                  iosSize: 30,
-                                  color: AppColors.mainColor),
+                                  iosSize: 30, color: AppColors.mainColor),
                             ),
                           ],
                         ),
@@ -268,13 +361,13 @@ class _MainDrawerState extends State<MainDrawer> {
           await Provider.of<GeneralViewModel>(context, listen: false)
               .savePrintInvoiceWithLogoToPreferences(false)
               .then(
-                (_) {
+            (_) {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const Authentication(),
                 ),
-                    (route) => false,
+                (route) => false,
               );
               setState(() {
                 signingOut = false;
@@ -288,10 +381,13 @@ class _MainDrawerState extends State<MainDrawer> {
         });
         if (authResponse["data"] is Map &&
             authResponse["data"]["message"] != null) {
-          showCustomToast(context,authResponse["data"]["message"],"assets/icons/alert-circle.webp",AppColors.c999);
+          print(authResponse["data"]["message"]);
+          showCustomToast(context, authResponse["data"]["message"],
+              "assets/icons/alert-circle.webp", AppColors.c999);
         } else {
           print(authResponse["data"]);
-          showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+              "assets/icons/alert-circle.webp", AppColors.c999);
         }
         //throw Exception(authResponse["data"]);
       }
@@ -301,17 +397,17 @@ class _MainDrawerState extends State<MainDrawer> {
         setState(() {
           signingOut = false;
         });
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       } else {
         // Handle other errors
         print('Error in requestOrder: $error');
         setState(() {
           signingOut = false;
         });
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       }
     });
   }
-
-
 }

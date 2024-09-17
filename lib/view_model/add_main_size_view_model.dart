@@ -30,7 +30,7 @@ class AddMainSizeViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .postData(
-          apiUrl: "$baseUrl/api/v1/categories",
+          apiUrl: "$baseUrl/api/size",
           headers: {
             'Authorization':
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -42,8 +42,9 @@ class AddMainSizeViewModel with ChangeNotifier {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
-          Provider.of<GeneralViewModel>(context, listen: false)
-              .updateSelectedIndex(index: ADDMAINSIZE_INDEX);
+          showCustomToast(context, "تم اضافة الحجم بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
+          clearData();
           notifyListeners();
         } else {
           setLoading(false);

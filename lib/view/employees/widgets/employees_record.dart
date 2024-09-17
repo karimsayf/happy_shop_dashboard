@@ -287,7 +287,7 @@ class _EmployeesRecordState extends State<EmployeesRecord> {
                                                   .updateEmployeeStatus(
                                                 context,
                                                 employee.id,
-                                                  "BLOCKED"
+                                                  "INACTIVE"
                                               );
                                             },
                                             child: Container(

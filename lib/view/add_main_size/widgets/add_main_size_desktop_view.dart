@@ -44,8 +44,8 @@ class _AddMainSizeDesktopViewState extends State<AddMainSizeDesktopView> {
                 const Text('/',style: TextStyle(color: AppColors.mainColor,fontSize: 13),),
                 const SizedBox(width: 10,),
                 InkWell(onTap: (){
-                  Provider.of<GeneralViewModel>(context,listen: false).updateSelectedIndex(index: SECTIONS_INDEX);
-                },child: const Text('الاقسام',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)),
+                  Provider.of<GeneralViewModel>(context,listen: false).updateSelectedIndex(index: PRODUCTS_INDEX);
+                },child: const Text('المنتجات',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)),
                 const SizedBox(width: 10,),
                 const Text('/',style: TextStyle(color: AppColors.mainColor,fontSize: 13),),
                 const SizedBox(width: 10,),
@@ -69,7 +69,6 @@ class _AddMainSizeDesktopViewState extends State<AddMainSizeDesktopView> {
                           controller: addMainSizeViewModel.name,
                           generalTextFieldValidator:
                           Validator(context).validateField,
-                          readOnly: true,
                           hintText: 'الحجم',
                           hintTextColor: AppColors.c912,
                         )),
@@ -86,7 +85,7 @@ class _AddMainSizeDesktopViewState extends State<AddMainSizeDesktopView> {
               children: [
                 InkWell(
                   onTap: addMainSizeViewModel.loading ? (){} :  () async{
-                    await Provider.of<AddProductViewModel>(context,listen: false).addMainSize(context);
+                    await Provider.of<AddMainSizeViewModel>(context,listen: false).addMainSize(context);
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(

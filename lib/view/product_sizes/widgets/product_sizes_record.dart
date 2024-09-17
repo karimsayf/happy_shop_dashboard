@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../components/custom_circular_progress_indicator.dart';
 import '../../../components/custom_dialog.dart';
 import '../../../components/custom_title.dart';
-import '../../../model/size_model/size_model.dart';
+import '../../../model/product_size_model/product_size_model.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
@@ -61,8 +61,8 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
     }
 
     List<DataRow> getRows() {
-      List<SizeModel> pageData = sizeViewModel.sizes;
-      return pageData.mapIndexed((index, size) {
+      List<ProductSizeModel> pageData = sizeViewModel.productSizes;
+      return pageData.mapIndexed((index, productSize) {
         return DataRow(cells: [
           DataCell(CustomTitle(
             text: (sizeViewModel.firstNum + index).toString(),
@@ -74,7 +74,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           )),
           DataCell(
             CustomTitle(
-              text: size.name,
+              text: productSize.size,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -82,16 +82,14 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
               maxLines: 1,
             ),
           ),
-          DataCell(
-            CustomTitle(
-              text: size.price,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
+          DataCell(CustomTitle(
+            text: "${productSize.price} د.ع",
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: AppColors.c016,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )),
           DataCell(
             Row(
               children: [
@@ -127,8 +125,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                         Provider.of<EditProductSizeViewModel>(context,
                                 listen: false)
                             .assignData(
-                                size.name,
-                                size.price,
+                            productSize,
                                 Provider.of<ProductViewModel>(context,
                                         listen: false)
                                     .selectedProductName);
@@ -198,7 +195,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                                   height: 10,
                                 ),
                                 const CustomTitle(
-                                  text: "حذف الحجم",
+                                  text: "حذف الحجم و السعر",
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.c016,
@@ -208,7 +205,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                                 ),
                                 const CustomTitle(
                                   text:
-                                      "هل أنت متأكد أنك تريد حذف هذه الحجم ؟ لا يمكن التراجع عن هذا الإجراء.",
+                                      "هل أنت متأكد أنك تريد حذف هذا الحجم و السعر ؟ لا يمكن التراجع عن هذا الإجراء.",
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.c912,
@@ -262,7 +259,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                                                           listen: false)
                                                       .deleteSize(
                                                     context,
-                                                    size.id,
+                                                    productSize.id,
                                                   );
                                                 },
                                           child: Container(
@@ -378,14 +375,39 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+            child: widget.flag? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CustomTitle(
-                  text: "سجل الاحجام",
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.c016,
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: "سجل الاحجام و الاسعار",
+                    style: const TextStyle(
+                        fontFamily: stcFontStr,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.c016,),
+                    children: <TextSpan>[
+                    const TextSpan(
+                        text: " - ",
+                        style: TextStyle(
+                            fontFamily: stcFontStr,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.c016,),
+                      ),
+                      TextSpan(
+                        text: Provider.of<ProductViewModel>(context,
+                            listen: false)
+                            .selectedProductName,
+                        style: const TextStyle(
+                            fontFamily: stcFontStr,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.c016,),
+                      ),
+                    ],
+                  ),
                 ),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -408,7 +430,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                         color: AppColors.mainColor,
                       ),
                       height: 45,
-                      width: 120,
+                      width: 160,
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -422,7 +444,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                             width: 5,
                           ),
                           CustomTitle(
-                            text: "إضافة حجم",
+                            text: "إضافة حجم و سعر",
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: AppColors.c555,
@@ -433,6 +455,97 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                       ),
                     ),
                   ),
+                ),
+              ],
+            ) : Column(
+              children: [
+                Row(
+                  children: [
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "سجل الاحجام و الاسعار",
+                        style: const TextStyle(
+                          fontFamily: stcFontStr,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.c016,),
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: " - ",
+                            style: TextStyle(
+                              fontFamily: stcFontStr,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.c016,),
+                          ),
+                          TextSpan(
+                            text: Provider.of<ProductViewModel>(context,
+                                listen: false)
+                                .selectedProductName,
+                            style: const TextStyle(
+                              fontFamily: stcFontStr,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.c016,),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          Provider.of<AddProductSizeViewModel>(context,
+                              listen: false)
+                              .clearData();
+                          Provider.of<AddProductSizeViewModel>(context,
+                              listen: false)
+                              .assignData(Provider.of<ProductViewModel>(context,
+                              listen: false)
+                              .selectedProductName);
+                          Provider.of<GeneralViewModel>(context, listen: false)
+                              .updateSelectedIndex(index: ADDSIZE_INDEX);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.mainColor,
+                          ),
+                          height: 45,
+                          width: 160,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                size: 18,
+                                color: AppColors.c555,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              CustomTitle(
+                                text: "إضافة حجم و سعر",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.c555,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -448,7 +561,10 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: buildDataTableTheme(getRows),
+              child: SizedBox(
+                width: getSize(context).width * 0.9,
+                child: buildDataTableTheme(getRows),
+              ),
             ),
           if (sizeViewModel.isSizesLoading)
             const Padding(

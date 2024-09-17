@@ -10,6 +10,7 @@ import '../../../components/upload_file_widget.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/validator.dart';
+import '../../../view_model/add_main_size_view_model.dart';
 import '../../../view_model/add_product_view_model.dart';
 import '../../../view_model/add_section_view_model.dart';
 import '../../../view_model/general_view_model.dart';
@@ -22,7 +23,7 @@ class AddMainSizeMobileView extends StatefulWidget {
 }
 
 class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
-  late final addProductViewModel = Provider.of<AddProductViewModel>(context);
+  late final addMainSizeViewModel = Provider.of<AddMainSizeViewModel>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.all(20),
       child: Form(
-        key: addProductViewModel.formKey,
+        key: addMainSizeViewModel.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,41 +46,29 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
                 const Text('/',style: TextStyle(color: AppColors.mainColor,fontSize: 13),),
                 const SizedBox(width: 10,),
                 InkWell(onTap: (){
-                  Provider.of<GeneralViewModel>(context,listen: false).updateSelectedIndex(index: SECTIONS_INDEX);
-                },child: const Text('الاقسام',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)),
+                  Provider.of<GeneralViewModel>(context,listen: false).updateSelectedIndex(index: PRODUCTS_INDEX);
+                },child: const Text('المنتجات',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)),
                 const SizedBox(width: 10,),
                 const Text('/',style: TextStyle(color: AppColors.mainColor,fontSize: 13),),
                 const SizedBox(width: 10,),
-                const Text('إضافة منتج',style: TextStyle(color: Colors.grey,fontSize: 13),),
+                const Text('إضافة حجم',style: TextStyle(color: Colors.grey,fontSize: 13),),
               ],
             ),
             _buildDivider(),
             const Text(
-              'إضافة منتج',
+              'إضافة حجم',
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
             ),
             _buildDivider(),
             _buildSection(
-              title: 'بيانات المنتج',
-              desc: 'قم برفع تفاصيل المنتج',
+              title: 'بيانات الحجم',
+              desc: 'قم برفع تفاصيل الحجم',
               children: [
                 Row(
                   children: [
                     Expanded(
                         child: CustomTextField(
-                          controller: addProductViewModel.sectionName,
-                          generalTextFieldValidator:
-                          Validator(context).validateField,
-                          readOnly: true,
-                          hintText: 'اسم القسم',
-                          hintTextColor: AppColors.c912,
-                        )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                        child: CustomTextField(
-                          controller: addProductViewModel.name,
+                          controller: addMainSizeViewModel.name,
                           generalTextFieldValidator:
                           Validator(context).validateField,
                           hintText: 'اسم المنتج',
@@ -90,38 +79,6 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: CustomTextField(
-                          generalTextFieldValidator:
-                          Validator(context).validateNationalId,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          controller: addProductViewModel.price,
-                          suffixIcon: const Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              ' د . ع',
-                              style: TextStyle(color: AppColors.c912),
-                            ),
-                          ),
-                          hintText: 'السعر',
-                          hintTextColor: AppColors.c912,
-                        )),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                UploadFileWidget(
-                  title: "تحميل صورة",
-                  file: addProductViewModel.file,
-                  setFileOnProvider: (file) {
-                    setState(() {
-                      addProductViewModel.file = file;
-                    });
-                  },
-                ),
               ],
             ),
             _buildDivider(),
@@ -129,8 +86,8 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 InkWell(
-                  onTap: addProductViewModel.loading ? (){} :  () async{
-                    await Provider.of<AddProductViewModel>(context,listen: false).addMainSize(context);
+                  onTap: addMainSizeViewModel.loading ? (){} :  () async{
+                    await Provider.of<AddMainSizeViewModel>(context,listen: false).addMainSize(context);
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
@@ -141,7 +98,7 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
                     ),
                     height: 40,
                     width: 120,
-                    child: addProductViewModel.loading? const Center(
+                    child: addMainSizeViewModel.loading? const Center(
                       child: CustomCircularProgressIndicator(
                           iosSize: 30,
                           color: AppColors.c555),

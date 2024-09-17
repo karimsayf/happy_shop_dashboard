@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
+import 'package:menu_dashboard/view_model/add_main_size_view_model.dart';
+import 'package:menu_dashboard/view_model/add_product_size_view_model.dart';
+import 'package:menu_dashboard/view_model/add_product_view_model.dart';
+import 'package:menu_dashboard/view_model/add_section_view_model.dart';
+import 'package:menu_dashboard/view_model/edit_product_size_view_model.dart';
+import 'package:menu_dashboard/view_model/edit_section_view_model.dart';
+import 'package:menu_dashboard/view_model/product_sizes_view_model.dart';
+import 'package:menu_dashboard/view_model/product_view_model.dart';
+import 'package:menu_dashboard/view_model/requests_view_model.dart';
+import 'package:menu_dashboard/view_model/sections_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -13,6 +23,7 @@ import 'view_model/add_employee_view_model.dart';
 import 'view_model/api_services_view_model.dart';
 import 'view_model/auth_form_provider.dart';
 import 'view_model/edit_employee_view_model.dart';
+import 'view_model/edit_product_view_model.dart';
 import 'view_model/employees_view_model.dart';
 import 'view_model/general_view_model.dart';
 import 'view_model/user_view_model.dart';
@@ -24,12 +35,24 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ApiServicesViewModel()),
-        ChangeNotifierProvider(create: (_) => UserViewModel()),
-        ChangeNotifierProvider(create: (_) => GeneralViewModel()),
-        ChangeNotifierProvider(create: (_) => AuthFormProvider()),
-        ChangeNotifierProvider(create: (_) => EmployeesViewModel()),
         ChangeNotifierProvider(create: (_) => AddEmployeeViewModel()),
+        ChangeNotifierProvider(create: (_) => AddMainSizeViewModel()),
+        ChangeNotifierProvider(create: (_) => AddProductSizeViewModel()),
+        ChangeNotifierProvider(create: (_) => AddProductSizeViewModel()),
+        ChangeNotifierProvider(create: (_) => AddProductViewModel()),
+        ChangeNotifierProvider(create: (_) => AddSectionViewModel()),
+        ChangeNotifierProvider(create: (_) => AuthFormProvider()),
         ChangeNotifierProvider(create: (_) => EditEmployeeViewModel()),
+        ChangeNotifierProvider(create: (_) => EditProductSizeViewModel()),
+        ChangeNotifierProvider(create: (_) => EditProductViewModel()),
+        ChangeNotifierProvider(create: (_) => EditSectionViewModel()),
+        ChangeNotifierProvider(create: (_) => EmployeesViewModel()),
+        ChangeNotifierProvider(create: (_) => GeneralViewModel()),
+        ChangeNotifierProvider(create: (_) => ProductSizesViewModel()),
+        ChangeNotifierProvider(create: (_) => ProductViewModel()),
+        ChangeNotifierProvider(create: (_) => RequestsViewModel()),
+        ChangeNotifierProvider(create: (_) => SectionsViewModel()),
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -48,8 +71,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<UserViewModel>(context, listen: false).loadUserDataFromFSS();
-    FlutterNativeSplash.remove();
+    Provider.of<UserViewModel>(context, listen: false).loadUserDataFromFSS().then((_) {
+      FlutterNativeSplash.remove();
+    },);
     super.initState();
   }
 

@@ -40,7 +40,7 @@ class UserViewModel with ChangeNotifier {
   Future signIn(BuildContext context, String username, String password) async {
     dynamic customerResponse;
     await Provider.of<ApiServicesViewModel>(context, listen: false).postData(
-        apiUrl: "$baseUrl/api/v1/users/login",
+        apiUrl: "$baseUrl/api/user/login",
         data: {
           "username": username,
           "password": password
@@ -57,7 +57,7 @@ class UserViewModel with ChangeNotifier {
   Future signOut(BuildContext context) async {
     dynamic customerResponse;
     await Provider.of<ApiServicesViewModel>(context, listen: false).postData(
-        apiUrl: "$baseUrl/api/v1/users/logout",
+        apiUrl: "$baseUrl/api/user/logout",
         headers: {
           'Authorization': 'Bearer $userToken'
         }

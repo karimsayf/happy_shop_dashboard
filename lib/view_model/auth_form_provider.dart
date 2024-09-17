@@ -68,7 +68,7 @@ class AuthFormProvider extends ChangeNotifier {
           await Provider.of<UserViewModel>(context, listen: false)
               .saveUserDataToFSS(
               signInResponse["data"]["token"]??"",
-              signInResponse["data"]["id"]??'',
+              signInResponse["data"]["id"].toString(),
               signInResponse["data"]["name"] ?? "")
               .then(
                 (_) async {

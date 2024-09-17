@@ -90,10 +90,10 @@ class _SectionsRecordState extends State<SectionsRecord> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   height: 40,
-                  width: 100,
+                  width: 40,
                 ),
                 height: 40,
-                width: 100,
+                width: 40,
                 fit: BoxFit.cover,
               ),
             ),
@@ -155,6 +155,7 @@ class _SectionsRecordState extends State<SectionsRecord> {
                           child: Image.asset(
                             "assets/icons/additem.webp",
                             scale: 4.5,
+                            color: AppColors.mainColor,
                           ),
                         ),
                       ),
@@ -678,7 +679,9 @@ class _SectionsRecordState extends State<SectionsRecord> {
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: buildDataTableTheme(getRows),
+              child: SizedBox(
+                  width: getSize(context).width * 0.9,
+                  child: buildDataTableTheme(getRows)),
             ),
           if (sectionsViewModel.isSectionsLoading)
             const Padding(

@@ -16,10 +16,12 @@ class EditProductViewModel with ChangeNotifier {
   final TextEditingController name = TextEditingController();
   final TextEditingController sectionName = TextEditingController();
   final TextEditingController price = TextEditingController();
+  final TextEditingController components = TextEditingController();
   PlatformFile? file;
   bool loading = false;
   String? sectionId;
   String? photoNetwork;
+  String? productId;
 
   clearData() {
     name.clear();
@@ -28,14 +30,19 @@ class EditProductViewModel with ChangeNotifier {
     sectionId = null;
     photoNetwork = null;
     price.clear();
+    components.clear();
+    productId = null;
     notifyListeners();
   }
 
-  assignData(ProductModel subsection){
-    name.text = subsection.name;
-    sectionName.text = subsection.mainCategoryName;
-    photoNetwork = subsection.photo;
-    sectionId = subsection.parentCategoryId;
+  assignData(ProductModel product){
+    name.text = product.name;
+    sectionName.text = product.categoryName;
+    photoNetwork = product.photo;
+    sectionId = product.categoryId;
+    components.text = product.components;
+    productId = product.id;
+    price.text = product.price;
     notifyListeners();
   }
 
@@ -49,7 +56,7 @@ class EditProductViewModel with ChangeNotifier {
       setLoading(true);
       Map<String,dynamic> body = {
         "name": name.text.trim(),
-        "parentCategoryId": sectionId,
+        "components": components.text,
         "price" : price.text.trim()
       };
       if(file != null){
@@ -63,7 +70,7 @@ class EditProductViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .updateData(
-        apiUrl: "$baseUrl/api/v1/categories/$sectionId",
+        apiUrl: "$baseUrl/api/product/$sectionId/$productId",
         headers: {
           'Authorization':
           'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -73,6 +80,8 @@ class EditProductViewModel with ChangeNotifier {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
+          showCustomToast(context, "تم تعديل المنتج بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: PRODUCTS_INDEX);
           notifyListeners();

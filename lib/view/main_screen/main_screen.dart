@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/view/add_main_size/add_main_size.dart';
+import 'package:menu_dashboard/view/add_product_size/add_product_size.dart';
 import 'package:menu_dashboard/view/products/products.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +12,10 @@ import '../add_product/add_product.dart';
 import '../add_section/add_section.dart';
 import '../edit_employee/edit_employee.dart';
 import '../edit_product/edit_product.dart';
+import '../edit_product_size/edit_product_size.dart';
 import '../edit_section/edit_section.dart';
 import '../employees/employees.dart';
+import '../product_sizes/product_sizes.dart';
 import '../requests/requests.dart';
 import '../responsive/responsive_layout.dart';
 import '../sections/sections.dart';
@@ -92,6 +96,22 @@ class _MainScreenState extends State<MainScreen> {
             .selectedIndex ==
         EDITEMPLOYEE_INDEX) {
       return EditEmployee(pageState: pageState);
+    } else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        SIZES_INDEX) {
+      return ProductSizes(pageState: pageState);
+    } else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        ADDSIZE_INDEX) {
+      return AddProductSize(pageState: pageState);
+    } else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        EDITSIZE_INDEX) {
+      return EditProductSize(pageState: pageState);
+    } else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        ADDMAINSIZE_INDEX) {
+      return AddMainSize(pageState: pageState);
     }
     return const SizedBox();
   }

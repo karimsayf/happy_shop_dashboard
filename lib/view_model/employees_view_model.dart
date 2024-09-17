@@ -271,7 +271,7 @@ class EmployeesViewModel with ChangeNotifier {
   Future updateEmployeeStatus(BuildContext context, String employeeId, String status) async {
     setUpdateStatusLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .postData(apiUrl: "$baseUrl/api/v1/users/$employeeId/changeStatus?status=$status",
+        .postData(apiUrl: "$baseUrl/api/user/$employeeId/changeStatus?status=$status",
         headers: {
           'Authorization':
           'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'

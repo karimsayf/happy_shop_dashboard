@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_dashboard/model/size_model/size_model.dart';
 import 'package:provider/provider.dart';
 
 import '../components/custom_circular_progress_indicator.dart';
 import '../components/custom_title.dart';
 import '../components/custom_toast.dart';
+import '../model/main_size_model/main_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
@@ -19,17 +18,22 @@ class AddProductSizeViewModel with ChangeNotifier {
   final TextEditingController productName = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController price = TextEditingController();
-  List<SizeModel> mainSizes = [];
+  List<MainSizeModel> mainSizes = [];
   int totalSizes = 0;
   bool loading = false;
   bool loadingMainSizes = false;
   int currentIndex = 1;
   bool loadingOtherMainSizes = false;
+  String? mainSizeId;
 
   clearData() {
     name.clear();
     price.clear();
     productName.clear();
+    mainSizes = [];
+    currentIndex = 1;
+    mainSizeId = null;
+    totalSizes = 0;
     notifyListeners();
   }
 
@@ -58,13 +62,15 @@ class AddProductSizeViewModel with ChangeNotifier {
       setLoading(true);
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .postData(apiUrl: "$baseUrl/api/v1/items", headers: {
+          .postData(apiUrl: "$baseUrl/api/product/$productId/$mainSizeId?price=${price.text.trim()}", headers: {
         'Authorization':
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
       }, data: {}).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
+          showCustomToast(context, "تم اضافة الحجم و السعر بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: SIZES_INDEX);
           notifyListeners();
@@ -103,13 +109,13 @@ class AddProductSizeViewModel with ChangeNotifier {
   ) async {
     setLoadingMainSizes(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(apiUrl: "$baseUrl/api/v1/items/subcategory?page=$page&size=10")
+        .getData(apiUrl: "$baseUrl/api/size?page=$page&size=10")
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
         mainSizes = [];
         for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
           mainSizes
-              .add(SizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
         }
         totalSizes = getItemsResponse["data"]["totalElements"];
         loadingMainSizes = false;
@@ -123,19 +129,30 @@ class AddProductSizeViewModel with ChangeNotifier {
                 children: mainSizes.isNotEmpty
                     ? [
                         SingleChildScrollView(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ...mainSizes.map((mainSize) {
-                                return SimpleDialogOption(
-                                  onPressed: () {
+                                return InkWell(
+                                  onTap: () {
                                     setState(() {
-                                      name.text = mainSize.name;
+                                      name.text = mainSize.size;
+                                      mainSizeId = mainSize.id;
                                     });
                                     Navigator.pop(
                                       context,
                                     );
                                   },
-                                  child: Text(mainSize.name),
+                                  child: Row(
+                                    children: [
+                                      CustomTitle(
+                                        text: mainSize.size,
+                                        fontSize: 16,
+                                        color: AppColors.c016,
+                                      )
+                                    ],
+                                  ),
                                 );
                               }),
                               if (mainSizes.length != totalSizes)
@@ -158,10 +175,12 @@ class AddProductSizeViewModel with ChangeNotifier {
                         )
                       ]
                     : [
-                        const CustomTitle(
-                          text: 'لا توجد احجام',
-                          fontSize: 16,
-                          color: AppColors.mainColor,
+                        const Center(
+                          child: CustomTitle(
+                            text: 'لا توجد احجام',
+                            fontSize: 16,
+                            color: AppColors.c016,
+                          ),
                         ),
                       ],
               ),
@@ -207,7 +226,7 @@ class AddProductSizeViewModel with ChangeNotifier {
       if (getItemsResponse["status"] == "success") {
         for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
           mainSizes
-              .add(SizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
         }
         totalSizes = getItemsResponse["data"]["totalElements"];
         if (getItemsResponse["data"]["content"].isNotEmpty) {

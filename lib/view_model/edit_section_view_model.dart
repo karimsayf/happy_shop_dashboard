@@ -56,7 +56,7 @@ class EditSectionViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .updateData(
-          apiUrl: "$baseUrl/api/v1/categories/$sectionId",
+          apiUrl: "$baseUrl/api/category/$sectionId",
           headers: {
             'Authorization':
             'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -66,6 +66,8 @@ class EditSectionViewModel with ChangeNotifier {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
+          showCustomToast(context, "تم تعديل القسم بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: SECTIONS_INDEX);
           notifyListeners();

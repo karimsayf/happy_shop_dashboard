@@ -73,7 +73,7 @@ class ProductViewModel with ChangeNotifier {
     clearData();
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/categories/getAllSubcategories?page=$page&size=10")
+        apiUrl: "$baseUrl/api/product?page=$page&size=10")
         .then((getSubsectionsResponse) {
       if (getSubsectionsResponse["status"] == "success") {
         for (int i = 0;
@@ -131,7 +131,7 @@ class ProductViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
 
-        apiUrl: "$baseUrl/api/v1/categories/getAllSubcategories?page=$page&size=10")
+        apiUrl: "$baseUrl/api/product?page=$page&size=10")
         .then((getSubsectionsResponse) {
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
@@ -189,7 +189,7 @@ class ProductViewModel with ChangeNotifier {
         .getData(
 
             apiUrl:
-                "$baseUrl/api/v1/categories/subcategory/name?name=$query&page=$page&size=10")
+                "$baseUrl/api/product/name?name=$query&page=$page&size=10")
         .then((searchSubsectionsResponse) {
       {
         if (searchSubsectionsResponse["status"] == "success") {
@@ -236,10 +236,10 @@ class ProductViewModel with ChangeNotifier {
     });
   }
 
-  Future deleteProduct(BuildContext context, String subsectionId) async {
+  Future deleteProduct(BuildContext context, String productId) async {
     setDeleteSubSectionsLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-        apiUrl: "$baseUrl/api/v1/categories/subcategory/$subsectionId",
+        apiUrl: "$baseUrl/api/product/$productId",
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -248,7 +248,7 @@ class ProductViewModel with ChangeNotifier {
       if (deleteSubsectionResponse["status"] == "success") {
         setDeleteSubSectionsLoading(false);
         Navigator.pop(context);
-        showCustomToast(context, "تم حذف القسم بنجاح",
+        showCustomToast(context, "تم حذف المنتج بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
         getProducts(context, "0", true);
       } else {

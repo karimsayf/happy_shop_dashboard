@@ -92,6 +92,17 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: editProductViewModel.components,
+                          generalTextFieldValidator:
+                          Validator(context).validateField,
+                          hintText: 'المكونات',
+                          hintTextColor: AppColors.c912,
+                        )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],

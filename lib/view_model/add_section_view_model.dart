@@ -33,7 +33,7 @@ class AddSectionViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .postData(
-              apiUrl: "$baseUrl/api/v1/categories",
+              apiUrl: "$baseUrl/api/category",
               headers: {
                 'Authorization':
                     'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -48,6 +48,8 @@ class AddSectionViewModel with ChangeNotifier {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
+          showCustomToast(context, "تم اضافة القسم بنجاح",
+              "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: SECTIONS_INDEX);
           notifyListeners();

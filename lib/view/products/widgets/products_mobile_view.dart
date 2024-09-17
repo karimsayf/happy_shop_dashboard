@@ -9,7 +9,7 @@ class ProductsMobileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        ProductsRecord(flag: true,)
+        ProductsRecord(flag: false,)
       ],
     );
   }
