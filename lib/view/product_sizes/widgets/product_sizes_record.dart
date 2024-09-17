@@ -25,47 +25,47 @@ class ProductSizesRecord extends StatefulWidget {
 }
 
 class _ProductSizesRecordState extends State<ProductSizesRecord> {
-  late final sizeViewModel = Provider.of<ProductSizesViewModel>(context);
+  late final productSizeViewModel = Provider.of<ProductSizesViewModel>(context);
 
   @override
   Widget build(BuildContext context) {
-    int totalRows = sizeViewModel.totalSizes;
-    int totalPages = (totalRows / sizeViewModel.rowsPerPage).ceil();
+    int totalRows = productSizeViewModel.totalSizes;
+    int totalPages = (totalRows / productSizeViewModel.rowsPerPage).ceil();
 
     void handlePrevious() {
       setState(() {
-        sizeViewModel.currentPage--;
-        sizeViewModel.firstNum = sizeViewModel.firstNum - 10;
-        sizeViewModel.lastNum = sizeViewModel.lastNum - 10;
+        productSizeViewModel.currentPage--;
+        productSizeViewModel.firstNum = productSizeViewModel.firstNum - 10;
+        productSizeViewModel.lastNum = productSizeViewModel.lastNum - 10;
       });
       Provider.of<ProductSizesViewModel>(context, listen: false).getSizes(
           context,
           Provider.of<ProductViewModel>(context, listen: false)
               .selectedProductId,
-          sizeViewModel.currentPage.toString(),
+          productSizeViewModel.currentPage.toString(),
           false);
     }
 
     void handleNext() {
       setState(() {
-        sizeViewModel.currentPage++;
-        sizeViewModel.firstNum = sizeViewModel.firstNum + 10;
-        sizeViewModel.lastNum = sizeViewModel.lastNum + 10;
+        productSizeViewModel.currentPage++;
+        productSizeViewModel.firstNum = productSizeViewModel.firstNum + 10;
+        productSizeViewModel.lastNum = productSizeViewModel.lastNum + 10;
       });
       Provider.of<ProductSizesViewModel>(context, listen: false).getSizes(
           context,
           Provider.of<ProductViewModel>(context, listen: false)
               .selectedProductId,
-          sizeViewModel.currentPage.toString(),
+          productSizeViewModel.currentPage.toString(),
           false);
     }
 
     List<DataRow> getRows() {
-      List<ProductSizeModel> pageData = sizeViewModel.productSizes;
+      List<ProductSizeModel> pageData = productSizeViewModel.productSizes;
       return pageData.mapIndexed((index, productSize) {
         return DataRow(cells: [
           DataCell(CustomTitle(
-            text: (sizeViewModel.firstNum + index).toString(),
+            text: (productSizeViewModel.firstNum + index).toString(),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: AppColors.c016,
@@ -553,7 +553,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           const SizedBox(
             height: 20,
           ),
-          if (widget.flag)
+          if (widget.flag || productSizeViewModel.sizesEmpty)
             SizedBox(
               width: getSize(context).width,
               child: buildDataTableTheme(getRows),
@@ -566,13 +566,13 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                 child: buildDataTableTheme(getRows),
               ),
             ),
-          if (sizeViewModel.isSizesLoading)
+          if (productSizeViewModel.isSizesLoading)
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: CustomCircularProgressIndicator(
                   iosSize: 30, color: AppColors.mainColor),
             )
-          else if (!sizeViewModel.sizesEmpty)
+          else if (!productSizeViewModel.sizesEmpty)
             Padding(
               padding:
                   const EdgeInsetsDirectional.only(start: 20, end: 15, top: 20),
@@ -590,7 +590,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                           fontWeight: FontWeight.w400),
                       children: <TextSpan>[
                         TextSpan(
-                          text: "${sizeViewModel.firstNum}",
+                          text: "${productSizeViewModel.firstNum}",
                           style: const TextStyle(
                               fontFamily: stcFontStr,
                               fontWeight: FontWeight.w500,
@@ -606,7 +606,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                               fontSize: 14),
                         ),
                         TextSpan(
-                          text: "${sizeViewModel.lastNum}",
+                          text: "${productSizeViewModel.lastNum}",
                           style: const TextStyle(
                               fontFamily: stcFontStr,
                               fontWeight: FontWeight.w500,
@@ -645,7 +645,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
-                          onTap: sizeViewModel.currentPage > 0
+                          onTap: productSizeViewModel.currentPage > 0
                               ? handlePrevious
                               : null,
                           child: Container(
@@ -669,10 +669,10 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                           buildPaginationButton(i, (value) {
                             if (value) {
                               setState(() {
-                                sizeViewModel.firstNum =
-                                    sizeViewModel.currentPage * 10 + 1;
-                                sizeViewModel.lastNum =
-                                    (sizeViewModel.currentPage + 1) * 10;
+                                productSizeViewModel.firstNum =
+                                    productSizeViewModel.currentPage * 10 + 1;
+                                productSizeViewModel.lastNum =
+                                    (productSizeViewModel.currentPage + 1) * 10;
                               });
                             }
                           }),
@@ -680,10 +680,10 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                         ...buildPaginationButtons(totalPages, (value) {
                           if (value) {
                             setState(() {
-                              sizeViewModel.firstNum =
-                                  sizeViewModel.currentPage * 10 + 1;
-                              sizeViewModel.lastNum =
-                                  (sizeViewModel.currentPage + 1) * 10;
+                              productSizeViewModel.firstNum =
+                                  productSizeViewModel.currentPage * 10 + 1;
+                              productSizeViewModel.lastNum =
+                                  (productSizeViewModel.currentPage + 1) * 10;
                             });
                           }
                         }),
@@ -693,7 +693,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
-                          onTap: sizeViewModel.currentPage < totalPages - 1
+                          onTap: productSizeViewModel.currentPage < totalPages - 1
                               ? handleNext
                               : null,
                           child: Container(
@@ -715,7 +715,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                 ],
               ),
             )
-          else if (sizeViewModel.sizesEmpty)
+          else if (productSizeViewModel.sizesEmpty)
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: CustomTitle(
@@ -795,7 +795,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
   List<Widget> buildPaginationButtons(
       int totalPages, Function(bool) callBackFunction) {
     List<Widget> buttons = [];
-    int start = (sizeViewModel.currentPage ~/ 3) * 3;
+    int start = (productSizeViewModel.currentPage ~/ 3) * 3;
     int end = (start + 3).clamp(0, totalPages);
     for (int i = start; i < end; i++) {
       buttons.add(buildPaginationButton(i, (value) {
@@ -816,7 +816,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          if (sizeViewModel.currentPage != pageNumber) {
+          if (productSizeViewModel.currentPage != pageNumber) {
             Provider.of<ProductSizesViewModel>(context, listen: false)
                 .setPage(pageNumber);
             callBackFunction(true);
@@ -824,7 +824,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                 context,
                 Provider.of<ProductViewModel>(context, listen: false)
                     .selectedProductId,
-                sizeViewModel.currentPage.toString(),
+                productSizeViewModel.currentPage.toString(),
                 false);
           }
         },
@@ -834,7 +834,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           margin: const EdgeInsetsDirectional.only(start: 10),
           padding: const EdgeInsets.only(top: 5),
           decoration: BoxDecoration(
-              color: sizeViewModel.currentPage == pageNumber
+              color: productSizeViewModel.currentPage == pageNumber
                   ? AppColors.mainColor.withOpacity(0.1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(12)),
@@ -843,7 +843,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
               text: (pageNumber + 1).toString(),
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: sizeViewModel.currentPage == pageNumber
+              color: productSizeViewModel.currentPage == pageNumber
                   ? AppColors.mainColor
                   : AppColors.c912,
             ),

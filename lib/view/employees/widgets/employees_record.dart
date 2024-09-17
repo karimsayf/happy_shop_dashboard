@@ -936,7 +936,7 @@ class _EmployeesRecordState extends State<EmployeesRecord> {
           const SizedBox(
             height: 20,
           ),
-          if (widget.flag)
+          if (widget.flag || employeesViewModel.employeesEmpty)
             SizedBox(
               width: getSize(context).width,
               child: buildDataTableTheme(getRows),

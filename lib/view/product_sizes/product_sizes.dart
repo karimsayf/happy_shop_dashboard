@@ -34,10 +34,12 @@ class _ProductSizesState extends State<ProductSizes> {
   @override
   Widget build(BuildContext context) {
     if (sizeViewModel.isSizesHomeLoading) {
-      return Padding(
-        padding: EdgeInsets.only(top: getSize(context).height * 0.4),
-        child: const CustomCircularProgressIndicator(
-            iosSize: 30, color: AppColors.mainColor),
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: getSize(context).height * 0.4),
+          child: const CustomCircularProgressIndicator(
+              iosSize: 30, color: AppColors.mainColor),
+        ),
       );
     } else {
       if (widget.pageState == "desktop") {

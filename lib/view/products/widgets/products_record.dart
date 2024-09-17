@@ -39,13 +39,14 @@ class _ProductsRecordState extends State<ProductsRecord> {
         productViewModel.lastNum = productViewModel.lastNum - 10;
       });
       if (productViewModel.searchQuery.isNotEmpty) {
-        Provider.of<ProductViewModel>(context, listen: false)
-            .searchProducts(context, productViewModel.searchQuery,
-                productViewModel.currentPage.toString(), false);
+        Provider.of<ProductViewModel>(context, listen: false).searchProducts(
+            context,
+            productViewModel.searchQuery,
+            productViewModel.currentPage.toString(),
+            false);
       } else {
-        Provider.of<ProductViewModel>(context, listen: false)
-            .getProducts(
-                context, productViewModel.currentPage.toString(), false);
+        Provider.of<ProductViewModel>(context, listen: false).getProducts(
+            context, productViewModel.currentPage.toString(), false);
       }
     }
 
@@ -56,13 +57,14 @@ class _ProductsRecordState extends State<ProductsRecord> {
         productViewModel.lastNum = productViewModel.lastNum + 10;
       });
       if (productViewModel.searchQuery.isNotEmpty) {
-        Provider.of<ProductViewModel>(context, listen: false)
-            .searchProducts(context, productViewModel.searchQuery,
-                productViewModel.currentPage.toString(), false);
+        Provider.of<ProductViewModel>(context, listen: false).searchProducts(
+            context,
+            productViewModel.searchQuery,
+            productViewModel.currentPage.toString(),
+            false);
       } else {
-        Provider.of<ProductViewModel>(context, listen: false)
-            .getProducts(
-                context, productViewModel.currentPage.toString(), false);
+        Provider.of<ProductViewModel>(context, listen: false).getProducts(
+            context, productViewModel.currentPage.toString(), false);
       }
     }
 
@@ -164,9 +166,11 @@ class _ProductsRecordState extends State<ProductsRecord> {
                         color: AppColors.c244),
                     child: GestureDetector(
                       onTap: () {
-                        Provider.of<EditProductViewModel>(context, listen: false)
+                        Provider.of<EditProductViewModel>(context,
+                                listen: false)
                             .clearData();
-                        Provider.of<EditProductViewModel>(context, listen: false)
+                        Provider.of<EditProductViewModel>(context,
+                                listen: false)
                             .assignData(product);
                         Provider.of<GeneralViewModel>(context, listen: false)
                             .updateSelectedIndex(index: EDITPRODUCT_INDEX);
@@ -217,9 +221,8 @@ class _ProductsRecordState extends State<ProductsRecord> {
                         color: AppColors.c244),
                     child: GestureDetector(
                       onTap: () {
-                        Provider.of<ProductViewModel>(context,
-                                listen: false)
-                            .updateSelectedItemId(product.id,product.name);
+                        Provider.of<ProductViewModel>(context, listen: false)
+                            .updateSelectedItemId(product.id, product.name);
                         Provider.of<GeneralViewModel>(context, listen: false)
                             .updateSelectedIndex(index: SIZES_INDEX);
                       },
@@ -363,7 +366,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                                     color: AppColors.c4221)),
                                             child: Center(
                                               child: Provider.of<
-                                                  ProductViewModel>(
+                                                              ProductViewModel>(
                                                           context)
                                                       .deleting
                                                   ? const CustomCircularProgressIndicator(
@@ -477,8 +480,8 @@ class _ProductsRecordState extends State<ProductsRecord> {
                               suffixIcon: productViewModel
                                       .searchQuery.isNotEmpty
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.only(end: 5),
+                                      padding: const EdgeInsetsDirectional.only(
+                                          end: 5),
                                       child: IconButton(
                                           onPressed: () {
                                             setState(() {
@@ -489,7 +492,8 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                             Provider.of<ProductViewModel>(
                                                     context,
                                                     listen: false)
-                                                .getProducts(context, "0", true);
+                                                .getProducts(
+                                                    context, "0", true);
                                           },
                                           icon: const Icon(
                                             Icons.close,
@@ -534,16 +538,20 @@ class _ProductsRecordState extends State<ProductsRecord> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 10,),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
                                 Provider.of<AddMainSizeViewModel>(context,
-                                    listen: false)
+                                        listen: false)
                                     .clearData();
-                                Provider.of<GeneralViewModel>(context, listen: false)
-                                    .updateSelectedIndex(index: ADDMAINSIZE_INDEX);
+                                Provider.of<GeneralViewModel>(context,
+                                        listen: false)
+                                    .updateSelectedIndex(
+                                        index: ADDMAINSIZE_INDEX);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -614,11 +622,9 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                       child: IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              productViewModel
-                                                  .searchController
+                                              productViewModel.searchController
                                                   .clear();
-                                              productViewModel.searchQuery =
-                                                  "";
+                                              productViewModel.searchQuery = "";
                                             });
                                             Provider.of<ProductViewModel>(
                                                     context,
@@ -653,8 +659,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                 setState(() {
                                   productViewModel.searchQuery = val;
                                 });
-                                if (productViewModel
-                                    .searchQuery.isNotEmpty) {
+                                if (productViewModel.searchQuery.isNotEmpty) {
                                   Provider.of<ProductViewModel>(context,
                                           listen: false)
                                       .searchProducts(
@@ -670,16 +675,20 @@ class _ProductsRecordState extends State<ProductsRecord> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 10,),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
                                 Provider.of<AddMainSizeViewModel>(context,
-                                    listen: false)
+                                        listen: false)
                                     .clearData();
-                                Provider.of<GeneralViewModel>(context, listen: false)
-                                    .updateSelectedIndex(index: ADDMAINSIZE_INDEX);
+                                Provider.of<GeneralViewModel>(context,
+                                        listen: false)
+                                    .updateSelectedIndex(
+                                        index: ADDMAINSIZE_INDEX);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -701,7 +710,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                                       width: 5,
                                     ),
                                     CustomTitle(
-                                      text: "إضافة حجم رئيسي",
+                                      text: "إضافة حجم",
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.c555,
@@ -721,7 +730,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
           const SizedBox(
             height: 20,
           ),
-          if (widget.flag)
+          if (widget.flag || productViewModel.productsEmpty)
             SizedBox(
               width: getSize(context).width,
               child: buildDataTableTheme(getRows),
@@ -858,10 +867,9 @@ class _ProductsRecordState extends State<ProductsRecord> {
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
-                          onTap:
-                              productViewModel.currentPage < totalPages - 1
-                                  ? handleNext
-                                  : null,
+                          onTap: productViewModel.currentPage < totalPages - 1
+                              ? handleNext
+                              : null,
                           child: Container(
                             width: 40,
                             height: 40,
@@ -1021,9 +1029,8 @@ class _ProductsRecordState extends State<ProductsRecord> {
                   .searchProducts(context, productViewModel.searchQuery,
                       productViewModel.currentPage.toString(), false);
             } else {
-              Provider.of<ProductViewModel>(context, listen: false)
-                  .getProducts(context,
-                      productViewModel.currentPage.toString(), false);
+              Provider.of<ProductViewModel>(context, listen: false).getProducts(
+                  context, productViewModel.currentPage.toString(), false);
             }
           }
         },

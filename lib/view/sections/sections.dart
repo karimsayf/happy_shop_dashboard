@@ -31,10 +31,12 @@ class _SectionsState extends State<Sections> {
   @override
   Widget build(BuildContext context) {
     if (sectionsViewModel.isSectionsHomeLoading) {
-      return Padding(
-        padding: EdgeInsets.only(top: getSize(context).height * 0.4),
-        child: const CustomCircularProgressIndicator(
-            iosSize: 30, color: AppColors.mainColor),
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: getSize(context).height * 0.4),
+          child: const CustomCircularProgressIndicator(
+              iosSize: 30, color: AppColors.mainColor),
+        ),
       );
     } else {
       if (widget.pageState == "desktop") {

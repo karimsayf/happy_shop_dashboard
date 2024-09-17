@@ -646,7 +646,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           const SizedBox(
             height: 20,
           ),
-          if (widget.flag)
+          if (widget.flag || requestViewModel.requestsEmpty)
             SizedBox(
               width: getSize(context).width,
               child: buildDataTableTheme(getRows),

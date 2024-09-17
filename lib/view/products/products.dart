@@ -32,10 +32,12 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     if (productViewModel.isProductsHomeLoading) {
-      return Padding(
-        padding: EdgeInsets.only(top: getSize(context).height * 0.4),
-        child: const CustomCircularProgressIndicator(
-            iosSize: 30, color: AppColors.mainColor),
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: getSize(context).height * 0.4),
+          child: const CustomCircularProgressIndicator(
+              iosSize: 30, color: AppColors.mainColor),
+        ),
       );
     } else {
       if (widget.pageState == "desktop") {

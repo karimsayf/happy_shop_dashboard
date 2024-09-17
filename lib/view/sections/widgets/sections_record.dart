@@ -671,7 +671,7 @@ class _SectionsRecordState extends State<SectionsRecord> {
           const SizedBox(
             height: 20,
           ),
-          if (widget.flag)
+          if (widget.flag || sectionsViewModel.sectionsEmpty)
             SizedBox(
               width: getSize(context).width,
               child: buildDataTableTheme(getRows),
@@ -680,7 +680,7 @@ class _SectionsRecordState extends State<SectionsRecord> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                  width: getSize(context).width * 0.9,
+                  width: getSize(context).width * 0.91,
                   child: buildDataTableTheme(getRows)),
             ),
           if (sectionsViewModel.isSectionsLoading)
