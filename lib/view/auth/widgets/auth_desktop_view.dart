@@ -28,7 +28,7 @@ class AuthDesktopView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 120,),
+                    const SizedBox(height: 60,),
                     Row(
                       children: [
                         Expanded(
@@ -46,22 +46,22 @@ class AuthDesktopView extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomTitle(
-                            text: "مرحبا بكم ف ارتاح",
+                          CustomTitle(
+                            text: "مرحبا بكم ف منيو",
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
                             color: AppColors.c555,
                           ),
                           SizedBox(
                             width: 330,
-                            child: const CustomTitle(
+                            child: CustomTitle(
                               text:
-                                  "مع ارتاح نضمن لك أسهل وأسرع طريقة لحجز خدمات منزلية تلبي احتياجاتك بكل سهولة. تجربتك معنا ستكون سريعة ومريحة!",
+                                  "مع منيو، نوفر لك أسهل وأسرع طريقة لإدارة قائمة مطعمك بكل احترافية وسهولة.",
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
                               color: AppColors.c555,

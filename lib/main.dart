@@ -71,10 +71,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     Provider.of<UserViewModel>(context, listen: false).loadUserDataFromFSS().then((_) {
       FlutterNativeSplash.remove();
     },);
-    super.initState();
   }
 
   @override

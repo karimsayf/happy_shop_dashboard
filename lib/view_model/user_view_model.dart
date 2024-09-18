@@ -46,8 +46,6 @@ class UserViewModel with ChangeNotifier {
           "password": password
         }
     ).then((response) {
-      print('RESPONSe');
-      print(response);
       customerResponse = response;
     });
     return customerResponse;
