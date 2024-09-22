@@ -42,10 +42,17 @@ class _MainDrawerState extends State<MainDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    "assets/icons/app_logo.webp",
-                    scale: 4.0,
-                    fit: BoxFit.contain,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.mainColor.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Image.asset(
+                      "assets/icons/app_logo.webp",
+                      scale: 4.0,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

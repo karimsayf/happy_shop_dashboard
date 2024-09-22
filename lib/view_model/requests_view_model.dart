@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../components/custom_dialog.dart';
 import '../components/custom_title.dart';
 import '../components/custom_toast.dart';
+import '../model/product_details_model/product_details_model.dart';
 import '../model/request_model/request_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
@@ -29,8 +31,8 @@ class RequestsViewModel with ChangeNotifier {
   bool underReviewing = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController reasonController = TextEditingController();
-  Map<String, dynamic> selectedStatus = {};
   bool loadingRequestDetails = false;
+  List<ProductDetailsModel> ordersDetails = [];
 
 
   void setPage(int page) {
@@ -90,23 +92,19 @@ class RequestsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedFilter(Map<String, dynamic> value) {
-    selectedStatus = value;
-    notifyListeners();
-  }
 
   void updateSelectedRecord(int value) {
     selectedRequestRecord = value;
     notifyListeners();
   }
 
-  Future getRequestsHome(BuildContext context, String page) async {
+  Future getRequestsHome(BuildContext context, String status, String page) async {
     setRequestsHomeLoading(true);
     clearRequests();
     clearData();
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/orders?page=$page&size=10",
+        apiUrl: "$baseUrl/api/order/all?orderStatus=$status&page=$page&size=10",
         headers: {
           'Authorization':
           'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -161,7 +159,7 @@ class RequestsViewModel with ChangeNotifier {
     });
   }
 
-  Future getRequests(BuildContext context, String page, bool clear) async {
+  Future getRequests(BuildContext context, String status, String page, bool clear) async {
     setRequestsLoading(true);
     clearRequests();
     if (clear) {
@@ -169,7 +167,7 @@ class RequestsViewModel with ChangeNotifier {
     }
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/orders?page=$page&size=10",
+        apiUrl: "$baseUrl/api/order/all?orderStatus=$status&page=$page&size=10",
         headers: {
           'Authorization':
           'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -216,12 +214,15 @@ class RequestsViewModel with ChangeNotifier {
     });
   }
 
-  Future updateRequestStatus(BuildContext context, String orderId, String status,
-      String rejectionReason) async {
+  Future updateRequestStatus(BuildContext context, String orderId, String status) async {
     dynamic updateOrderStatusResponse;
     await Provider.of<ApiServicesViewModel>(context, listen: false).updateData(
       apiUrl:
-      "$baseUrl/api/v1/orders/changeStatus/$orderId/?status=$status&reason=$rejectionReason",
+      "$baseUrl/api/order/status",
+      data: {
+        "orderId": orderId,
+        "status": status
+      },
       headers: {
         'Authorization':
         'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
@@ -232,11 +233,11 @@ class RequestsViewModel with ChangeNotifier {
     return updateOrderStatusResponse;
   }
 
-  Future rejectOrder(BuildContext context, String orderId) async {
+  Future rejectOrder(BuildContext context, String status, String orderId) async {
     setRejectLoading(true);
     formKey.currentState!.save();
     await updateRequestStatus(
-        context, orderId, "REJECTED", reasonController.text.trim())
+        context, orderId, "CANCELLED")
         .then((updateOrderStatusResponse) {
       if (updateOrderStatusResponse["status"] == "success") {
         setRejectLoading(false);
@@ -245,6 +246,7 @@ class RequestsViewModel with ChangeNotifier {
             "assets/icons/check_c.webp", AppColors.c368);
         getRequests(
             context,
+            status,
             "0",
             true);
       } else {
@@ -275,9 +277,9 @@ class RequestsViewModel with ChangeNotifier {
     });
   }
 
-  Future approveOrder(BuildContext context, String orderId) async {
+  Future approveOrder(BuildContext context, String status, String orderId) async {
     setApproveLoading(true);
-    await updateRequestStatus(context, orderId, "COMPLETED", "")
+    await updateRequestStatus(context, orderId, "DONE")
         .then((updateOrderStatusResponse) {
       if (updateOrderStatusResponse["status"] == "success") {
         setApproveLoading(false);
@@ -285,6 +287,7 @@ class RequestsViewModel with ChangeNotifier {
             "assets/icons/check_c.webp", AppColors.c368);
         getRequests(
             context,
+            status,
             "0",
             true);
       } else {
@@ -309,6 +312,322 @@ class RequestsViewModel with ChangeNotifier {
         // Handle other errors
         print('Error in requestOrder: $error');
         setApproveLoading(false);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
+      }
+    });
+  }
+
+  Future getRequestDetails(BuildContext context,String orderID) async {
+    setRequestDetailsLoading(true);
+    await Provider.of<ApiServicesViewModel>(context, listen: false)
+        .getData(
+        apiUrl: "$baseUrl/api/order/details/$orderID",
+        headers: {
+          'Authorization':
+          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+        })
+        .then((getSubsectionsResponse) {
+      if (getSubsectionsResponse["status"] == "success") {
+        ordersDetails = [];
+        ordersDetails = getSubsectionsResponse["data"]
+            .map<RequestModel>((e) => ProductDetailsModel.fromJason(e))
+            .toList();
+        loadingRequestDetails = false;
+        notifyListeners();
+        showCustomDialog(
+            context, content:
+        StatefulBuilder(
+          builder: (context, setState) {
+            return SizedBox(
+              width: 400,
+              height: 550,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.mainColor
+                                      .withOpacity(0.1),
+                                  borderRadius:
+                                  BorderRadius.circular(50)),
+                              child: Container(
+                                margin: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    color: AppColors.c555,
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        50)),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.mainColor
+                                          .withOpacity(0.11),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          50)),
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/icons/document.webp",
+                                      scale: 3.5,
+                                      color: AppColors.mainColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const CustomTitle(
+                              text: "تفاصيل الطلب",
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.c016,
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(
+                            Icons.close_rounded,
+                            size: 25,
+                            color: AppColors.c111,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ...ordersDetails.mapIndexed((index, product) {
+                     return Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color:
+                              AppColors.c016.withOpacity(0.05),
+                              spreadRadius: 3,
+                              blurRadius: 7,
+                            ),
+                          ],
+                          color: AppColors.c555,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomTitle(
+                                  text: "اسم المنتج :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Flexible(
+                                  child: CustomTitle(
+                                    text: product.productName,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.c016,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CustomTitle(
+                                  text: "صورة المنتج :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5,),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border.all(
+                                    width: 1, color: AppColors.c912),
+                                borderRadius:
+                                BorderRadius.circular(16),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      "$baseUrl/images/${product.productPhoto}"),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              height: 120,
+                              width: 120,
+                            ),
+                            const SizedBox(height: 10,),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CustomTitle(
+                                  text: "مكونات المنتج :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5,),
+                            CustomTitle(
+                              text: product.productComponent,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                              color: AppColors.c016,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomTitle(
+                                  text: "الكمية :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Flexible(
+                                  child: CustomTitle(
+                                    text: product.quantity,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.c016,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomTitle(
+                                  text: "الحجم :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Flexible(
+                                  child: CustomTitle(
+                                    text: product.size.isNotEmpty? product.size : "  -  ",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.c016,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomTitle(
+                                  text: "السعر :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Flexible(
+                                  child: CustomTitle(
+                                    text: product.price,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.c016,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomTitle(
+                                  text: "السعر :",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.c912,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Flexible(
+                                  child: CustomTitle(
+                                    text: product.price,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.c016,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },),
+                  ],
+                ),
+              ),
+            );
+          },
+        ));
+      } else {
+        setRequestDetailsLoading(false);
+        if (getSubsectionsResponse["data"] is Map &&
+            getSubsectionsResponse["data"]["message"] != null) {
+          showCustomToast(context, getSubsectionsResponse["data"]["message"],
+              "assets/icons/alert-circle.webp", AppColors.c999);
+        } else {
+          print(getSubsectionsResponse["data"]);
+          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+              "assets/icons/alert-circle.webp", AppColors.c999);
+        }
+      }
+    }).catchError((error) {
+      if (error is DioException) {
+        print('DioError in requestOrder: ${error.message}');
+        setRequestDetailsLoading(false);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
+      } else {
+        // Handle other errors
+        print('Error in requestOrder: $error');
+        setRequestDetailsLoading(false);
         showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
             "assets/icons/alert-circle.webp", AppColors.c999);
       }

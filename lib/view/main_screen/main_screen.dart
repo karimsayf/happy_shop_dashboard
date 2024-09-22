@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:menu_dashboard/view/add_main_size/add_main_size.dart';
 import 'package:menu_dashboard/view/add_product_size/add_product_size.dart';
 import 'package:menu_dashboard/view/products/products.dart';
+import 'package:menu_dashboard/view/requests_history/requests_history.dart';
 import 'package:provider/provider.dart';
 
 import '../../utilities/constants.dart';
@@ -112,6 +113,10 @@ class _MainScreenState extends State<MainScreen> {
         .selectedIndex ==
         ADDMAINSIZE_INDEX) {
       return AddMainSize(pageState: pageState);
+    } else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        ORDERSHISTORY_INDEX) {
+      return RequestsHistory(pageState: pageState);
     }
     return const SizedBox();
   }

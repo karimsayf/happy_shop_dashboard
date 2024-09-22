@@ -38,7 +38,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum - 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "NEW", requestViewModel.currentPage.toString(), false);
     }
 
     void handleNext() {
@@ -48,7 +48,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum + 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "NEW", requestViewModel.currentPage.toString(), false);
     }
 
     List<DataRow> getRows() {
@@ -65,9 +65,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           )),
           DataCell(
             CustomTitle(
-              text: request.customerName.isNotEmpty
-                  ? request.customerName
-                  : "لا يتوفر اسم",
+              text: request.captainName,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -77,7 +75,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataCell(
             CustomTitle(
-              text: request.service,
+              text: request.totalQuantity,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -87,7 +85,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataCell(
             CustomTitle(
-              text: request.createdDate.reversed.join('/'),
+              text: request.totalPrice,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -96,8 +94,38 @@ class _RequestsRecordState extends State<RequestsRecord> {
             ),
           ),
           DataCell(
-            request.orderStatus == "PROCESSING"
-                ? Row(
+            CustomTitle(
+              text: request.totalPrice,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          DataCell(
+              Container(
+                height: 30,
+                width: 130,
+                decoration: BoxDecoration(
+                    color: AppColors.c869.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(50),
+                    border:
+                    Border.all(width: 1, color: AppColors.c869)),
+                child: const Center(
+                  child: CustomTitle(
+                    text: "الطلب تحت المراجعه",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.c869,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              )
+          ),
+          DataCell(
+            Row(
               children: [
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -235,6 +263,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                                     listen: false)
                                                     .approveOrder(
                                                   context,
+                                                  "NEW",
                                                   request
                                                       .id,
                                                 );
@@ -346,195 +375,172 @@ class _RequestsRecordState extends State<RequestsRecord> {
                             builder: (context, setState) {
                               return SizedBox(
                                 width: 400,
-                                height: 350,
-                                child: Form(
-                                  key: requestViewModel.formKey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
+                                height: 205,
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.c752
+                                              .withOpacity(0.1),
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              50)),
+                                      child: Container(
+                                        margin:
+                                        const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
-                                            color: AppColors.c752
-                                                .withOpacity(0.1),
+                                            color: AppColors.c555,
                                             borderRadius:
                                             BorderRadius.circular(
                                                 50)),
                                         child: Container(
-                                          margin:
-                                          const EdgeInsets.all(5),
+                                          height: 40,
+                                          width: 40,
                                           decoration: BoxDecoration(
-                                              color: AppColors.c555,
+                                              color: AppColors.c752
+                                                  .withOpacity(0.11),
                                               borderRadius:
-                                              BorderRadius.circular(
-                                                  50)),
-                                          child: Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                                color: AppColors.c752
-                                                    .withOpacity(0.11),
-                                                borderRadius:
-                                                BorderRadius
-                                                    .circular(50)),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "assets/icons/alert-circle.webp",
-                                                scale: 3.5,
-                                              ),
+                                              BorderRadius
+                                                  .circular(50)),
+                                          child: Center(
+                                            child: Image.asset(
+                                              "assets/icons/alert-circle.webp",
+                                              scale: 3.5,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      const CustomTitle(
-                                        text: "حذف الطلب",
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.c016,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      const CustomTitle(
-                                        text:
-                                        "هل أنت متأكد أنك تريد حذف هذا الطلب ؟ لا يمكن التراجع عن هذا الإجراء.",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.c912,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomTextField(
-                                        hintTextDirection:
-                                        TextDirection.rtl,
-                                        hintText: 'السبب',
-                                        hintTextColor: AppColors.c912,
-                                        contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 16),
-                                        keyboardType:
-                                        TextInputType.number,
-                                        controller: requestViewModel
-                                            .reasonController,
-                                        focusBorderColor:
-                                        AppColors.c912,
-                                        minLines: 4,
-                                        maxLines: 5,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors
-                                                  .click,
-                                              child: GestureDetector(
-                                                onTap: () =>
-                                                    Navigator.pop(
-                                                        context),
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          12),
-                                                      color: AppColors
-                                                          .c555,
-                                                      border: Border.all(
-                                                          width: 1,
-                                                          color: AppColors
-                                                              .c565)),
-                                                  child: const Center(
-                                                    child: CustomTitle(
-                                                      text: "إلغاء",
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w700,
-                                                      color: AppColors
-                                                          .c016,
-                                                    ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const CustomTitle(
+                                      text: "حذف الطلب",
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.c016,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const CustomTitle(
+                                      text:
+                                      "هل أنت متأكد أنك تريد حذف هذا الطلب ؟ لا يمكن التراجع عن هذا الإجراء.",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.c912,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors
+                                                .click,
+                                            child: GestureDetector(
+                                              onTap: () =>
+                                                  Navigator.pop(
+                                                      context),
+                                              child: Container(
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        12),
+                                                    color: AppColors
+                                                        .c555,
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: AppColors
+                                                            .c565)),
+                                                child: const Center(
+                                                  child: CustomTitle(
+                                                    text: "إلغاء",
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w700,
+                                                    color: AppColors
+                                                        .c016,
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Expanded(
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors
-                                                  .click,
-                                              child: GestureDetector(
-                                                onTap:
-                                                Provider.of<
-                                                    RequestsViewModel>(
-                                                    context)
-                                                    .rejecting
-                                                    ? () {}
-                                                    : () async {
-                                                  await Provider.of<RequestsViewModel>(
-                                                      context,
-                                                      listen:
-                                                      false)
-                                                      .rejectOrder(
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Expanded(
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors
+                                                .click,
+                                            child: GestureDetector(
+                                              onTap:
+                                              Provider.of<
+                                                  RequestsViewModel>(
+                                                  context)
+                                                  .rejecting
+                                                  ? () {}
+                                                  : () async {
+                                                await Provider.of<RequestsViewModel>(
                                                     context,
-                                                    request
-                                                        .id,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          12),
-                                                      color: AppColors
-                                                          .c4221,
-                                                      border: Border.all(
-                                                          width: 1,
-                                                          color: AppColors
-                                                              .c4221)),
-                                                  child: Center(
-                                                    child: Provider.of<
-                                                        RequestsViewModel>(
-                                                        context)
-                                                        .rejecting
-                                                        ? const CustomCircularProgressIndicator(
-                                                        iosSize: 30,
-                                                        color:
-                                                        AppColors
-                                                            .c555)
-                                                        : const CustomTitle(
-                                                      text: "حذف",
-                                                      fontSize:
-                                                      20,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w700,
+                                                    listen:
+                                                    false)
+                                                    .rejectOrder(
+                                                  context,
+                                                  "NEW",
+                                                  request
+                                                      .id,
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        12),
+                                                    color: AppColors
+                                                        .c4221,
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: AppColors
+                                                            .c4221)),
+                                                child: Center(
+                                                  child: Provider.of<
+                                                      RequestsViewModel>(
+                                                      context)
+                                                      .rejecting
+                                                      ? const CustomCircularProgressIndicator(
+                                                      iosSize: 30,
                                                       color:
                                                       AppColors
-                                                          .c555,
-                                                    ),
+                                                          .c555)
+                                                      : const CustomTitle(
+                                                    text: "حذف",
+                                                    fontSize:
+                                                    20,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w700,
+                                                    color:
+                                                    AppColors
+                                                        .c555,
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               );
                             },
@@ -581,23 +587,64 @@ class _RequestsRecordState extends State<RequestsRecord> {
                   ),
                 ),
               ],
-            )
-                : request.orderStatus == "COMPLETED"
-                ? const CustomTitle(
-              text: "تم قبول هذا الطلب",
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c368,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            )
-                : const CustomTitle(
-              text: "تم رفض هذا الطلب",
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c4221,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataCell(
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Tooltip(
+                message: "عرض الطلب",
+                enableTapToDismiss: true,
+                textAlign: TextAlign.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.c555,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.c016.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                preferBelow: false,
+                textStyle: const TextStyle(
+                    fontFamily: stcFontStr,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.c244),
+                child: GestureDetector(
+                  onTap: requestViewModel.loadingRequestDetails
+                      ? () {}
+                      : () async {
+                    Provider.of<RequestsViewModel>(context, listen: false)
+                        .updateSelectedRecord(index);
+                    await Provider.of<RequestsViewModel>(context,
+                        listen: false)
+                        .getRequestDetails(context, request.id);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.mainColor.withOpacity(0.1),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: Center(
+                      child: requestViewModel.loadingRequestDetails &&
+                          requestViewModel.selectedRequestRecord == index
+                          ? const CustomCircularProgressIndicator(
+                          iosSize: 10, color: AppColors.mainColor)
+                          : Image.asset(
+                        "assets/icons/document.webp",
+                        scale: 4.5,
+                        color: AppColors.mainColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ]);
@@ -629,16 +676,47 @@ class _RequestsRecordState extends State<RequestsRecord> {
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomTitle(
-                  text: "سجل الطلابات",
+                const CustomTitle(
+                  text: "سجل الطلابات الحالية",
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.c016,
+                ),
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      Provider.of<GeneralViewModel>(context, listen: false)
+                          .updateSelectedIndex(index: ORDERSHISTORY_INDEX);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.mainColor,
+                      ),
+                      height: 45,
+                      width: 150,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomTitle(
+                            text: "سجل الطلابات",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.c555,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -846,7 +924,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "اسم العميل",
+              text: "اسم الكابتن",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,
@@ -856,7 +934,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "الخدمة",
+              text: "الكمية الاجمالية",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,
@@ -866,7 +944,17 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "تاريخ الطلب",
+              text: "السعر الاجمالي",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الحالة",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,
@@ -921,7 +1009,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                 .setPage(pageNumber);
             callBackFunction(true);
             Provider.of<RequestsViewModel>(context, listen: false).getRequests(
-                context, requestViewModel.currentPage.toString(), false);
+                context, "NEW", requestViewModel.currentPage.toString(), false);
           }
         },
         child: Container(

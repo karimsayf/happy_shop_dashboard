@@ -1,26 +1,29 @@
 class RequestModel {
   final String id;
-  final String service;
-  final String customerId;
-  final String customerName;
-  final String orderStatus;
-  final List<dynamic> createdDate;
+  final String totalQuantity;
+  final String totalPrice;
+  final String tableNumber;
+  final String captainId;
+  final String captainName;
+  final String status;
 
   RequestModel(
       {required this.id,
-      required this.service,
-      required this.customerId,
-      required this.customerName,
-      required this.orderStatus,
-      required this.createdDate});
+      required this.totalQuantity,
+      required this.totalPrice,
+      required this.tableNumber,
+      required this.captainId,
+      required this.captainName,
+      required this.status});
 
   factory RequestModel.fromJason(Map<String, dynamic> request) {
     return RequestModel(
-        id: request["id"],
-        service: request["service"] ?? "",
-        customerId: request["customerId"] ?? "",
-        customerName: request["customerName"] ?? "",
-        orderStatus: request["orderStatus"] ?? "",
-        createdDate: request["createdDate"] ?? "");
+        id: request["id"].toString(),
+        totalQuantity: request["totalQuantity"].toString(),
+        totalPrice: request["totalPrice"].toString(),
+        tableNumber: request["tableNumber"].toString(),
+        captainId: request["captainId"].toString(),
+        captainName: request["captainName"] ?? "",
+        status: request["status"]);
   }
 }

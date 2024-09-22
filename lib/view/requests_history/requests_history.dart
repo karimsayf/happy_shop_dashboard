@@ -5,26 +5,26 @@ import '../../components/custom_circular_progress_indicator.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/size_utility.dart';
 import '../../view_model/requests_view_model.dart';
-import 'widgets/requests_desktop_view.dart';
-import 'widgets/requests_mobile_view.dart';
-import 'widgets/requests_tablet_view.dart';
+import 'widgets/requests_history_desktop_view.dart';
+import 'widgets/requests_history_mobile_view.dart';
+import 'widgets/requests_history_tablet_view.dart';
 
-class Requests extends StatefulWidget {
+class RequestsHistory extends StatefulWidget {
   final String pageState;
-  const Requests({super.key, required this.pageState});
+  const RequestsHistory({super.key, required this.pageState});
 
   @override
-  State<Requests> createState() => _RequestsState();
+  State<RequestsHistory> createState() => _RequestsHistoryState();
 }
 
-class _RequestsState extends State<Requests> {
+class _RequestsHistoryState extends State<RequestsHistory> {
   late final requestViewModel = Provider.of<RequestsViewModel>(context);
 
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "NEW", "0");
+      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "DONE&CANCELLED", "0");
     },);
     super.initState();
   }
@@ -41,11 +41,11 @@ class _RequestsState extends State<Requests> {
       );
     } else {
       if (widget.pageState == "desktop") {
-        return const RequestsDesktopView();
+        return const RequestsHistoryDesktopView();
       } else if (widget.pageState == "tablet") {
-        return const RequestsTabletView();
+        return const RequestsHistoryTabletView();
       } else {
-        return const RequestsMobileView();
+        return const RequestsHistoryMobileView();
       }
     }
   }
