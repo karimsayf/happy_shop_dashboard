@@ -24,7 +24,7 @@ class _RequestsState extends State<Requests> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "NEW", "0");
+      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "status=PROGRESSING", "0");
     },);
     super.initState();
   }

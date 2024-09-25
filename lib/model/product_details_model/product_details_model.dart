@@ -1,29 +1,32 @@
 class ProductDetailsModel {
-  final String id;
+  final String productId;
   final String productName;
   final String productComponent;
   final String productPhoto;
-  final String size;
-  final String price;
+  final String sizeName;
+  final String totalPrice;
+  final String pricePerOne;
   final String quantity;
 
   ProductDetailsModel(
-      {required this.id,
+      {required this.productId,
       required this.productName,
       required this.productComponent,
       required this.productPhoto,
-      required this.size,
-      required this.price,
+      required this.sizeName,
+      required this.totalPrice,
+        required this.pricePerOne,
       required this.quantity});
 
   factory ProductDetailsModel.fromJason(Map<String, dynamic> productDetails) {
     return ProductDetailsModel(
-        id: productDetails["_id"] ?? "",
-        productName: productDetails["productName"],
-        productComponent: productDetails["productComponent"],
-        productPhoto: productDetails["productPhoto"],
-        size: productDetails["size"],
-        price: productDetails["price"].toString(),
+        productId: productDetails["productId"] ?? "",
+        productName: productDetails["productName"] ?? "",
+        productComponent: productDetails["productComponent"] ?? "",
+        productPhoto: productDetails["productPhoto"] ?? "",
+        sizeName: productDetails["sizeName"] ?? "",
+        pricePerOne: productDetails["pricePerOne"].toString(),
+        totalPrice: productDetails["totalPrice"].toString(),
         quantity: productDetails["quantity"].toString());
   }
 }

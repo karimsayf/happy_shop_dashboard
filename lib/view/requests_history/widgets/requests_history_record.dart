@@ -37,7 +37,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum - 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, "DONE&CANCELLED", requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "status=DONE&status=CANCELLED", requestViewModel.currentPage.toString(), false);
     }
 
     void handleNext() {
@@ -47,7 +47,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum + 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, "DONE&CANCELLED", requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "status=DONE&status=CANCELLED", requestViewModel.currentPage.toString(), false);
     }
 
     List<DataRow> getRows() {
@@ -65,26 +65,6 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           DataCell(
             CustomTitle(
               text: request.captainName,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-          DataCell(
-            CustomTitle(
-              text: request.totalQuantity,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-          DataCell(
-            CustomTitle(
-              text: request.totalPrice,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -372,16 +352,6 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "الكمية الاجمالية",
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.c912,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          DataColumn(
-            label: CustomTitle(
               text: "السعر الاجمالي",
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -437,7 +407,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
                 .setPage(pageNumber);
             callBackFunction(true);
             Provider.of<RequestsViewModel>(context, listen: false).getRequests(
-                context, "DONE&CANCELLED", requestViewModel.currentPage.toString(), false);
+                context, "status=DONE&status=CANCELLED", requestViewModel.currentPage.toString(), false);
           }
         },
         child: Container(

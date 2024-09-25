@@ -38,7 +38,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum - 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, "NEW", requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "status=PROGRESSING", requestViewModel.currentPage.toString(), false);
     }
 
     void handleNext() {
@@ -48,7 +48,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
         requestViewModel.lastNum = requestViewModel.lastNum + 10;
       });
       Provider.of<RequestsViewModel>(context, listen: false)
-          .getRequests(context, "NEW", requestViewModel.currentPage.toString(), false);
+          .getRequests(context, "status=PROGRESSING", requestViewModel.currentPage.toString(), false);
     }
 
     List<DataRow> getRows() {
@@ -66,16 +66,6 @@ class _RequestsRecordState extends State<RequestsRecord> {
           DataCell(
             CustomTitle(
               text: request.captainName,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-          DataCell(
-            CustomTitle(
-              text: request.totalQuantity,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -622,7 +612,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                         .updateSelectedRecord(index);
                     await Provider.of<RequestsViewModel>(context,
                         listen: false)
-                        .getRequestDetails(context, request.id);
+                        .getRequestDetails(context, request.products);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -934,16 +924,6 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "الكمية الاجمالية",
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.c912,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          DataColumn(
-            label: CustomTitle(
               text: "السعر الاجمالي",
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -1009,7 +989,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                 .setPage(pageNumber);
             callBackFunction(true);
             Provider.of<RequestsViewModel>(context, listen: false).getRequests(
-                context, "NEW", requestViewModel.currentPage.toString(), false);
+                context, "status=PROGRESSING", requestViewModel.currentPage.toString(), false);
           }
         },
         child: Container(

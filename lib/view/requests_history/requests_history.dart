@@ -24,7 +24,7 @@ class _RequestsHistoryState extends State<RequestsHistory> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "DONE&CANCELLED", "0");
+      Provider.of<RequestsViewModel>(context,listen: false).getRequestsHome(context, "status=DONE&status=CANCELLED", "0");
     },);
     super.initState();
   }
