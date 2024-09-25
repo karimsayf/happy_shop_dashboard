@@ -22,7 +22,7 @@ class RequestModel {
         totalQuantity: request["totalQuantity"].toString(),
         totalPrice: request["totalPrice"].toString(),
         tableNumber: request["tableNumber"].toString(),
-        captainId: request["captainId"].toString(),
+        captainId: request["captainId"] ?? "",
         captainName: request["captainName"] ?? "",
         status: request["status"]);
   }
