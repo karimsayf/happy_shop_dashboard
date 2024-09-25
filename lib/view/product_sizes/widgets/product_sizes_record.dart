@@ -287,9 +287,10 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
       ]);
     }).toList();
   }
-
   @override
   Widget build(BuildContext context) {
+
+
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12), color: AppColors.c555),
