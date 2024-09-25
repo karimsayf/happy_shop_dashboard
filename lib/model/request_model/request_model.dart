@@ -18,7 +18,7 @@ class RequestModel {
 
   factory RequestModel.fromJason(Map<String, dynamic> request) {
     return RequestModel(
-        id: request["id"].toString(),
+        id: request["_id"] ?? "",
         totalQuantity: request["totalQuantity"].toString(),
         totalPrice: request["totalPrice"].toString(),
         tableNumber: request["tableNumber"].toString(),

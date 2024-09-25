@@ -186,6 +186,7 @@ class ProductViewModel with ChangeNotifier {
 
   Future searchProducts(
       BuildContext context, String query, String page, bool clear) async {
+    print(query);
     setProductsLoading(true);
     clearSubSections();
     if (clear) {
@@ -193,7 +194,7 @@ class ProductViewModel with ChangeNotifier {
     }
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-            apiUrl: "$baseUrl/api/v1/product?name=$query&page=$page&size=10",
+            apiUrl: "$baseUrl/api/v1/product/search?name=$query&page=$page&size=10",
       headers: {
         'Authorization':
         Provider.of<UserViewModel>(context, listen: false).userToken
@@ -209,7 +210,7 @@ class ProductViewModel with ChangeNotifier {
           } else {
             productsEmpty = false;
           }
-          totalProducts = searchSubsectionsResponse["data"]["totalProduct"];
+          totalProducts = searchSubsectionsResponse["data"]["totalproduct"];
           isProductsLoading = false;
           notifyListeners();
         } else {

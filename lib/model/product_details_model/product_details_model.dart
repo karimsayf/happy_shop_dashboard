@@ -18,7 +18,7 @@ class ProductDetailsModel {
 
   factory ProductDetailsModel.fromJason(Map<String, dynamic> productDetails) {
     return ProductDetailsModel(
-        id: productDetails["id"].toString(),
+        id: productDetails["_id"] ?? "",
         productName: productDetails["productName"],
         productComponent: productDetails["productComponent"],
         productPhoto: productDetails["productPhoto"],
