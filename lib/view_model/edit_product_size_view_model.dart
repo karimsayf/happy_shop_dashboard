@@ -69,19 +69,13 @@ class EditProductSizeViewModel with ChangeNotifier {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
-      List sizes = Provider.of<ProductSizesViewModel>(context,listen: false).sizesProduct;
-      sizes.removeWhere((element) => element['_id'] == mainSizeId,);
-      sizes.add({
-        'sizeId': mainSizeId,
-        'price': price.text.trim(),
-        'name': name.text.trim()
-      });
       await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .updateData(apiUrl: "$baseUrl/api/v1/product/$productId", headers: {
+          .updateData(apiUrl: "$baseUrl/api/v1/product/$productId/sizes/$productSizeId", headers: {
         'Authorization':
         Provider.of<UserViewModel>(context, listen: false).userToken
       }, data: {
-            'sizes':sizes
+        "newSizeId": mainSizeId,
+        "price": price.text.trim()
       }).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

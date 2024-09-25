@@ -15,7 +15,6 @@ class ProductSizesViewModel with ChangeNotifier {
   bool deleting = false;
   bool isSizesHomeLoading = true;
   bool isSizesLoading = true;
-  List<dynamic> sizesProduct = [];
 
 
   void setSizesLoading(bool value) {
@@ -44,14 +43,13 @@ class ProductSizesViewModel with ChangeNotifier {
     clearItems();
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/getProductSizes?productId=$productId",
+        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
       headers: {
         'Authorization':
         Provider.of<UserViewModel>(context, listen: false).userToken
       },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        sizesProduct = getItemsResponse["data"]["sizes"];
         productSizes =
             getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
         isSizesLoading = false;
@@ -89,15 +87,13 @@ class ProductSizesViewModel with ChangeNotifier {
     clearItems();
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-        apiUrl: "$baseUrl/api/v1/getProductSizes?productId=$productId",
+        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
       headers: {
         'Authorization':
         Provider.of<UserViewModel>(context, listen: false).userToken
       },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        print(getItemsResponse["data"]);
-        sizesProduct = getItemsResponse["data"]["sizes"];
         productSizes =
             getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
         isSizesLoading = false;
@@ -128,19 +124,15 @@ class ProductSizesViewModel with ChangeNotifier {
 
   Future deleteSize(BuildContext context, String productId ,String sizeId) async {
     setDeleteItemLoading(true);
-    List sizes = sizesProduct;
-    sizes.removeWhere((element) => element['sizeId'] == sizeId,);
-    await Provider.of<ApiServicesViewModel>(context, listen: false).updateData(
-      apiUrl: "$baseUrl/api/v1/product/$productId",
+    await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
+      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
       headers: {
         'Authorization':
             Provider.of<UserViewModel>(context, listen: false).userToken
       },
-        data: {
-        "sizes": [
-          ...sizes,
-        ]
-        }
+      data: {
+        "sizeId" : sizeId
+      }
     ).then((deleteItemResponse) {
       if (deleteItemResponse["status"] == "success") {
         setDeleteItemLoading(false);
