@@ -39,7 +39,7 @@ class AddEmployeeViewModel extends ChangeNotifier{
           apiUrl: "$baseUrl/api/v1/employees",
           headers: {
             'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+            Provider.of<UserViewModel>(context, listen: false).userToken
           },
           data:{
             "name": name.text.trim(),

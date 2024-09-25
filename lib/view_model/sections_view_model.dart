@@ -64,25 +64,25 @@ class SectionsViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
 
-        apiUrl: "$baseUrl/api/category?page=$page&size=10",
+        apiUrl: "$baseUrl/api/v1/category?page=$page&size=10",
       headers: {
         'Authorization':
-        'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+        Provider.of<UserViewModel>(context, listen: false).userToken
       },)
         .then((getSubsectionsResponse) {
       if (getSubsectionsResponse["status"] == "success") {
         for (int i = 0;
-        i < getSubsectionsResponse["data"]["content"].length;
+        i < getSubsectionsResponse["data"]["category"].length;
         i++) {
           sections.add(SectionModel.fromJason(
-              getSubsectionsResponse["data"]["content"][i]));
+              getSubsectionsResponse["data"]["category"][i]));
         }
         if (sections.isEmpty) {
           sectionsEmpty = true;
         } else {
           sectionsEmpty = false;
         }
-        totalSections = getSubsectionsResponse["data"]["totalElements"];
+        totalSections = getSubsectionsResponse["data"]["totalCategory"];
         isSectionsLoading = false;
         isSectionsHomeLoading = false;
         notifyListeners();
@@ -110,19 +110,18 @@ class SectionsViewModel with ChangeNotifier {
     }
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-
-        apiUrl: "$baseUrl/api/category?page=$page&size=10",
+        apiUrl: "$baseUrl/api/v1/category?page=$page&size=10",
       headers: {
         'Authorization':
-        'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+        Provider.of<UserViewModel>(context, listen: false).userToken
       },)
         .then((getSubsectionsResponse) {
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
         for (int i = 0;
-        i < getSubsectionsResponse["data"]["content"].length;
+        i < getSubsectionsResponse["data"]["category"].length;
         i++) {
-          sections = getSubsectionsResponse["data"]["content"]
+          sections = getSubsectionsResponse["data"]["category"]
               .map<SectionModel>((e) => SectionModel.fromJason(e))
               .toList();
         }
@@ -131,7 +130,7 @@ class SectionsViewModel with ChangeNotifier {
         } else {
           sectionsEmpty = false;
         }
-        totalSections = getSubsectionsResponse["data"]["totalElements"];
+        totalSections = getSubsectionsResponse["data"]["totalCategory"];
         isSectionsLoading = false;
         notifyListeners();
       } else {
@@ -172,15 +171,15 @@ class SectionsViewModel with ChangeNotifier {
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
         apiUrl:
-        "$baseUrl/api/category/search?name=$query&page=$page&size=10",
+        "$baseUrl/api/v1/category/search?name=$query&page=$page&size=10",
       headers: {
         'Authorization':
-        'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+        Provider.of<UserViewModel>(context, listen: false).userToken
       },)
         .then((searchSubsectionsResponse) {
       {
         if (searchSubsectionsResponse["status"] == "success") {
-          sections = searchSubsectionsResponse["data"]["content"]
+          sections = searchSubsectionsResponse["data"]["category"]
               .map<SectionModel>((e) => SectionModel.fromJason(e))
               .toList();
           if (sections.isEmpty) {
@@ -188,7 +187,7 @@ class SectionsViewModel with ChangeNotifier {
           } else {
             sectionsEmpty = false;
           }
-          totalSections = searchSubsectionsResponse["data"]["totalElements"];
+          totalSections = searchSubsectionsResponse["data"]["totalCategory"];
           isSectionsLoading = false;
           notifyListeners();
         } else {
@@ -223,13 +222,13 @@ class SectionsViewModel with ChangeNotifier {
     });
   }
 
-  Future deleteSection(BuildContext context, String subsectionId) async {
+  Future deleteSection(BuildContext context, String sectionId) async {
     setDeleteSubSectionsLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-      apiUrl: "$baseUrl/api/category/$subsectionId",
+      apiUrl: "$baseUrl/api/v1/category/$sectionId",
       headers: {
         'Authorization':
-        'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+        Provider.of<UserViewModel>(context, listen: false).userToken
       },
     ).then((deleteSubsectionResponse) {
       if (deleteSubsectionResponse["status"] == "success") {

@@ -9,7 +9,7 @@ class MainSizeModel {
 
   factory MainSizeModel.fromJason(Map<String, dynamic> size) {
     return MainSizeModel(
-      id: size["id"].toString(),
+      id: size["_id"] ?? "",
       size: size["name"] ?? "",
     );
   }

@@ -73,24 +73,24 @@ class EmployeesViewModel with ChangeNotifier {
         "$baseUrl/api/v1/employees?page=$page&size=10",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
         })
         .then((getCustomersResponse) {
       if (getCustomersResponse["status"] == "success") {
         for (int i = 0;
         i <
-            getCustomersResponse["data"]["content"]
+            getCustomersResponse["data"]["employees"]
                 .length;
         i++) {
           employees.add(EmployeeModel.fromJason(
-              getCustomersResponse["data"]["content"][i]));
+              getCustomersResponse["data"]["employees"][i]));
         }
         if (employees.isEmpty) {
           employeesEmpty = true;
         } else {
           employeesEmpty = false;
         }
-        totalEmployees = getCustomersResponse["data"]["totalElements"];
+        totalEmployees = getCustomersResponse["data"]["totalEmployees"];
         isEmployeesLoading = false;
         isEmployeesHomeLoading = false;
         notifyListeners();
@@ -134,16 +134,16 @@ class EmployeesViewModel with ChangeNotifier {
         "$baseUrl/api/v1/employees?page=$page&size=10",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
         })
         .then((getCustomersResponse) {
       if (getCustomersResponse["status"] == "success") {
         for (int i = 0;
         i <
-            getCustomersResponse["data"]["content"]
+            getCustomersResponse["data"]["employees"]
                 .length;
         i++) {
-          employees= getCustomersResponse["data"]["content"].map<EmployeeModel>((e)=>EmployeeModel.fromJason(
+          employees= getCustomersResponse["data"]["employees"].map<EmployeeModel>((e)=>EmployeeModel.fromJason(
               e)).toList();
         }
         if (employees.isEmpty) {
@@ -151,7 +151,7 @@ class EmployeesViewModel with ChangeNotifier {
         } else {
           employeesEmpty = false;
         }
-        totalEmployees = getCustomersResponse["data"]["totalElements"];
+        totalEmployees = getCustomersResponse["data"]["totalEmployees"];
         isEmployeesLoading = false;
         notifyListeners();
       } else {
@@ -191,18 +191,18 @@ class EmployeesViewModel with ChangeNotifier {
         "$baseUrl/api/v1/employees/search?name=$query&page=$page&size=10",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
         })
         .then((searchCustomersResponse) {
       if (searchCustomersResponse["status"] == "success") {
-          employees= searchCustomersResponse["data"]["content"].map<EmployeeModel>((e)=>EmployeeModel.fromJason(
+          employees= searchCustomersResponse["data"]["employees"].map<EmployeeModel>((e)=>EmployeeModel.fromJason(
               e)).toList();
         if (employees.isEmpty) {
           employeesEmpty = true;
         } else {
           employeesEmpty = false;
         }
-        totalEmployees = searchCustomersResponse["data"]["totalElements"];
+        totalEmployees = searchCustomersResponse["data"]["totalEmployees"];
         isEmployeesLoading = false;
         notifyListeners();
       } else {
@@ -235,7 +235,7 @@ class EmployeesViewModel with ChangeNotifier {
         .deleteData(apiUrl: "$baseUrl/api/v1/employees/$employeeId",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
         })
         .then((deleteSubsectionsResponse) {
       if (deleteSubsectionsResponse["status"] == "success") {
@@ -271,10 +271,12 @@ class EmployeesViewModel with ChangeNotifier {
   Future updateEmployeeStatus(BuildContext context, String employeeId, String status) async {
     setUpdateStatusLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .postData(apiUrl: "$baseUrl/api/user/$employeeId/changeStatus?status=$status",
+        .updateData(apiUrl: "$baseUrl/api/v1/employees/$employeeId",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
+        },data: {
+          "status" : status
         })
         .then((deleteSubsectionsResponse) {
       if (deleteSubsectionsResponse["status"] == "success") {

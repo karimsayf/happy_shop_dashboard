@@ -52,30 +52,33 @@ class EditProductViewModel with ChangeNotifier {
   }
 
   Future editProduct(BuildContext context) async {
+    print(productId);
+    print(sectionId);
     if (formKey.currentState!.validate()) {
       setLoading(true);
       Map<String,dynamic> body = {
         "name": name.text.trim(),
-        "components": components.text,
-        "price" : price.text.trim()
+        "component": components.text,
+        "price" : price.text.trim(),
+        "photo" : "test"
       };
-      if(file != null){
+      /*if(file != null){
         body.addAll({
           'photo':  MultipartFile.fromBytes(
               file!.bytes!,
               filename: file!.xFile.name
           ),
         });
-      }
+      }*/
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .updateData(
-        apiUrl: "$baseUrl/api/product/$sectionId/$productId",
+        apiUrl: "$baseUrl/api/v1/product/$productId",
         headers: {
           'Authorization':
-          'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+          Provider.of<UserViewModel>(context, listen: false).userToken
         },
-        formData: FormData.fromMap(body),)
+        data: body,)
           .then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

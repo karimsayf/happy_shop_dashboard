@@ -43,25 +43,26 @@ class EditSectionViewModel with ChangeNotifier {
       setLoading(true);
       Map<String,dynamic> body = {
         "name": name.text.trim(),
-        "parentCategoryId": null
+        "photo" : "test"
       };
-      if(file != null){
+      /*if(file != null){
         body.addAll({
           'photo':  MultipartFile.fromBytes(
               file!.bytes!,
               filename: file!.xFile.name
           ),
         });
-      }
+      }*/
+      print(sectionId);
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .updateData(
-          apiUrl: "$baseUrl/api/category/$sectionId",
+          apiUrl: "$baseUrl/api/v1/category/$sectionId",
           headers: {
             'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+            Provider.of<UserViewModel>(context, listen: false).userToken
           },
-          formData: FormData.fromMap(body),)
+          data: body,)
           .then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/view_model/product_sizes_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../components/custom_circular_progress_indicator.dart';
 import '../components/custom_title.dart';
 import '../components/custom_toast.dart';
 import '../model/main_size_model/main_size_model.dart';
+import '../model/product_size_model/product_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
@@ -61,11 +63,26 @@ class AddProductSizeViewModel with ChangeNotifier {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
+      List data = Provider.of<ProductViewModel>(context,listen: false).productSizes;
+      data.add({
+        "sizeId": mainSizeId,
+        "name": name.text,
+        "price": price.text.trim()
+      });
       await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .postData(apiUrl: "$baseUrl/api/product/$productId/$mainSizeId?price=${price.text.trim()}", headers: {
+          .updateData(apiUrl: "$baseUrl/api/v1/product/$productId", headers: {
         'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
-      }, data: {}).then((getSubsectionsResponse) {
+            Provider.of<UserViewModel>(context, listen: false).userToken
+      }, data: {
+        "sizes":[
+          ...data.map((size)=>
+            {
+              "sizeId": size['sizeId'],
+              "name": size['name'],
+              "price": size['price'],
+          }),
+        ]
+      }).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
@@ -109,15 +126,18 @@ class AddProductSizeViewModel with ChangeNotifier {
   ) async {
     setLoadingMainSizes(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(apiUrl: "$baseUrl/api/size?page=$page&size=10")
+        .getData(apiUrl: "$baseUrl/api/v1/size?page=$page&size=10", headers: {
+      'Authorization':
+      Provider.of<UserViewModel>(context, listen: false).userToken
+    },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
         mainSizes = [];
-        for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
+        for (int i = 0; i < getItemsResponse["data"]["size"].length; i++) {
           mainSizes
-              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["size"][i]));
         }
-        totalSizes = getItemsResponse["data"]["totalElements"];
+        totalSizes = getItemsResponse["data"]["totalSize"];
         loadingMainSizes = false;
         notifyListeners();
         showDialog<String>(
@@ -221,14 +241,17 @@ class AddProductSizeViewModel with ChangeNotifier {
   ) async {
     setLoadingOtherMainSizes(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(apiUrl: "$baseUrl/api/v1/items/subcategory?page=$page&size=10")
+        .getData(apiUrl: "$baseUrl/api/v1/size?page=$page&size=10", headers: {
+      'Authorization':
+      Provider.of<UserViewModel>(context, listen: false).userToken
+    },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
+        for (int i = 0; i < getItemsResponse["data"]["size"].length; i++) {
           mainSizes
-              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["size"][i]));
         }
-        totalSizes = getItemsResponse["data"]["totalElements"];
+        totalSizes = getItemsResponse["data"]["totalSize"];
         if (getItemsResponse["data"]["content"].isNotEmpty) {
           currentIndex++;
         }

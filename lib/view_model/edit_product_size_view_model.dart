@@ -11,6 +11,8 @@ import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
 import 'general_view_model.dart';
+import 'product_sizes_view_model.dart';
+import 'product_view_model.dart';
 import 'user_view_model.dart';
 
 class EditProductSizeViewModel with ChangeNotifier {
@@ -67,19 +69,37 @@ class EditProductSizeViewModel with ChangeNotifier {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
+      print(productSizeId);
+      List data = Provider.of<ProductViewModel>(context,listen: false).productSizes;
+      final int index = data.indexWhere((element) {
+        print('here element');
+        print(element);
+        return element['_id'] == productSizeId;
+      },);
+      data.removeAt(index);
+      data.add({
+        "sizeId": mainSizeId,
+        "name": name.text,
+        "price": price.text.trim()
+      });
       await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .updateData(
-          apiUrl: "$baseUrl/api/product/$productId/$mainSizeId/$productSizeId?price=${price.text.trim()}",
-          headers: {
-            'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
-          },
-          data: {})
-          .then((getSubsectionsResponse) {
+          .updateData(apiUrl: "$baseUrl/api/v1/product/$productId", headers: {
+        'Authorization':
+        Provider.of<UserViewModel>(context, listen: false).userToken
+      }, data: {
+        "sizes":[
+          ...data.map((size)=>
+          {
+            "sizeId": size['sizeId'],
+            "name": size['name'],
+            "price": size['price'],
+          }),
+        ]
+      }).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {
           loading = false;
-          showCustomToast(context, "تم تعديل الحجم والسعر بنجاح",
+          showCustomToast(context, "تم اضافة الحجم و السعر بنجاح",
               "assets/icons/check_c.webp", AppColors.c368);
           Provider.of<GeneralViewModel>(context, listen: false)
               .updateSelectedIndex(index: SIZES_INDEX);
@@ -119,15 +139,18 @@ class EditProductSizeViewModel with ChangeNotifier {
       ) async {
     setLoadingMainSizes(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(apiUrl: "$baseUrl/api/v1/items/subcategory?page=$page&size=10")
+        .getData(apiUrl: "$baseUrl/api/v1/size?page=$page&size=10", headers: {
+      'Authorization':
+      Provider.of<UserViewModel>(context, listen: false).userToken
+    },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
         mainSizes = [];
-        for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
+        for (int i = 0; i < getItemsResponse["data"]["size"].length; i++) {
           mainSizes
-              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["size"][i]));
         }
-        totalSizes = getItemsResponse["data"]["totalElements"];
+        totalSizes = getItemsResponse["data"]["totalSize"];
         loadingMainSizes = false;
         notifyListeners();
         showDialog<String>(
@@ -231,14 +254,17 @@ class EditProductSizeViewModel with ChangeNotifier {
       ) async {
     setLoadingOtherMainSizes(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(apiUrl: "$baseUrl/api/v1/items/subcategory?page=$page&size=10")
+        .getData(apiUrl: "$baseUrl/api/v1/size?page=$page&size=10", headers: {
+      'Authorization':
+      Provider.of<UserViewModel>(context, listen: false).userToken
+    },)
         .then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        for (int i = 0; i < getItemsResponse["data"]["content"].length; i++) {
+        for (int i = 0; i < getItemsResponse["data"]["size"].length; i++) {
           mainSizes
-              .add(MainSizeModel.fromJason(getItemsResponse["data"]["content"][i]));
+              .add(MainSizeModel.fromJason(getItemsResponse["data"]["size"][i]));
         }
-        totalSizes = getItemsResponse["data"]["totalElements"];
+        totalSizes = getItemsResponse["data"]["totalSize"];
         if (getItemsResponse["data"]["content"].isNotEmpty) {
           currentIndex++;
         }

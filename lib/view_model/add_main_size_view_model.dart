@@ -30,10 +30,10 @@ class AddMainSizeViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .postData(
-          apiUrl: "$baseUrl/api/size",
+          apiUrl: "$baseUrl/api/v1/size",
           headers: {
             'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+            Provider.of<UserViewModel>(context, listen: false).userToken
           },
           data: {
             "name" : name.text.trim()

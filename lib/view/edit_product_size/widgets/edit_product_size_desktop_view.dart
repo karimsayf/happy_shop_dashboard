@@ -135,7 +135,7 @@ class _EditProductSizeDesktopViewState extends State<EditProductSizeDesktopView>
                         Expanded(
                             child: CustomTextField(
                           onTap: () async{
-                            await Provider.of<AddProductSizeViewModel>(context,
+                            await Provider.of<EditProductSizeViewModel>(context,
                                 listen: false)
                                 .getMainSizes(
                               context,"0"

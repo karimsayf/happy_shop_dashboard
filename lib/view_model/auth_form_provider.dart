@@ -65,11 +65,12 @@ class AuthFormProvider extends ChangeNotifier {
           .signIn(context, username, password)
           .then((signInResponse) async {
         if (signInResponse["status"] == "success") {
+          print(signInResponse["data"]);
           await Provider.of<UserViewModel>(context, listen: false)
               .saveUserDataToFSS(
-              signInResponse["data"]["token"]??"",
-              signInResponse["data"]["id"].toString(),
-              signInResponse["data"]["name"] ?? "")
+              signInResponse["data"]["token"] ?? "",
+              signInResponse["data"]["user"]["_id"] ?? "",
+              signInResponse["data"]["user"]["name"] ?? "")
               .then(
                 (_) async {
               await Provider.of<UserViewModel>(context, listen: false)

@@ -222,7 +222,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                     child: GestureDetector(
                       onTap: () {
                         Provider.of<ProductViewModel>(context, listen: false)
-                            .updateSelectedItemId(product.id, product.name);
+                            .updateSelectedItemId(product.id, product.name , product.sizes);
                         Provider.of<GeneralViewModel>(context, listen: false)
                             .updateSelectedIndex(index: SIZES_INDEX);
                       },

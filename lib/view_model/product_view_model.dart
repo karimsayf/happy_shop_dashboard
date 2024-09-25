@@ -24,6 +24,8 @@ class ProductViewModel with ChangeNotifier {
   bool deleting = false;
   String selectedProductId = "";
   String selectedProductName = "";
+  List<dynamic> productSizes = [];
+
 
   void setPage(int page) {
     currentPage = page;
@@ -61,9 +63,10 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedItemId(String id, String name) {
+  void updateSelectedItemId(String id, String name, List<dynamic> sizes) {
     selectedProductId = id;
     selectedProductName = name;
+    productSizes = sizes;
     notifyListeners();
   }
 
@@ -71,23 +74,26 @@ class ProductViewModel with ChangeNotifier {
     setProductsHomeLoading(true);
     clearSubSections();
     clearData();
-    await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(
-        apiUrl: "$baseUrl/api/product?page=$page&size=10")
-        .then((getSubsectionsResponse) {
+    await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
+      apiUrl: "$baseUrl/api/v1/allProducts?page=$page&size=10",
+      headers: {
+        'Authorization':
+            Provider.of<UserViewModel>(context, listen: false).userToken
+      },
+    ).then((getSubsectionsResponse) {
       if (getSubsectionsResponse["status"] == "success") {
         for (int i = 0;
-            i < getSubsectionsResponse["data"]["content"].length;
+            i < getSubsectionsResponse["data"]["product"].length;
             i++) {
           products.add(ProductModel.fromJason(
-              getSubsectionsResponse["data"]["content"][i]));
+              getSubsectionsResponse["data"]["product"][i]));
         }
         if (products.isEmpty) {
           productsEmpty = true;
         } else {
           productsEmpty = false;
         }
-        totalProducts = getSubsectionsResponse["data"]["totalElements"];
+        totalProducts = getSubsectionsResponse["data"]["totalProduct"];
         isProductsLoading = false;
         isProductsHomeLoading = false;
         notifyListeners();
@@ -128,17 +134,19 @@ class ProductViewModel with ChangeNotifier {
     if (clear) {
       clearData();
     }
-    await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(
-
-        apiUrl: "$baseUrl/api/product?page=$page&size=10")
-        .then((getSubsectionsResponse) {
+    await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
+      apiUrl: "$baseUrl/api/v1/allProducts?page=$page&size=10",
+      headers: {
+        'Authorization':
+            Provider.of<UserViewModel>(context, listen: false).userToken
+      },
+    ).then((getSubsectionsResponse) {
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
         for (int i = 0;
-            i < getSubsectionsResponse["data"]["content"].length;
+            i < getSubsectionsResponse["data"]["product"].length;
             i++) {
-          products = getSubsectionsResponse["data"]["content"]
+          products = getSubsectionsResponse["data"]["product"]
               .map<ProductModel>((e) => ProductModel.fromJason(e))
               .toList();
         }
@@ -147,7 +155,7 @@ class ProductViewModel with ChangeNotifier {
         } else {
           productsEmpty = false;
         }
-        totalProducts = getSubsectionsResponse["data"]["totalElements"];
+        totalProducts = getSubsectionsResponse["data"]["totalProduct"];
         isProductsLoading = false;
         notifyListeners();
       } else {
@@ -187,21 +195,23 @@ class ProductViewModel with ChangeNotifier {
     }
     await Provider.of<ApiServicesViewModel>(context, listen: false)
         .getData(
-
-            apiUrl:
-                "$baseUrl/api/product/name?name=$query&page=$page&size=10")
+            apiUrl: "$baseUrl/api/v1/product?name=$query&page=$page&size=10",
+      headers: {
+        'Authorization':
+        Provider.of<UserViewModel>(context, listen: false).userToken
+      },)
         .then((searchSubsectionsResponse) {
       {
         if (searchSubsectionsResponse["status"] == "success") {
-            products = searchSubsectionsResponse["data"]["content"]
-                .map<ProductModel>((e) => ProductModel.fromJason(e))
-                .toList();
+          products = searchSubsectionsResponse["data"]["product"]
+              .map<ProductModel>((e) => ProductModel.fromJason(e))
+              .toList();
           if (products.isEmpty) {
             productsEmpty = true;
           } else {
             productsEmpty = false;
           }
-          totalProducts = searchSubsectionsResponse["data"]["totalElements"];
+          totalProducts = searchSubsectionsResponse["data"]["totalProduct"];
           isProductsLoading = false;
           notifyListeners();
         } else {
@@ -239,12 +249,12 @@ class ProductViewModel with ChangeNotifier {
   Future deleteProduct(BuildContext context, String productId) async {
     setDeleteSubSectionsLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-        apiUrl: "$baseUrl/api/product/$productId",
+      apiUrl: "$baseUrl/api/v1/product/$productId",
       headers: {
         'Authorization':
-        'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+            Provider.of<UserViewModel>(context, listen: false).userToken
       },
-     ).then((deleteSubsectionResponse) {
+    ).then((deleteSubsectionResponse) {
       if (deleteSubsectionResponse["status"] == "success") {
         setDeleteSubSectionsLoading(false);
         Navigator.pop(context);

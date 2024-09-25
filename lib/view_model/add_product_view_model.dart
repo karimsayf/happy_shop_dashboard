@@ -47,18 +47,22 @@ class AddProductViewModel with ChangeNotifier {
       formKey.currentState!.save();
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .postData(
-          apiUrl: "$baseUrl/api/product/$sectionId",
+          apiUrl: "$baseUrl/api/v1/product",
           headers: {
             'Authorization':
-            'Bearer ${Provider.of<UserViewModel>(context, listen: false).userToken}'
+            Provider.of<UserViewModel>(context, listen: false).userToken
           },
-          formData: FormData.fromMap({
+          data: {
             "name": name.text.trim(),
-            "photo": MultipartFile.fromBytes(file!.bytes!,
-                filename: file!.xFile.name),
-            "components": components.text.trim(),
-            "price" : price.text.trim()
-          }))
+            /*"photo": MultipartFile.fromBytes(file!.bytes!,
+                filename: file!.xFile.name),*/
+            "photo" : "test",
+            "component": components.text.trim(),
+            "price" : price.text.trim(),
+            "categoryName" : sectionName.text,
+            "categoryId" : sectionId,
+            "sizes" : []
+          })
           .then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

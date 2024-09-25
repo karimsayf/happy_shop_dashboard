@@ -12,6 +12,7 @@ import 'widgets/product_sizes_tablet_view.dart';
 
 class ProductSizes extends StatefulWidget {
   final String pageState;
+
   const ProductSizes({super.key, required this.pageState});
 
   @override
@@ -21,34 +22,27 @@ class ProductSizes extends StatefulWidget {
 class _ProductSizesState extends State<ProductSizes> {
   late final sizeViewModel = Provider.of<ProductSizesViewModel>(context);
 
-
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<ProductSizesViewModel>(context,listen: false).getSizesHome(context, Provider.of<ProductViewModel>(context, listen: false).selectedProductId,"0");
-    },);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Provider.of<ProductSizesViewModel>(context, listen: false).getSizes(
+            context,
+            Provider.of<ProductViewModel>(context, listen: false).productSizes);
+      },
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (sizeViewModel.isSizesHomeLoading) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: getSize(context).height * 0.4),
-          child: const CustomCircularProgressIndicator(
-              iosSize: 30, color: AppColors.mainColor),
-        ),
-      );
+    if (widget.pageState == "desktop") {
+      return const ProductSizesDesktopView();
+    } else if (widget.pageState == "tablet") {
+      return const ProductSizesTabletView();
     } else {
-      if (widget.pageState == "desktop") {
-        return const ProductSizesDesktopView();
-      } else if (widget.pageState == "tablet") {
-        return const ProductSizesTabletView();
-      } else {
-        return const ProductSizesMobileView();
-      }
+      return const ProductSizesMobileView();
     }
   }
 }

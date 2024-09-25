@@ -6,6 +6,7 @@ class ProductModel {
   final String components;
   final String categoryName;
   final String categoryId;
+  final List<dynamic> sizes;
 
   ProductModel(
       {required this.id,
@@ -14,17 +15,19 @@ class ProductModel {
       required this.photo,
       required this.components,
       required this.categoryName,
-      required this.categoryId});
+      required this.categoryId,
+      required this.sizes});
 
   factory ProductModel.fromJason(Map<String, dynamic> product) {
     return ProductModel(
-      id: product["id"].toString(),
+      id: product["_id"] ?? "",
       name: product["name"] ?? "",
       photo: product["photo"] ?? "",
       price: product["price"].toString(),
-      components: product["components"] ?? "",
+      components: product["component"] ?? "",
       categoryName: product["categoryName"] ?? "",
-      categoryId: product["categoryId"].toString(),
+      categoryId: product["categoryId"] ?? "",
+      sizes: product["sizes"],
     );
   }
 }

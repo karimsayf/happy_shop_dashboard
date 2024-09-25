@@ -354,67 +354,30 @@ class _MainDrawerState extends State<MainDrawer> {
     );
   }
 
-  signOut() {
+  signOut() async{
     setState(() {
       signingOut = true;
     });
-    Provider.of<UserViewModel>(context, listen: false)
-        .signOut(context)
-        .then((authResponse) async {
-      if (authResponse["status"] == "success") {
-        await Provider.of<UserViewModel>(context, listen: false)
-            .deleteUserData()
-            .then((_) async {
-          await Provider.of<GeneralViewModel>(context, listen: false)
-              .savePrintInvoiceWithLogoToPreferences(false)
-              .then(
+    await Future.delayed(const Duration(milliseconds: 300));
+    await Provider.of<UserViewModel>(context, listen: false)
+        .deleteUserData()
+        .then((_) async {
+      await Provider.of<GeneralViewModel>(context, listen: false)
+          .savePrintInvoiceWithLogoToPreferences(false)
+          .then(
             (_) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Authentication(),
-                ),
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Authentication(),
+            ),
                 (route) => false,
-              );
-              setState(() {
-                signingOut = false;
-              });
-            },
           );
-        });
-      } else {
-        setState(() {
-          signingOut = false;
-        });
-        if (authResponse["data"] is Map &&
-            authResponse["data"]["message"] != null) {
-          print(authResponse["data"]["message"]);
-          showCustomToast(context, authResponse["data"]["message"],
-              "assets/icons/alert-circle.webp", AppColors.c999);
-        } else {
-          print(authResponse["data"]);
-          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-              "assets/icons/alert-circle.webp", AppColors.c999);
-        }
-        //throw Exception(authResponse["data"]);
-      }
-    }).catchError((error) {
-      if (error is DioException) {
-        print('DioError in requestOrder: ${error.message}');
-        setState(() {
-          signingOut = false;
-        });
-        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-            "assets/icons/alert-circle.webp", AppColors.c999);
-      } else {
-        // Handle other errors
-        print('Error in requestOrder: $error');
-        setState(() {
-          signingOut = false;
-        });
-        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-            "assets/icons/alert-circle.webp", AppColors.c999);
-      }
+          setState(() {
+            signingOut = false;
+          });
+        },
+      );
     });
   }
 }
