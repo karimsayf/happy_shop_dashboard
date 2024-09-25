@@ -226,7 +226,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                                               .deleteSize(
                                             context,
                                             Provider.of<ProductViewModel>(context,listen: false).selectedProductId,
-                                            productSize.id,
+                                            productSize.sizeId,
                                           );
                                         },
                                         child: Container(
@@ -536,7 +536,13 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                 child: buildDataTableTheme(getRows),
               ),
             ),
-          if (productSizeViewModel.productSizes.isEmpty)
+          if (productSizeViewModel.isSizesLoading)
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: CustomCircularProgressIndicator(
+                  iosSize: 30, color: AppColors.mainColor),
+            )
+         else if (productSizeViewModel.productSizes.isEmpty)
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: CustomTitle(

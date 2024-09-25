@@ -27,9 +27,9 @@ class _ProductSizesState extends State<ProductSizes> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        Provider.of<ProductSizesViewModel>(context, listen: false).getSizes(
+        Provider.of<ProductSizesViewModel>(context, listen: false).getProductSizesHome(
             context,
-            Provider.of<ProductViewModel>(context, listen: false).productSizes);
+            Provider.of<ProductViewModel>(context, listen: false).selectedProductId);
       },
     );
     super.initState();
@@ -37,12 +37,20 @@ class _ProductSizesState extends State<ProductSizes> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.pageState == "desktop") {
-      return const ProductSizesDesktopView();
-    } else if (widget.pageState == "tablet") {
-      return const ProductSizesTabletView();
+    if (sizeViewModel.isSizesHomeLoading) {
+      return Padding(
+        padding: EdgeInsets.only(top: getSize(context).height * 0.4),
+        child: const CustomCircularProgressIndicator(
+            iosSize: 30, color: AppColors.mainColor),
+      );
     } else {
-      return const ProductSizesMobileView();
+      if (widget.pageState == "desktop") {
+        return const ProductSizesDesktopView();
+      } else if (widget.pageState == "tablet") {
+        return const ProductSizesTabletView();
+      } else {
+        return const ProductSizesMobileView();
+      }
     }
   }
 }

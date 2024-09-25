@@ -63,25 +63,18 @@ class AddProductSizeViewModel with ChangeNotifier {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
-      List data = Provider.of<ProductViewModel>(context,listen: false).productSizes;
-      data.add({
-        "sizeId": mainSizeId,
-        "name": name.text,
-        "price": price.text.trim()
+      List sizes = Provider.of<ProductSizesViewModel>(context,listen: false).sizesProduct;
+      sizes.add({
+        'sizeId': mainSizeId,
+        'price': price.text.trim(),
+        'name': name.text.trim()
       });
       await Provider.of<ApiServicesViewModel>(context, listen: false)
           .updateData(apiUrl: "$baseUrl/api/v1/product/$productId", headers: {
         'Authorization':
             Provider.of<UserViewModel>(context, listen: false).userToken
       }, data: {
-        "sizes":[
-          ...data.map((size)=>
-            {
-              "sizeId": size['sizeId'],
-              "name": size['name'],
-              "price": size['price'],
-          }),
-        ]
+          'sizes':sizes,
       }).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

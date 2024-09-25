@@ -59,9 +59,7 @@ class AddProductViewModel with ChangeNotifier {
             "photo" : "test",
             "component": components.text.trim(),
             "price" : price.text.trim(),
-            "categoryName" : sectionName.text,
             "categoryId" : sectionId,
-            "sizes" : []
           })
           .then((getSubsectionsResponse) {
         print(getSubsectionsResponse);

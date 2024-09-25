@@ -13,6 +13,20 @@ import 'user_view_model.dart';
 class ProductSizesViewModel with ChangeNotifier {
   List<ProductSizeModel> productSizes = [];
   bool deleting = false;
+  bool isSizesHomeLoading = true;
+  bool isSizesLoading = true;
+  List<dynamic> sizesProduct = [];
+
+
+  void setSizesLoading(bool value) {
+    isSizesLoading = value;
+    notifyListeners();
+  }
+
+  void setSizesHomeLoading(bool value) {
+    isSizesHomeLoading = value;
+    notifyListeners();
+  }
 
   void setDeleteItemLoading(bool value) {
     deleting = value;
@@ -24,17 +38,98 @@ class ProductSizesViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  getSizes(BuildContext context, List<dynamic> sizes) {
+
+  Future getProductSizesHome(BuildContext context, String productId,) async {
+    setSizesHomeLoading(true);
     clearItems();
-    productSizes =
-        sizes.map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
-    notifyListeners();
+    await Provider.of<ApiServicesViewModel>(context, listen: false)
+        .getData(
+        apiUrl: "$baseUrl/api/v1/getProductSizes?productId=$productId",
+      headers: {
+        'Authorization':
+        Provider.of<UserViewModel>(context, listen: false).userToken
+      },)
+        .then((getItemsResponse) {
+      if (getItemsResponse["status"] == "success") {
+        sizesProduct = getItemsResponse["data"]["sizes"];
+        productSizes =
+            getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
+        isSizesLoading = false;
+        isSizesHomeLoading = false;
+        notifyListeners();
+      } else {
+        setSizesLoading(false);
+        setSizesHomeLoading(false);
+        if (getItemsResponse["data"] is Map &&
+            getItemsResponse["data"]["message"] != null) {
+          showCustomToast(context,getItemsResponse["data"]["message"],"assets/icons/alert-circle.webp",AppColors.c999);
+        } else {
+          print(getItemsResponse["data"]);
+          showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        }
+      }
+    }).catchError((error) {
+      if (error is DioException) {
+        print('DioError in requestOrder: ${error.message}');
+        setSizesLoading(false);
+        setSizesHomeLoading(false);
+        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+      } else {
+        // Handle other errors
+        print('Error in requestOrder: $error');
+        setSizesLoading(false);
+        setSizesHomeLoading(false);
+        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+      }
+    });
   }
 
-  Future deleteSize(BuildContext context, String productId ,String productSizeId) async {
+  Future getProductSizes(BuildContext context, String productId) async {
+    setSizesLoading(true);
+    clearItems();
+    await Provider.of<ApiServicesViewModel>(context, listen: false)
+        .getData(
+        apiUrl: "$baseUrl/api/v1/getProductSizes?productId=$productId",
+      headers: {
+        'Authorization':
+        Provider.of<UserViewModel>(context, listen: false).userToken
+      },)
+        .then((getItemsResponse) {
+      if (getItemsResponse["status"] == "success") {
+        print(getItemsResponse["data"]);
+        sizesProduct = getItemsResponse["data"]["sizes"];
+        productSizes =
+            getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
+        isSizesLoading = false;
+        notifyListeners();
+      } else {
+        setSizesLoading(false);
+        if (getItemsResponse["data"] is Map &&
+            getItemsResponse["data"]["message"] != null) {
+          showCustomToast(context,getItemsResponse["data"]["message"],"assets/icons/alert-circle.webp",AppColors.c999);
+        } else {
+          print(getItemsResponse["data"]);
+          showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        }
+      }
+    }).catchError((error) {
+      if (error is DioException) {
+        print('DioError in requestOrder: ${error.message}');
+        setSizesLoading(false);
+        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+      } else {
+        // Handle other errors
+        print('Error in requestOrder: $error');
+        setSizesLoading(false);
+        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+      }
+    });
+  }
+
+  Future deleteSize(BuildContext context, String productId ,String sizeId) async {
     setDeleteItemLoading(true);
-    List data = Provider.of<ProductViewModel>(context,listen: false).productSizes;
-    data.removeWhere((element) => element['_id'] == productSizeId,);
+    List sizes = sizesProduct;
+    sizes.removeWhere((element) => element['sizeId'] == sizeId,);
     await Provider.of<ApiServicesViewModel>(context, listen: false).updateData(
       apiUrl: "$baseUrl/api/v1/product/$productId",
       headers: {
@@ -42,22 +137,17 @@ class ProductSizesViewModel with ChangeNotifier {
             Provider.of<UserViewModel>(context, listen: false).userToken
       },
         data: {
-          "sizes":[
-            ...data.map((size)=>
-            {
-              "sizeId": size['sizeId'],
-              "name": size['name'],
-              "price": size['price'],
-            }),
-          ]
+        "sizes": [
+          ...sizes,
+        ]
         }
     ).then((deleteItemResponse) {
       if (deleteItemResponse["status"] == "success") {
-        productSizes.removeWhere((size) => size.id == productSizeId);
         setDeleteItemLoading(false);
         Navigator.pop(context);
         showCustomToast(context, "تم حذف الحجم و السعر بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
+        getProductSizes(context, productId);
       } else {
         setDeleteItemLoading(false);
         if (deleteItemResponse["data"] is Map &&

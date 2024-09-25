@@ -24,7 +24,6 @@ class ProductViewModel with ChangeNotifier {
   bool deleting = false;
   String selectedProductId = "";
   String selectedProductName = "";
-  List<dynamic> productSizes = [];
 
 
   void setPage(int page) {
@@ -63,10 +62,9 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedItemId(String id, String name, List<dynamic> sizes) {
+  void updateSelectedItemId(String id, String name) {
     selectedProductId = id;
     selectedProductName = name;
-    productSizes = sizes;
     notifyListeners();
   }
 
