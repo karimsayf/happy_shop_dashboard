@@ -74,6 +74,16 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           ),
           DataCell(
             CustomTitle(
+              text: request.tableNumber,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          DataCell(
+            CustomTitle(
               text: request.totalPrice,
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -83,25 +93,99 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
             ),
           ),
           DataCell(
-              Container(
-                height: 30,
-                width: 130,
+             request.status == "DONE" ? Container(
+               height: 30,
+               width: 130,
+               decoration: BoxDecoration(
+                   color: AppColors.c368.withOpacity(0.1),
+                   borderRadius: BorderRadius.circular(50),
+                   border: Border.all(width: 1, color: AppColors.c368)),
+               child: const Center(
+                 child: CustomTitle(
+                   text: "تم اكمال الطلب",
+                   fontSize: 14,
+                   fontWeight: FontWeight.w400,
+                   color: AppColors.c368,
+                   maxLines: 2,
+                   overflow: TextOverflow.ellipsis,
+                 ),
+               ),
+             ) : Container(
+               height: 30,
+               width: 130,
+               decoration: BoxDecoration(
+                   color: AppColors.c4221.withOpacity(0.1),
+                   borderRadius: BorderRadius.circular(50),
+                   border: Border.all(width: 1, color: AppColors.c4221)),
+               child: const Center(
+                 child: CustomTitle(
+                   text: "تم إلغاء الطلب",
+                   fontSize: 14,
+                   fontWeight: FontWeight.w400,
+                   color: AppColors.c4221,
+                   maxLines: 2,
+                   overflow: TextOverflow.ellipsis,
+                 ),
+               ),
+             )
+          ),
+          DataCell(
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Tooltip(
+                message: "عرض الطلب",
+                enableTapToDismiss: true,
+                textAlign: TextAlign.center,
                 decoration: BoxDecoration(
-                    color: AppColors.c869.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(50),
-                    border:
-                    Border.all(width: 1, color: AppColors.c869)),
-                child: const Center(
-                  child: CustomTitle(
-                    text: "الطلب تحت المراجعه",
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.c555,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.c016.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                preferBelow: false,
+                textStyle: const TextStyle(
+                    fontFamily: stcFontStr,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.c869,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    color: AppColors.c244),
+                child: GestureDetector(
+                  onTap: requestViewModel.loadingRequestDetails
+                      ? () {}
+                      : () async {
+                    Provider.of<RequestsViewModel>(context, listen: false)
+                        .updateSelectedRecord(index);
+                    await Provider.of<RequestsViewModel>(context,
+                        listen: false)
+                        .getRequestDetails(context, request.products);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.mainColor.withOpacity(0.1),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: Center(
+                      child: requestViewModel.loadingRequestDetails &&
+                          requestViewModel.selectedRequestRecord == index
+                          ? const CustomCircularProgressIndicator(
+                          iosSize: 10, color: AppColors.mainColor)
+                          : Image.asset(
+                        "assets/icons/document.webp",
+                        scale: 4.5,
+                        color: AppColors.mainColor,
+                      ),
+                    ),
                   ),
                 ),
-              )
+              ),
+            ),
           ),
         ]);
       }).toList();
@@ -352,6 +436,16 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           ),
           DataColumn(
             label: CustomTitle(
+              text: "رقم الطاولة",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
               text: "السعر الاجمالي",
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -363,6 +457,16 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           DataColumn(
             label: CustomTitle(
               text: "الحالة",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: " ",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,

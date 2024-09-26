@@ -75,7 +75,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataCell(
             CustomTitle(
-              text: request.totalPrice,
+              text: request.tableNumber,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -924,6 +924,16 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
+              text: "رقم الطاولة",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
               text: "السعر الاجمالي",
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -935,6 +945,16 @@ class _RequestsRecordState extends State<RequestsRecord> {
           DataColumn(
             label: CustomTitle(
               text: "الحالة",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: " ",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,
