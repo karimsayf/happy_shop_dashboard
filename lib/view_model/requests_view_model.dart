@@ -229,7 +229,7 @@ class RequestsViewModel with ChangeNotifier {
   }
 
   Future rejectOrder(
-      BuildContext context, String status, String orderId) async {
+      BuildContext context, String orderId) async {
     setRejectLoading(true);
     await updateRequestStatus(context, orderId, "CANCELLED")
         .then((updateOrderStatusResponse) {
@@ -238,7 +238,7 @@ class RequestsViewModel with ChangeNotifier {
         Navigator.pop(context);
         showCustomToast(context, "تم رفض الطلب بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
-        getRequests(context, status, "0", true);
+        getRequests(context, "status=PROGRESSING", "0", true);
       } else {
         setRejectLoading(false);
         if (updateOrderStatusResponse["data"] is Map &&
@@ -268,7 +268,7 @@ class RequestsViewModel with ChangeNotifier {
   }
 
   Future approveOrder(
-      BuildContext context, String status, String orderId) async {
+      BuildContext context, String orderId) async {
     setApproveLoading(true);
     await updateRequestStatus(context, orderId, "DONE")
         .then((updateOrderStatusResponse) {
@@ -277,7 +277,7 @@ class RequestsViewModel with ChangeNotifier {
         Navigator.pop(context);
         showCustomToast(context, "تم تاكيد الطلب بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
-        getRequests(context, status, "0", true);
+        getRequests(context, "status=PROGRESSING", "0", true);
       } else {
         setApproveLoading(false);
         if (updateOrderStatusResponse["data"] is Map &&
@@ -520,7 +520,7 @@ class RequestsViewModel with ChangeNotifier {
                               ),
                               Flexible(
                                 child: CustomTitle(
-                                  text: product.sizeName,
+                                  text: product.sizeName == "Regular" ? "طبيعي" :  product.sizeName,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,

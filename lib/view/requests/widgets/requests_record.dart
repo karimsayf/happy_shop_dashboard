@@ -253,7 +253,6 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                                     listen: false)
                                                     .approveOrder(
                                                   context,
-                                                  "NEW",
                                                   request
                                                       .id,
                                                 );
@@ -484,7 +483,6 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                                     false)
                                                     .rejectOrder(
                                                   context,
-                                                  "NEW",
                                                   request
                                                       .id,
                                                 );

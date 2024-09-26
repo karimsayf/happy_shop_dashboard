@@ -2,7 +2,7 @@ const String stcFontStr = 'STC';
 
 const String baseUrl = 'http://localhost:3000';
 
-const int HOME_INDEX= 0;
+const int HOME_INDEX = 0;
 const int SECTIONS_INDEX= 1;
 const int ADDSECTIONS_INDEX= 2;
 const int EDITSECTIONS_INDEX= 3;
