@@ -1,5 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utilities/constants.dart';
+import 'api_services_view_model.dart';
+import 'user_view_model.dart';
 class GeneralViewModel with ChangeNotifier {
   int selectedIndex = 0;
   String mainTitle = "الرئيسية";
@@ -44,6 +50,22 @@ class GeneralViewModel with ChangeNotifier {
       printInvoiceWithLogo = print;
       notifyListeners();
     }
+  }
+
+  Future uploadImage(BuildContext context, String filePath) async {
+    dynamic uploadImageResponse;
+    await Provider.of<ApiServicesViewModel>(context, listen: false).postData(
+        apiUrl: "$baseUrl/upload",
+        formData: FormData.fromMap({
+          'file': await MultipartFile.fromFile(filePath),
+        }),
+        headers: {
+          "Authorization":
+          Provider.of<UserViewModel>(context, listen: false).userToken,
+        }).then((response) {
+      uploadImageResponse = response;
+    });
+    return uploadImageResponse;
   }
 
 }
