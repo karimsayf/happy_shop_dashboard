@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/utilities/size_utility.dart';
 import 'package:provider/provider.dart';
 
 import '../components/custom_dialog.dart';
@@ -444,12 +445,12 @@ class RequestsViewModel with ChangeNotifier {
                               borderRadius: BorderRadius.circular(16),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    "$baseUrl/images/${product.productPhoto}"),
-                                fit: BoxFit.cover,
+                                    "$baseUrl/uploads/${product.productPhoto}"),
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
-                            height: 120,
-                            width: 120,
+                            height: 180,
+                            width: getSize(context).width,
                           ),
                           const SizedBox(
                             height: 10,

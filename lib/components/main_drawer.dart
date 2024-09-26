@@ -364,26 +364,22 @@ class _MainDrawerState extends State<MainDrawer> {
     setState(() {
       signingOut = true;
     });
-    await Future.delayed(const Duration(milliseconds: 300));
-    await Provider.of<UserViewModel>(context, listen: false)
-        .deleteUserData()
-        .then((_) async {
-      await Provider.of<GeneralViewModel>(context, listen: false)
-          .savePrintInvoiceWithLogoToPreferences(false)
-          .then(
-            (_) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Authentication(),
-            ),
-                (route) => false,
-          );
-          setState(() {
-            signingOut = false;
-          });
-        },
-      );
-    });
+    await Future.delayed(const Duration(milliseconds: 300)).then((_) async{
+      await Provider.of<UserViewModel>(context, listen: false)
+          .deleteUserData()
+          .then((_) async {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Authentication(),
+          ),
+              (route) => true,
+        );
+        setState(() {
+          signingOut = false;
+        });
+      });
+    },);
+
   }
 }
