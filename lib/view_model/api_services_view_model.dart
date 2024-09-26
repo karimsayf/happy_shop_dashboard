@@ -16,7 +16,6 @@ class ApiServicesViewModel with ChangeNotifier {
     Response response = await dio.get(apiUrl,
         queryParameters: queryParameters, options: Options(headers: headers));
     print(response.data);
-
     if (response.statusCode == 200) {
       return {"status": "success", "data": response.data};
     } else {

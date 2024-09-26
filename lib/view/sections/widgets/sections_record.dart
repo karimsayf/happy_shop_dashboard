@@ -83,7 +83,7 @@ class _SectionsRecordState extends State<SectionsRecord> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                "$baseUrl/images/${section.photo}",
+                "$baseUrl/uploads/${section.photo}",
                 errorBuilder: (context, error, stackTrace) => Container(
                   decoration: BoxDecoration(
                     color: AppColors.c912.withOpacity(0.5),

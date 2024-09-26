@@ -41,63 +41,140 @@ class EditSectionViewModel with ChangeNotifier {
   Future editSection(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       setLoading(true);
-      Map<String,dynamic> body = {
-        "name": name.text.trim(),
-        "photo" : "test"
-      };
-      /*if(file != null){
-        body.addAll({
-          'photo':  MultipartFile.fromBytes(
-              file!.bytes!,
-              filename: file!.xFile.name
-          ),
-        });
-      }*/
-      print(sectionId);
       formKey.currentState!.save();
-      await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .updateData(
-          apiUrl: "$baseUrl/api/v1/category/$sectionId",
-          headers: {
-            'Authorization':
-            Provider.of<UserViewModel>(context, listen: false).userToken
-          },
-          data: body,)
-          .then((getSubsectionsResponse) {
-        print(getSubsectionsResponse);
-        if (getSubsectionsResponse["status"] == "success") {
-          loading = false;
-          showCustomToast(context, "تم تعديل القسم بنجاح",
-              "assets/icons/check_c.webp", AppColors.c368);
-          Provider.of<GeneralViewModel>(context, listen: false)
-              .updateSelectedIndex(index: SECTIONS_INDEX);
-          notifyListeners();
-        } else {
-          setLoading(false);
-          if (getSubsectionsResponse["data"] is Map &&
-              getSubsectionsResponse["data"]["message"] != null) {
-            showCustomToast(context, getSubsectionsResponse["data"]["message"],
+      if(file != null) {
+        print("file is found");
+        await Provider.of<GeneralViewModel>(context, listen: false)
+            .uploadImage(context,file!)
+            .then((photoResponse) async{
+          print(photoResponse);
+          if (photoResponse["status"] == "success") {
+            await Provider.of<ApiServicesViewModel>(context, listen: false)
+                .updateData(
+              apiUrl: "$baseUrl/api/v1/category/$sectionId",
+              headers: {
+                'Authorization':
+                Provider
+                    .of<UserViewModel>(context, listen: false)
+                    .userToken
+              },
+              data: {
+                "name": name.text.trim(),
+                "photo" : photoResponse['data']['filePath']
+              },)
+                .then((getSubsectionsResponse) {
+              if (getSubsectionsResponse["status"] == "success") {
+                loading = false;
+                showCustomToast(context, "تم تعديل القسم بنجاح",
+                    "assets/icons/check_c.webp", AppColors.c368);
+                Provider.of<GeneralViewModel>(context, listen: false)
+                    .updateSelectedIndex(index: SECTIONS_INDEX);
+                notifyListeners();
+              } else {
+                setLoading(false);
+                if (getSubsectionsResponse["data"] is Map &&
+                    getSubsectionsResponse["data"]["message"] != null) {
+                  showCustomToast(
+                      context, getSubsectionsResponse["data"]["message"],
+                      "assets/icons/alert-circle.webp", AppColors.c999);
+                } else {
+                  print(getSubsectionsResponse["data"]);
+                  showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                      "assets/icons/alert-circle.webp", AppColors.c999);
+                }
+              }
+            }).catchError((error) {
+              if (error is DioException) {
+                setLoading(false);
+                print('DioError in requestOrder: ${error.message}');
+                showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                    "assets/icons/alert-circle.webp", AppColors.c999);
+              } else {
+                setLoading(false);
+                // Handle other errors
+                print('Error in requestOrder: $error');
+                showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                    "assets/icons/alert-circle.webp", AppColors.c999);
+              }
+            });
+          } else {
+            setLoading(false);
+            if (photoResponse["data"] is Map &&
+                photoResponse["data"]["message"] != null) {
+              showCustomToast(context, photoResponse["data"]["message"],
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            } else {
+              print(photoResponse["data"]);
+              showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            }
+          }
+        }).catchError((error) {
+          if (error is DioException) {
+            setLoading(false);
+            print('DioError in requestOrder: ${error.message}');
+            showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
                 "assets/icons/alert-circle.webp", AppColors.c999);
           } else {
-            print(getSubsectionsResponse["data"]);
+            setLoading(false);
+            // Handle other errors
+            print('Error in requestOrder: $error');
             showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
                 "assets/icons/alert-circle.webp", AppColors.c999);
           }
-        }
-      }).catchError((error) {
-        if (error is DioException) {
-          setLoading(false);
-          print('DioError in requestOrder: ${error.message}');
-          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-              "assets/icons/alert-circle.webp", AppColors.c999);
-        } else {
-          setLoading(false);
-          // Handle other errors
-          print('Error in requestOrder: $error');
-          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
-              "assets/icons/alert-circle.webp", AppColors.c999);
-        }
-      });
+        });
+      } else {
+        print("file not found");
+        await Provider.of<ApiServicesViewModel>(context, listen: false)
+            .updateData(
+          apiUrl: "$baseUrl/api/v1/category/$sectionId",
+          headers: {
+            'Authorization':
+            Provider
+                .of<UserViewModel>(context, listen: false)
+                .userToken
+          },
+          data: {
+            "name": name.text.trim(),
+            "photo" : photoNetwork
+          },)
+            .then((getSubsectionsResponse) {
+          if (getSubsectionsResponse["status"] == "success") {
+            loading = false;
+            showCustomToast(context, "تم تعديل القسم بنجاح",
+                "assets/icons/check_c.webp", AppColors.c368);
+            Provider.of<GeneralViewModel>(context, listen: false)
+                .updateSelectedIndex(index: SECTIONS_INDEX);
+            notifyListeners();
+          } else {
+            setLoading(false);
+            if (getSubsectionsResponse["data"] is Map &&
+                getSubsectionsResponse["data"]["message"] != null) {
+              showCustomToast(
+                  context, getSubsectionsResponse["data"]["message"],
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            } else {
+              print(getSubsectionsResponse["data"]);
+              showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            }
+          }
+        }).catchError((error) {
+          if (error is DioException) {
+            setLoading(false);
+            print('DioError in requestOrder: ${error.message}');
+            showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                "assets/icons/alert-circle.webp", AppColors.c999);
+          } else {
+            setLoading(false);
+            // Handle other errors
+            print('Error in requestOrder: $error');
+            showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                "assets/icons/alert-circle.webp", AppColors.c999);
+          }
+        });
+      }
+
     }
   }
 

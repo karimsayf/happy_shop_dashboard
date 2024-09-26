@@ -84,7 +84,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                "$baseUrl/images/${product.photo}",
+                "$baseUrl/uploads/${product.photo}",
                 errorBuilder: (context, error, stackTrace) => Container(
                   decoration: BoxDecoration(
                     color: AppColors.c912.withOpacity(0.5),

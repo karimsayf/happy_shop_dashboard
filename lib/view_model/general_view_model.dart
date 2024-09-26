@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,12 +56,13 @@ class GeneralViewModel with ChangeNotifier {
     }
   }
 
-  Future uploadImage(BuildContext context, String filePath) async {
+  Future uploadImage(BuildContext context, PlatformFile file) async {
     dynamic uploadImageResponse;
+    Uint8List fileBytes = await file.xFile.readAsBytes();
     await Provider.of<ApiServicesViewModel>(context, listen: false).postData(
-        apiUrl: "$baseUrl/upload",
+        apiUrl: "$baseUrl/api/v1/upload",
         formData: FormData.fromMap({
-          'file': await MultipartFile.fromFile(filePath),
+          'file':  MultipartFile.fromBytes(fileBytes,filename: file.xFile.name),
         }),
         headers: {
           "Authorization":

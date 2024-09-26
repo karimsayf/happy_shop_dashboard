@@ -45,46 +45,75 @@ class AddProductViewModel with ChangeNotifier {
     if (formKey.currentState!.validate()) {
       setLoading(true);
       formKey.currentState!.save();
-      await Provider.of<ApiServicesViewModel>(context, listen: false)
-          .postData(
-          apiUrl: "$baseUrl/api/v1/product",
-          headers: {
-            'Authorization':
-            Provider.of<UserViewModel>(context, listen: false).userToken
-          },
-          data: {
-            "name": name.text.trim(),
-            /*"photo": MultipartFile.fromBytes(file!.bytes!,
-                filename: file!.xFile.name),*/
-            "photo" : "test",
-            "component": components.text.trim(),
-            "price" : price.text.trim(),
-            "categoryId" : sectionId,
-          })
-          .then((getSubsectionsResponse) {
-        print(getSubsectionsResponse);
-        if (getSubsectionsResponse["status"] == "success") {
-          loading = false;
-          showCustomToast(context, "تم اضافة المنتج بنجاح",
-              "assets/icons/check_c.webp", AppColors.c368);
-          Provider.of<GeneralViewModel>(context, listen: false)
-              .updateSelectedIndex(index: PRODUCTS_INDEX);
-          notifyListeners();
+      await Provider.of<GeneralViewModel>(context, listen: false)
+          .uploadImage(context,file!)
+          .then((photoResponse) async{
+        print(photoResponse);
+        if (photoResponse["status"] == "success") {
+          await Provider.of<ApiServicesViewModel>(context, listen: false)
+              .postData(
+              apiUrl: "$baseUrl/api/v1/product",
+              headers: {
+                'Authorization':
+                Provider.of<UserViewModel>(context, listen: false).userToken
+              },
+              data: {
+                "name": name.text.trim(),
+                "photo" : photoResponse['data']['filePath'],
+                "component": components.text.trim(),
+                "price" : price.text.trim(),
+                "categoryId" : sectionId,
+              })
+              .then((getSubsectionsResponse) {
+            print(getSubsectionsResponse);
+            if (getSubsectionsResponse["status"] == "success") {
+              loading = false;
+              showCustomToast(context, "تم اضافة المنتج بنجاح",
+                  "assets/icons/check_c.webp", AppColors.c368);
+              Provider.of<GeneralViewModel>(context, listen: false)
+                  .updateSelectedIndex(index: PRODUCTS_INDEX);
+              notifyListeners();
+            } else {
+              setLoading(false);
+              if (getSubsectionsResponse["data"] is Map &&
+                  getSubsectionsResponse["data"]["message"] != null) {
+                showCustomToast(context, getSubsectionsResponse["data"]["message"],
+                    "assets/icons/alert-circle.webp", AppColors.c999);
+              } else {
+                print(getSubsectionsResponse["data"]);
+                showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                    "assets/icons/alert-circle.webp", AppColors.c999);
+              }
+            }
+          }).catchError((error) {
+            setLoading(false);
+            if (error is DioException) {
+              print('DioError in requestOrder: ${error.message}');
+              showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            } else {
+              setLoading(false);
+              // Handle other errors
+              print('Error in requestOrder: $error');
+              showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+                  "assets/icons/alert-circle.webp", AppColors.c999);
+            }
+          });
         } else {
           setLoading(false);
-          if (getSubsectionsResponse["data"] is Map &&
-              getSubsectionsResponse["data"]["message"] != null) {
-            showCustomToast(context, getSubsectionsResponse["data"]["message"],
+          if (photoResponse["data"] is Map &&
+              photoResponse["data"]["message"] != null) {
+            showCustomToast(context, photoResponse["data"]["message"],
                 "assets/icons/alert-circle.webp", AppColors.c999);
           } else {
-            print(getSubsectionsResponse["data"]);
+            print(photoResponse["data"]);
             showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
                 "assets/icons/alert-circle.webp", AppColors.c999);
           }
         }
       }).catchError((error) {
-        setLoading(false);
         if (error is DioException) {
+          setLoading(false);
           print('DioError in requestOrder: ${error.message}');
           showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
               "assets/icons/alert-circle.webp", AppColors.c999);

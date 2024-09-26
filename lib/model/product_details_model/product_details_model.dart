@@ -22,7 +22,7 @@ class ProductDetailsModel {
     return ProductDetailsModel(
         productId: productDetails["productId"] ?? "",
         productName: productDetails["productName"] ?? "",
-        productComponent: productDetails["productComponent"] ?? "",
+        productComponent: productDetails["productComponents"] ?? "",
         productPhoto: productDetails["productPhoto"] ?? "",
         sizeName: productDetails["sizeName"] ?? "",
         pricePerOne: productDetails["pricePerOne"].toString(),

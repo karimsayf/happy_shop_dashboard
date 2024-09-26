@@ -42,16 +42,22 @@ class _MainDrawerState extends State<MainDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Image.asset(
-                      "assets/icons/app_logo.webp",
-                      scale: 4.0,
-                      fit: BoxFit.contain,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 15),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5,),
+                        Image.asset(
+                          "assets/icons/app_logo.webp",
+                          scale: 8.5,
+                        ),
+                        const CustomTitle(
+                          text: "منيو",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.c000,
+                        )
+                      ],
                     ),
                   ),
                   const SizedBox(

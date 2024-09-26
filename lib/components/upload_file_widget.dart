@@ -47,7 +47,7 @@ class _UploadFileWidgetState extends State<UploadFileWidget> {
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
               fit: BoxFit.contain,
-              image: NetworkImage('$baseUrl/images/${widget.networkImage}')
+              image: NetworkImage('$baseUrl/uploads/${widget.networkImage}')
           )
       ),
       child: IconButton(onPressed: (){

@@ -102,7 +102,7 @@ class RequestsViewModel with ChangeNotifier {
     clearRequests();
     clearData();
     await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
-        apiUrl: "$baseUrl/api/v1/order?status=$status&page=$page&size=10",
+        apiUrl: "$baseUrl/api/v1/order?$status&page=$page&size=10",
         headers: {
           'Authorization':
               Provider.of<UserViewModel>(context, listen: false).userToken
@@ -169,6 +169,7 @@ class RequestsViewModel with ChangeNotifier {
           'Authorization':
               Provider.of<UserViewModel>(context, listen: false).userToken
         }).then((getSubsectionsResponse) {
+
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
         requests = getSubsectionsResponse["data"]["orders"]
@@ -229,7 +230,6 @@ class RequestsViewModel with ChangeNotifier {
   Future rejectOrder(
       BuildContext context, String status, String orderId) async {
     setRejectLoading(true);
-    formKey.currentState!.save();
     await updateRequestStatus(context, orderId, "CANCELLED")
         .then((updateOrderStatusResponse) {
       if (updateOrderStatusResponse["status"] == "success") {
@@ -273,6 +273,7 @@ class RequestsViewModel with ChangeNotifier {
         .then((updateOrderStatusResponse) {
       if (updateOrderStatusResponse["status"] == "success") {
         setApproveLoading(false);
+        Navigator.pop(context);
         showCustomToast(context, "تم تاكيد الطلب بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
         getRequests(context, status, "0", true);
@@ -378,7 +379,7 @@ class RequestsViewModel with ChangeNotifier {
                 ...ordersDetails.mapIndexed(
                   (index, product) {
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20,left: 5,right: 5),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 15),
                       decoration: BoxDecoration(
