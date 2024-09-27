@@ -206,7 +206,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
               }, icon: const Icon(Icons.home,color: AppColors.mainColor,size: 20,),),
               const Text('/',style: TextStyle(color: AppColors.mainColor,fontSize: 13),),
               const SizedBox(width: 10,),
-              const Text('سجل الطلابات',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)
+              const Text('سجل الطلبات',style: TextStyle(color: AppColors.mainColor,fontSize: 13),)
             ],
           ),
           const Padding(
@@ -215,7 +215,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CustomTitle(
-                  text: "سجل الطلابات",
+                  text: "سجل الطلبات",
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.c016,

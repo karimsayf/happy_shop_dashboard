@@ -458,7 +458,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CustomTitle(
-                        text: "سجل المنتاج",
+                        text: "سجل المنتجات",
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: AppColors.c016,

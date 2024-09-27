@@ -670,7 +670,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomTitle(
-                  text: "سجل الطلابات الحالية",
+                  text: "سجل الطلبات الحالية",
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.c016,
@@ -694,7 +694,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CustomTitle(
-                            text: "سجل الطلابات",
+                            text: "سجل الطلبات",
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: AppColors.c555,
