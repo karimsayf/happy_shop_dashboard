@@ -1,6 +1,6 @@
 const String stcFontStr = 'STC';
 
-const String baseUrl = 'http://localhost:3000';
+const String baseUrl = 'https://menu-demo-back.technolanes.com';
 
 const int HOME_INDEX = 0;
 const int SECTIONS_INDEX= 1;
