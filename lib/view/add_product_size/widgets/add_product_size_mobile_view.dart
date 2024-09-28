@@ -249,7 +249,7 @@ class _AddProductSizeMobileViewState extends State<AddProductSizeMobileView> {
           ),
         ),
         const SizedBox(
-          width: 60,
+          height: 20,
         ),
         Column(
           children: children,

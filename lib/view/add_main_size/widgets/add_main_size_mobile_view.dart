@@ -143,7 +143,7 @@ class _AddMainSizeMobileViewState extends State<AddMainSizeMobileView> {
           ),
         ),
         const SizedBox(
-          width: 60,
+          height: 20,
         ),
         Column(
           children: children,

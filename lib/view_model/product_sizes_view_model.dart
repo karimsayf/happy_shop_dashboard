@@ -16,7 +16,6 @@ class ProductSizesViewModel with ChangeNotifier {
   bool isSizesHomeLoading = true;
   bool isSizesLoading = true;
 
-
   void setSizesLoading(bool value) {
     isSizesLoading = value;
     notifyListeners();
@@ -37,21 +36,24 @@ class ProductSizesViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future getProductSizesHome(BuildContext context, String productId,) async {
+  Future getProductSizesHome(
+    BuildContext context,
+    String productId,
+  ) async {
     setSizesHomeLoading(true);
     clearItems();
-    await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(
-        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+    await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
+      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
       headers: {
         'Authorization':
-        Provider.of<UserViewModel>(context, listen: false).userToken
-      },)
-        .then((getItemsResponse) {
+            Provider.of<UserViewModel>(context, listen: false).userToken
+      },
+    ).then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        productSizes =
-            getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
+        clearItems();
+        productSizes = getItemsResponse["data"]["sizes"]
+            .map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e))
+            .toList();
         isSizesLoading = false;
         isSizesHomeLoading = false;
         notifyListeners();
@@ -60,10 +62,12 @@ class ProductSizesViewModel with ChangeNotifier {
         setSizesHomeLoading(false);
         if (getItemsResponse["data"] is Map &&
             getItemsResponse["data"]["message"] != null) {
-          showCustomToast(context,getItemsResponse["data"]["message"],"assets/icons/alert-circle.webp",AppColors.c999);
+          showCustomToast(context, getItemsResponse["data"]["message"],
+              "assets/icons/alert-circle.webp", AppColors.c999);
         } else {
           print(getItemsResponse["data"]);
-          showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+              "assets/icons/alert-circle.webp", AppColors.c999);
         }
       }
     }).catchError((error) {
@@ -71,13 +75,15 @@ class ProductSizesViewModel with ChangeNotifier {
         print('DioError in requestOrder: ${error.message}');
         setSizesLoading(false);
         setSizesHomeLoading(false);
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       } else {
         // Handle other errors
         print('Error in requestOrder: $error');
         setSizesLoading(false);
         setSizesHomeLoading(false);
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       }
     });
   }
@@ -85,55 +91,60 @@ class ProductSizesViewModel with ChangeNotifier {
   Future getProductSizes(BuildContext context, String productId) async {
     setSizesLoading(true);
     clearItems();
-    await Provider.of<ApiServicesViewModel>(context, listen: false)
-        .getData(
-        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+    await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
+      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
       headers: {
         'Authorization':
-        Provider.of<UserViewModel>(context, listen: false).userToken
-      },)
-        .then((getItemsResponse) {
+            Provider.of<UserViewModel>(context, listen: false).userToken
+      },
+    ).then((getItemsResponse) {
       if (getItemsResponse["status"] == "success") {
-        productSizes =
-            getItemsResponse["data"]["sizes"].map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e)).toList();
+        clearItems();
+        productSizes = getItemsResponse["data"]["sizes"]
+            .map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e))
+            .toList();
         isSizesLoading = false;
         notifyListeners();
       } else {
         setSizesLoading(false);
         if (getItemsResponse["data"] is Map &&
             getItemsResponse["data"]["message"] != null) {
-          showCustomToast(context,getItemsResponse["data"]["message"],"assets/icons/alert-circle.webp",AppColors.c999);
+          showCustomToast(context, getItemsResponse["data"]["message"],
+              "assets/icons/alert-circle.webp", AppColors.c999);
         } else {
           print(getItemsResponse["data"]);
-          showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+          showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+              "assets/icons/alert-circle.webp", AppColors.c999);
         }
       }
     }).catchError((error) {
       if (error is DioException) {
         print('DioError in requestOrder: ${error.message}');
         setSizesLoading(false);
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       } else {
         // Handle other errors
         print('Error in requestOrder: $error');
         setSizesLoading(false);
-        showCustomToast(context,"حدثت مشكله ما حاول مره اخري","assets/icons/alert-circle.webp",AppColors.c999);
+        showCustomToast(context, "حدثت مشكله ما حاول مره اخري",
+            "assets/icons/alert-circle.webp", AppColors.c999);
       }
     });
   }
 
-  Future deleteSize(BuildContext context, String productId ,String sizeId) async {
+  Future deleteSize(
+      BuildContext context, String productId, String sizeId) async {
     setDeleteItemLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
-      headers: {
-        'Authorization':
-            Provider.of<UserViewModel>(context, listen: false).userToken
-      },
-      data: {
-        "sizeId" : sizeId
-      }
-    ).then((deleteItemResponse) {
+        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+        headers: {
+          'Authorization':
+              Provider.of<UserViewModel>(context, listen: false).userToken
+        },
+        data: {
+          "sizeId": sizeId
+        }).then((deleteItemResponse) {
       if (deleteItemResponse["status"] == "success") {
         setDeleteItemLoading(false);
         Navigator.pop(context);

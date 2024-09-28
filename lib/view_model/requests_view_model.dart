@@ -173,6 +173,7 @@ class RequestsViewModel with ChangeNotifier {
 
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
+        clearRequests();
         requests = getSubsectionsResponse["data"]["orders"]
             .map<RequestModel>((e) => RequestModel.fromJason(e))
             .toList();

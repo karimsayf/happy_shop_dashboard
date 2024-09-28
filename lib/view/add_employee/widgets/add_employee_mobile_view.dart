@@ -64,10 +64,6 @@ class _AddEmployeeMobileViewState extends State<AddEmployeeMobileView> {
                     title: 'المعلومات الشخصية',
                     desc: 'قم برفع تفاصيلك الشخصية.',
                     children: [
-
-                      const SizedBox(
-                        height: 35,
-                      ),
                       Column(
                         children: [
                           Column(
@@ -166,7 +162,7 @@ class _AddEmployeeMobileViewState extends State<AddEmployeeMobileView> {
           ),
         ),
         const SizedBox(
-          width: 60,
+          height: 20,
         ),
         Column(
           children: children,

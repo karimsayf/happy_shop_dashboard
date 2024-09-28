@@ -250,7 +250,7 @@ class _EditProductSizeMobileViewState extends State<EditProductSizeMobileView> {
           ),
         ),
         const SizedBox(
-          width: 60,
+          height: 20,
         ),
         Column(
           children: children,

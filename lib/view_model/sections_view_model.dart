@@ -71,12 +71,11 @@ class SectionsViewModel with ChangeNotifier {
       },)
         .then((getSubsectionsResponse) {
       if (getSubsectionsResponse["status"] == "success") {
-        for (int i = 0;
-        i < getSubsectionsResponse["data"]["category"].length;
-        i++) {
-          sections.add(SectionModel.fromJason(
-              getSubsectionsResponse["data"]["category"][i]));
-        }
+        clearSubSections();
+        clearData();
+        sections = getSubsectionsResponse["data"]["category"]
+            .map<SectionModel>((e) => SectionModel.fromJason(e))
+            .toList();
         if (sections.isEmpty) {
           sectionsEmpty = true;
         } else {
@@ -118,13 +117,10 @@ class SectionsViewModel with ChangeNotifier {
         .then((getSubsectionsResponse) {
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
-        for (int i = 0;
-        i < getSubsectionsResponse["data"]["category"].length;
-        i++) {
+        clearSubSections();
           sections = getSubsectionsResponse["data"]["category"]
               .map<SectionModel>((e) => SectionModel.fromJason(e))
               .toList();
-        }
         if (sections.isEmpty) {
           sectionsEmpty = true;
         } else {

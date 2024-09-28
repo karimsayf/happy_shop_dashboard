@@ -53,6 +53,7 @@ class MainScreenMobileView extends StatelessWidget {
               height: 45,
               padding:
               const EdgeInsetsDirectional.only(start: 10, end: 10),
+              margin: const EdgeInsets.only(left: 10),
               child: Center(
                 child: CustomTitle(
                   text: Provider.of<UserViewModel>(context,listen: true).name,
@@ -61,7 +62,7 @@ class MainScreenMobileView extends StatelessWidget {
                   color: AppColors.c016,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

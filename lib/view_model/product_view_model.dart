@@ -46,7 +46,7 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearSubSections() {
+  void clearProducts() {
     products.clear();
     notifyListeners();
   }
@@ -70,7 +70,7 @@ class ProductViewModel with ChangeNotifier {
 
   Future getProductsHome(BuildContext context, String page) async {
     setProductsHomeLoading(true);
-    clearSubSections();
+    clearProducts();
     clearData();
     await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
       apiUrl: "$baseUrl/api/v1/allProducts?page=$page&size=10",
@@ -80,12 +80,11 @@ class ProductViewModel with ChangeNotifier {
       },
     ).then((getSubsectionsResponse) {
       if (getSubsectionsResponse["status"] == "success") {
-        for (int i = 0;
-            i < getSubsectionsResponse["data"]["product"].length;
-            i++) {
-          products.add(ProductModel.fromJason(
-              getSubsectionsResponse["data"]["product"][i]));
-        }
+        clearProducts();
+        clearData();
+        products = getSubsectionsResponse["data"]["product"]
+            .map<ProductModel>((e) => ProductModel.fromJason(e))
+            .toList();
         if (products.isEmpty) {
           productsEmpty = true;
         } else {
@@ -128,7 +127,7 @@ class ProductViewModel with ChangeNotifier {
 
   Future getProducts(BuildContext context, String page, bool clear) async {
     setProductsLoading(true);
-    clearSubSections();
+    clearProducts();
     if (clear) {
       clearData();
     }
@@ -141,13 +140,10 @@ class ProductViewModel with ChangeNotifier {
     ).then((getSubsectionsResponse) {
       print(getSubsectionsResponse);
       if (getSubsectionsResponse["status"] == "success") {
-        for (int i = 0;
-            i < getSubsectionsResponse["data"]["product"].length;
-            i++) {
-          products = getSubsectionsResponse["data"]["product"]
-              .map<ProductModel>((e) => ProductModel.fromJason(e))
-              .toList();
-        }
+        clearProducts();
+        products = getSubsectionsResponse["data"]["product"]
+            .map<ProductModel>((e) => ProductModel.fromJason(e))
+            .toList();
         if (products.isEmpty) {
           productsEmpty = true;
         } else {
@@ -188,7 +184,7 @@ class ProductViewModel with ChangeNotifier {
       BuildContext context, String query, String page, bool clear) async {
     print(query);
     setProductsLoading(true);
-    clearSubSections();
+    clearProducts();
     if (clear) {
       clearData();
     }
