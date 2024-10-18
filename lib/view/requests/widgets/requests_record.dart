@@ -875,7 +875,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: CustomTitle(
-                text: "لا توجد طلابات",
+                text: "لا توجد طلبات",
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
                 color: AppColors.c912,

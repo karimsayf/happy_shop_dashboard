@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
-import 'package:menu_dashboard/view_model/add_main_size_view_model.dart';
+import 'package:menu_dashboard/view_model/add_banner_view_model.dart';
+import 'package:menu_dashboard/view_model/add_product_color_view_model.dart';
 import 'package:menu_dashboard/view_model/add_product_size_view_model.dart';
 import 'package:menu_dashboard/view_model/add_product_view_model.dart';
 import 'package:menu_dashboard/view_model/add_section_view_model.dart';
-import 'package:menu_dashboard/view_model/edit_product_size_view_model.dart';
+import 'package:menu_dashboard/view_model/banners_view_model.dart';
+import 'package:menu_dashboard/view_model/edit_banner_view_model.dart';
 import 'package:menu_dashboard/view_model/edit_section_view_model.dart';
+import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
 import 'package:menu_dashboard/view_model/product_sizes_view_model.dart';
 import 'package:menu_dashboard/view_model/product_view_model.dart';
 import 'package:menu_dashboard/view_model/requests_view_model.dart';
@@ -36,22 +39,24 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ApiServicesViewModel()),
         ChangeNotifierProvider(create: (_) => AddEmployeeViewModel()),
-        ChangeNotifierProvider(create: (_) => AddMainSizeViewModel()),
         ChangeNotifierProvider(create: (_) => AddProductSizeViewModel()),
-        ChangeNotifierProvider(create: (_) => AddProductSizeViewModel()),
+        ChangeNotifierProvider(create: (_) => AddProductColorViewModel()),
         ChangeNotifierProvider(create: (_) => AddProductViewModel()),
         ChangeNotifierProvider(create: (_) => AddSectionViewModel()),
         ChangeNotifierProvider(create: (_) => AuthFormProvider()),
         ChangeNotifierProvider(create: (_) => EditEmployeeViewModel()),
-        ChangeNotifierProvider(create: (_) => EditProductSizeViewModel()),
         ChangeNotifierProvider(create: (_) => EditProductViewModel()),
         ChangeNotifierProvider(create: (_) => EditSectionViewModel()),
         ChangeNotifierProvider(create: (_) => EmployeesViewModel()),
         ChangeNotifierProvider(create: (_) => GeneralViewModel()),
         ChangeNotifierProvider(create: (_) => ProductSizesViewModel()),
+        ChangeNotifierProvider(create: (_) => ProductColorsViewModel()),
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => RequestsViewModel()),
         ChangeNotifierProvider(create: (_) => SectionsViewModel()),
+        ChangeNotifierProvider(create: (_) => BannersViewModel()),
+        ChangeNotifierProvider(create: (_) => AddBannerViewModel()),
+        ChangeNotifierProvider(create: (_) => EditBannerViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: const MyApp(),
@@ -80,7 +85,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Menu Dashboard',
+      title: 'Happy Shop Dashboard',
       debugShowCheckedModeBanner: false,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorKey: NavigationService.navigatorKey,

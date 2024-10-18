@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:menu_dashboard/view_model/add_product_size_view_model.dart';
+import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
 import 'package:menu_dashboard/view_model/product_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -133,26 +134,11 @@ class _AddProductSizeDesktopViewState extends State<AddProductSizeDesktopView> {
                         ),
                         Expanded(
                             child: CustomTextField(
-                          onTap: () async{
-                            await Provider.of<AddProductSizeViewModel>(context,
-                                listen: false)
-                                .getMainSizes(
-                              context,"0"
-                            );
-                          },
                           controller: addProductSizeViewModel.name,
-                          readOnly: true,
                           generalTextFieldValidator:
                               Validator(context).validateField,
-                          hintText: 'اختر الحجم',
+                          hintText: 'الحجم',
                           hintTextColor: AppColors.c912,
-                          suffixIcon: addProductSizeViewModel.loadingMainSizes
-                              ? const CustomCircularProgressIndicator(
-                                  iosSize: 20, color: AppColors.mainColor)
-                              : const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: AppColors.c912,
-                                ),
                         )),
                       ],
                     ))
@@ -194,7 +180,8 @@ class _AddProductSizeDesktopViewState extends State<AddProductSizeDesktopView> {
                           await Provider.of<AddProductSizeViewModel>(context,
                                   listen: false)
                               .addSizeAndPrice(
-                            context,Provider.of<ProductViewModel>(context,listen: false).selectedProductId
+                            context,Provider.of<ProductViewModel>(context,listen: false).selectedProductId,
+                              Provider.of<ProductColorsViewModel>(context,listen: false).colorId!
                           );
                         },
                   borderRadius: BorderRadius.circular(10),

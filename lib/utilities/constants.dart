@@ -1,8 +1,8 @@
 const String stcFontStr = 'STC';
 
-const String baseUrl = 'https://menu-demo-back.technolanes.com';
+//const String baseUrl = 'https://menu-demo-back.technolanes.com';
 
-//const String baseUrl = 'http://localhost:3000';
+const String baseUrl = 'http://localhost:3000';
 
 const int HOME_INDEX = 0;
 const int SECTIONS_INDEX= 1;
@@ -17,5 +17,10 @@ const int EDITEMPLOYEE_INDEX = 12;
 const int SIZES_INDEX = 13;
 const int ADDSIZE_INDEX = 14;
 const int EDITSIZE_INDEX = 15;
-const int ADDMAINSIZE_INDEX = 16;
 const int ORDERSHISTORY_INDEX = 17;
+const int BANNERS_INDEX = 18;
+const int ADDBANNERS_INDEX = 19;
+const int EDITBANNERS_INDEX = 20;
+const int COLORS_INDEX = 21;
+const int ADDCOLOR_INDEX = 22;
+

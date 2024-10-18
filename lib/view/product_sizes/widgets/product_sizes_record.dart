@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/custom_circular_progress_indicator.dart';
@@ -11,7 +12,6 @@ import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
 import '../../../view_model/product_sizes_view_model.dart';
 import '../../../view_model/add_product_size_view_model.dart';
-import '../../../view_model/edit_product_size_view_model.dart';
 import '../../../view_model/general_view_model.dart';
 import '../../../view_model/product_view_model.dart';
 
@@ -59,65 +59,7 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
         DataCell(
           Row(
             children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: Tooltip(
-                  message: "تعديل",
-                  enableTapToDismiss: true,
-                  textAlign: TextAlign.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.c555,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.c016.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  preferBelow: false,
-                  textStyle: const TextStyle(
-                      fontFamily: stcFontStr,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.c244),
-                  child: GestureDetector(
-                    onTap: () {
-                      Provider.of<EditProductSizeViewModel>(context,
-                          listen: false)
-                          .clearData();
-                      Provider.of<EditProductSizeViewModel>(context,
-                          listen: false)
-                          .assignData(
-                          productSize,
-                          Provider.of<ProductViewModel>(context,
-                              listen: false)
-                              .selectedProductName);
-                      Provider.of<GeneralViewModel>(context, listen: false)
-                          .updateSelectedIndex(index: EDITSIZE_INDEX);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.mainColor.withOpacity(0.1),
-                      ),
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                        child: Image.asset(
-                          "assets/icons/edit-2.webp",
-                          scale: 4.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
+
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
@@ -226,7 +168,8 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                                               .deleteSize(
                                             context,
                                             Provider.of<ProductViewModel>(context,listen: false).selectedProductId,
-                                            productSize.sizeId,
+                                            productSize.size,
+                                              Provider.of<ProductColorsViewModel>(context, listen: false).colorId!
                                           );
                                         },
                                         child: Container(
@@ -334,6 +277,26 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
                 '/',
                 style: TextStyle(color: AppColors.mainColor, fontSize: 13),
               ),
+              const SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                  onTap: () {
+                    Provider.of<GeneralViewModel>(context, listen: false)
+                        .updateSelectedIndex(index: COLORS_INDEX);
+                  },
+                  child: const Text(
+                    'الألوان',
+                    style: TextStyle(color: AppColors.mainColor, fontSize: 13),
+                  )),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                '/',
+                style: TextStyle(color: AppColors.mainColor, fontSize: 13),
+              ),
+
               const SizedBox(
                 width: 10,
               ),

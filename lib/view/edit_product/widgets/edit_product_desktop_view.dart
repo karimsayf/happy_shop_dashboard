@@ -92,10 +92,50 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: editProductViewModel.description,
+                          generalTextFieldValidator: Validator(context).validateField,
+
+                          hintText: 'الوصف',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           controller: editProductViewModel.components,
                           generalTextFieldValidator:
-                          Validator(context).validateField,
-                          hintText: 'المكونات',
+                              (p0) {
+                            return null;
+                          },
+                          hintText: 'المكونات (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          controller: editProductViewModel.priceBefore,
+                          suffixIcon: const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              ' د . ع',
+                              style: TextStyle(color: AppColors.c912),
+                            ),
+                          ),
+                          hintText: 'السعر قبل الخصم (اختياري)',
                           hintTextColor: AppColors.c912,
                         )),
                     const SizedBox(
@@ -106,7 +146,7 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          controller: editProductViewModel.price,
+                          controller: editProductViewModel.finalPrice,
                           suffixIcon: const Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
@@ -114,7 +154,7 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                               style: TextStyle(color: AppColors.c912),
                             ),
                           ),
-                          hintText: 'السعر',
+                          hintText: 'السعر النهائي',
                           hintTextColor: AppColors.c912,
                         )),
                   ],

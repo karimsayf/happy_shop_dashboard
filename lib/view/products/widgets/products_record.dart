@@ -10,7 +10,6 @@ import '../../../model/product_model/product_model.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
-import '../../../view_model/add_main_size_view_model.dart';
 import '../../../view_model/edit_product_view_model.dart';
 import '../../../view_model/general_view_model.dart';
 import '../../../view_model/product_view_model.dart';
@@ -121,6 +120,16 @@ class _ProductsRecordState extends State<ProductsRecord> {
           ),
           DataCell(
             CustomTitle(
+              text: product.description,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          DataCell(
+            CustomTitle(
               text: product.components,
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -130,7 +139,15 @@ class _ProductsRecordState extends State<ProductsRecord> {
             ),
           ),
           DataCell(CustomTitle(
-            text: "${product.price} د.ع",
+            text: "${product.priceBefore} د.ع",
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: AppColors.c016,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )),
+          DataCell(CustomTitle(
+            text: "${product.finalPrice} د.ع",
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: AppColors.c016,
@@ -192,13 +209,14 @@ class _ProductsRecordState extends State<ProductsRecord> {
                     ),
                   ),
                 ),
+
                 const SizedBox(
                   width: 5,
                 ),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: Tooltip(
-                    message: "عرض الاحجام واسعارهم",
+                    message: "التحكم في الألوان",
                     enableTapToDismiss: true,
                     textAlign: TextAlign.center,
                     decoration: BoxDecoration(
@@ -224,7 +242,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                         Provider.of<ProductViewModel>(context, listen: false)
                             .updateSelectedItemId(product.id, product.name );
                         Provider.of<GeneralViewModel>(context, listen: false)
-                            .updateSelectedIndex(index: SIZES_INDEX);
+                            .updateSelectedIndex(index: COLORS_INDEX);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -234,10 +252,10 @@ class _ProductsRecordState extends State<ProductsRecord> {
                         height: 30,
                         width: 30,
                         child: Center(
-                          child: Image.asset(
-                            "assets/icons/document.webp",
-                            scale: 4.5,
+                          child: Icon(
+                            Icons.color_lens_outlined,
                             color: AppColors.mainColor,
+                            size: 20,
                           ),
                         ),
                       ),
@@ -538,53 +556,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                               },
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: () {
-                                Provider.of<AddMainSizeViewModel>(context,
-                                        listen: false)
-                                    .clearData();
-                                Provider.of<GeneralViewModel>(context,
-                                        listen: false)
-                                    .updateSelectedIndex(
-                                        index: ADDMAINSIZE_INDEX);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.mainColor,
-                                ),
-                                height: 45,
-                                width: 120,
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      size: 18,
-                                      color: AppColors.c555,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    CustomTitle(
-                                      text: "إضافة حجم",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.c555,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+
                         ],
                       )
                     ],
@@ -675,53 +647,7 @@ class _ProductsRecordState extends State<ProductsRecord> {
                               },
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: () {
-                                Provider.of<AddMainSizeViewModel>(context,
-                                        listen: false)
-                                    .clearData();
-                                Provider.of<GeneralViewModel>(context,
-                                        listen: false)
-                                    .updateSelectedIndex(
-                                        index: ADDMAINSIZE_INDEX);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.mainColor,
-                                ),
-                                height: 45,
-                                width: 120,
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      size: 18,
-                                      color: AppColors.c555,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    CustomTitle(
-                                      text: "إضافة حجم",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.c555,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+
                         ],
                       )
                     ],
@@ -960,6 +886,16 @@ class _ProductsRecordState extends State<ProductsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
+              text: " الوصف",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
               text: "المكونات",
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -970,7 +906,17 @@ class _ProductsRecordState extends State<ProductsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "السعر",
+              text: "السعر قبل الخصم",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "السعر النهائي",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,

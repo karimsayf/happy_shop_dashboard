@@ -106,7 +106,7 @@ class _EditProductMobileViewState extends State<EditProductMobileView> {
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          controller: editProductViewModel.price,
+                          controller: editProductViewModel.finalPrice,
                           suffixIcon: const Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Text(

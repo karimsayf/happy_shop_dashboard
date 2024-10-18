@@ -52,7 +52,7 @@ class AuthDesktopView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTitle(
-                            text: "مرحبا بكم ف منيو",
+                            text: "مرحبا بكم في هابي شوب",
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
                             color: AppColors.c555,
@@ -61,7 +61,7 @@ class AuthDesktopView extends StatelessWidget {
                             width: 330,
                             child: CustomTitle(
                               text:
-                                  "مع منيو، نوفر لك أسهل وأسرع طريقة لإدارة قائمة مطعمك بكل احترافية وسهولة.",
+                                  "مع هابي شوب، نوفر لك أسهل وأسرع طريقة لإدارة قائمة متجرك بكل احترافية وسهولة.",
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
                               color: AppColors.c555,

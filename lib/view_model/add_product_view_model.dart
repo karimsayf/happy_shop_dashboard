@@ -14,7 +14,9 @@ class AddProductViewModel with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController sectionName = TextEditingController();
-  final TextEditingController price = TextEditingController();
+  final TextEditingController priceBefore = TextEditingController();
+  final TextEditingController finalPrice = TextEditingController();
+  final TextEditingController description = TextEditingController();
   final TextEditingController components = TextEditingController();
   PlatformFile? file;
   bool loading = false;
@@ -25,7 +27,7 @@ class AddProductViewModel with ChangeNotifier {
     file = null;
     sectionName.clear();
     sectionId = null;
-    price.clear();
+    finalPrice.clear();
     components.clear();
     notifyListeners();
   }
@@ -61,7 +63,9 @@ class AddProductViewModel with ChangeNotifier {
                 "name": name.text.trim(),
                 "photo" : photoResponse['data']['filePath'],
                 "component": components.text.trim(),
-                "price" : price.text.trim(),
+                "description":description.text.trim(),
+                "finalPrice" : finalPrice.text.trim(),
+                "priceBefore" : priceBefore.text.trim(),
                 "categoryId" : sectionId,
               })
               .then((getSubsectionsResponse) {

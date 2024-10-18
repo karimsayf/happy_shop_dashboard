@@ -94,10 +94,49 @@ class _AddProductMobileViewState extends State<AddProductMobileView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: addProductViewModel.description,
+                          generalTextFieldValidator: Validator(context).validateField,
+                          hintText: 'الوصف',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           controller: addProductViewModel.components,
                           generalTextFieldValidator:
-                          Validator(context).validateField,
-                          hintText: 'المكونات',
+                              (p0) {
+                            return null;
+                          },
+                          hintText: 'المكونات (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          controller: addProductViewModel.priceBefore,
+                          suffixIcon: const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              ' د . ع',
+                              style: TextStyle(color: AppColors.c912),
+                            ),
+                          ),
+                          hintText: 'السعر قبل الخصم (اختياري)',
                           hintTextColor: AppColors.c912,
                         )),
                     const SizedBox(
@@ -108,7 +147,7 @@ class _AddProductMobileViewState extends State<AddProductMobileView> {
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          controller: addProductViewModel.price,
+                          controller: addProductViewModel.finalPrice,
                           suffixIcon: const Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
@@ -116,7 +155,7 @@ class _AddProductMobileViewState extends State<AddProductMobileView> {
                               style: TextStyle(color: AppColors.c912),
                             ),
                           ),
-                          hintText: 'السعر',
+                          hintText: 'السعر النهائي',
                           hintTextColor: AppColors.c912,
                         )),
                   ],
@@ -133,6 +172,17 @@ class _AddProductMobileViewState extends State<AddProductMobileView> {
                     });
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.info_outline,color: AppColors.c912,),
+                    SizedBox(width: 10,),
+                    Text('يمكنك إضافة ألوان وأحجام بأسعار مختلفة لجميع منتجاتك بعد أضافة المننتج عن طريق التوجه إلى قائمة المنتجات',style: TextStyle(color: AppColors.c912,),),
+                  ],
+                )
+
               ],
             ),
             _buildDivider(),

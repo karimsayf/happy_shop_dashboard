@@ -50,9 +50,12 @@ class _MainDrawerState extends State<MainDrawer> {
                         Image.asset(
                           "assets/icons/app_logo.webp",
                           scale: 8.5,
+                          color:   AppColors.mainColor
+
                         ),
+                        SizedBox(height:10),
                         const CustomTitle(
-                          text: "منيو",
+                          text: "هابي شوب",
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: AppColors.c000,
@@ -123,6 +126,64 @@ class _MainDrawerState extends State<MainDrawer> {
                                               listen: true)
                                           .selectedIndex ==
                                       HOME_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Provider.of<GeneralViewModel>(context, listen: false)
+                            .updateMainScreen(BANNERS_INDEX, "البنرات");
+                      },
+                      child: Container(
+                        height: 40,
+                        width: getSize(context).width,
+                        margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Provider.of<GeneralViewModel>(context,
+                              listen: true)
+                              .selectedIndex ==
+                              BANNERS_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/icons/layer.webp",
+                              scale: 4.5,
+                              color: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  BANNERS_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            CustomTitle(
+                              text: "البنرات",
+                              fontSize: 18,
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  BANNERS_INDEX
+                                  ? FontWeight.w700
+                                  : FontWeight.w400,
+                              color: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  BANNERS_INDEX
                                   ? AppColors.mainColor
                                   : AppColors.c912,
                             ),

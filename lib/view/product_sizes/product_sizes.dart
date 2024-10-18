@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/custom_circular_progress_indicator.dart';
@@ -29,7 +30,7 @@ class _ProductSizesState extends State<ProductSizes> {
       (timeStamp) {
         Provider.of<ProductSizesViewModel>(context, listen: false).getProductSizesHome(
             context,
-            Provider.of<ProductViewModel>(context, listen: false).selectedProductId);
+            Provider.of<ProductViewModel>(context, listen: false).selectedProductId,Provider.of<ProductColorsViewModel>(context, listen: false).colorId!);
       },
     );
     super.initState();

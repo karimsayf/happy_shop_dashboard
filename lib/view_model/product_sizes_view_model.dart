@@ -39,11 +39,12 @@ class ProductSizesViewModel with ChangeNotifier {
   Future getProductSizesHome(
     BuildContext context,
     String productId,
+      String colorId
   ) async {
     setSizesHomeLoading(true);
     clearItems();
     await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
-      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+      apiUrl: "$baseUrl/api/v1/product/$productId/$colorId/sizes",
       headers: {
         'Authorization':
             Provider.of<UserViewModel>(context, listen: false).userToken
@@ -88,11 +89,11 @@ class ProductSizesViewModel with ChangeNotifier {
     });
   }
 
-  Future getProductSizes(BuildContext context, String productId) async {
+  Future getProductSizes(BuildContext context, String productId,String colorId) async {
     setSizesLoading(true);
     clearItems();
     await Provider.of<ApiServicesViewModel>(context, listen: false).getData(
-      apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+      apiUrl: "$baseUrl/api/v1/product/$productId/$colorId/sizes",
       headers: {
         'Authorization':
             Provider.of<UserViewModel>(context, listen: false).userToken
@@ -134,23 +135,23 @@ class ProductSizesViewModel with ChangeNotifier {
   }
 
   Future deleteSize(
-      BuildContext context, String productId, String sizeId) async {
+      BuildContext context, String productId, String size,String colorId) async {
     setDeleteItemLoading(true);
     await Provider.of<ApiServicesViewModel>(context, listen: false).deleteData(
-        apiUrl: "$baseUrl/api/v1/product/$productId/sizes",
+        apiUrl: "$baseUrl/api/v1/product/$productId/$colorId/sizes",
         headers: {
           'Authorization':
               Provider.of<UserViewModel>(context, listen: false).userToken
         },
         data: {
-          "sizeId": sizeId
+          "size": size
         }).then((deleteItemResponse) {
       if (deleteItemResponse["status"] == "success") {
         setDeleteItemLoading(false);
         Navigator.pop(context);
         showCustomToast(context, "تم حذف الحجم و السعر بنجاح",
             "assets/icons/check_c.webp", AppColors.c368);
-        getProductSizes(context, productId);
+        getProductSizes(context, productId,colorId);
       } else {
         setDeleteItemLoading(false);
         if (deleteItemResponse["data"] is Map &&

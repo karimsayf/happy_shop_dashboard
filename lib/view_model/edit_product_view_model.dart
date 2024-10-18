@@ -15,8 +15,10 @@ class EditProductViewModel with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController sectionName = TextEditingController();
-  final TextEditingController price = TextEditingController();
+  final TextEditingController finalPrice = TextEditingController();
+  final TextEditingController priceBefore = TextEditingController();
   final TextEditingController components = TextEditingController();
+  final TextEditingController description = TextEditingController();
   PlatformFile? file;
   bool loading = false;
   String? sectionId;
@@ -29,7 +31,7 @@ class EditProductViewModel with ChangeNotifier {
     sectionName.clear();
     sectionId = null;
     photoNetwork = null;
-    price.clear();
+    finalPrice.clear();
     components.clear();
     productId = null;
     notifyListeners();
@@ -41,8 +43,10 @@ class EditProductViewModel with ChangeNotifier {
     photoNetwork = product.photo;
     sectionId = product.categoryId;
     components.text = product.components;
+    description.text = product.description;
     productId = product.id;
-    price.text = product.price;
+    finalPrice.text = product.finalPrice;
+    priceBefore.text = product.priceBefore;
     notifyListeners();
   }
 
@@ -73,7 +77,9 @@ class EditProductViewModel with ChangeNotifier {
               data: {
                 "name": name.text.trim(),
                 "component": components.text,
-                "price" : price.text.trim(),
+                "description":description.text,
+                "priceBefore" : priceBefore.text.trim(),
+                "finalPrice" : finalPrice.text.trim(),
                 "photo" : photoResponse['data']['filePath']
               },)
                 .then((getSubsectionsResponse) {
@@ -148,7 +154,9 @@ class EditProductViewModel with ChangeNotifier {
           data: {
             "name": name.text.trim(),
             "component": components.text,
-            "price" : price.text.trim(),
+            "description":description.text,
+            "priceBefore" : priceBefore.text.trim(),
+            "finalPrice" : finalPrice.text.trim(),
             "photo" : photoNetwork
           },)
             .then((getSubsectionsResponse) {
