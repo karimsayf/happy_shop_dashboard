@@ -115,7 +115,42 @@ class _AddProductDesktopViewState extends State<AddProductDesktopView> {
 
                   ],
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          controller: addProductViewModel.weight,
+                          generalTextFieldValidator: (p0) {
 
+                          },
+                          hintText: 'الوزن (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: addProductViewModel.quantity,
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          hintText: 'الكمية (اختياري)',
+                          suffixIcon: Tooltip(
+                            child: Icon(Icons.info_outline),
+                            message: 'سيتم اعتماد هذه الكمية كمخزون أساسي للمنتج في حالة (عدم) إضافة أحجام وألوان. \nفي حالة إضافة أحجام وألوان سيتم اعتماد مجموع كميات الأحجام والألوان التي ستقوم بإضافتها.',
+                          ),
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -176,7 +211,7 @@ class _AddProductDesktopViewState extends State<AddProductDesktopView> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   children: [
                     Icon(Icons.info_outline,color: AppColors.c912,),
                     SizedBox(width: 10,),

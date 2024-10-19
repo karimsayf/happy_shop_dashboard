@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import '../../../components/custom_circular_progress_indicator.dart';
 import '../../../components/custom_dialog.dart';
 import '../../../components/custom_title.dart';
-import '../../../model/product_size_model/product_size_model.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
@@ -45,6 +44,14 @@ class _ProductColorsRecordState extends State<ProductColorsRecord> {
           backgroundColor: Color(int.tryParse(productColor.color.toString()) ?? 0),
         )
         ),
+        DataCell(CustomTitle(
+          text: productColor.quantity,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: AppColors.c016,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        )),
         DataCell(CustomTitle(
           text: productColor.sizes!.isEmpty ? "لا يوجد أحجام" : "${productColor.sizes!.map((e) => e.size)}",
           fontSize: 14,
@@ -580,6 +587,16 @@ class _ProductColorsRecordState extends State<ProductColorsRecord> {
           DataColumn(
             label: CustomTitle(
               text: "اللون",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الكمية",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,

@@ -150,6 +150,24 @@ class _AddProductSizeMobileViewState extends State<AddProductSizeMobileView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: addProductSizeViewModel.quantity,
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          hintText: 'الكمية (اختياري)',
+                          suffixIcon: const Tooltip(
+                            child: Icon(Icons.info_outline),
+                            message: 'سيتم اعتماد هذه الكمية كمخزون أساسي لهذا الحجم',
+                          ),
+                          hintTextColor: AppColors.c912,
+                        )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           generalTextFieldValidator:
                           Validator(context).validateNationalId,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],

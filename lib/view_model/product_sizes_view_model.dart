@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/model/product_variant_model/product_variant_size_model.dart';
 import 'package:provider/provider.dart';
 
 import '../components/custom_toast.dart';
-import '../model/product_size_model/product_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
@@ -11,7 +11,7 @@ import 'product_view_model.dart';
 import 'user_view_model.dart';
 
 class ProductSizesViewModel with ChangeNotifier {
-  List<ProductSizeModel> productSizes = [];
+  List<ProductVariantSizeModel> productSizes = [];
   bool deleting = false;
   bool isSizesHomeLoading = true;
   bool isSizesLoading = true;
@@ -53,7 +53,7 @@ class ProductSizesViewModel with ChangeNotifier {
       if (getItemsResponse["status"] == "success") {
         clearItems();
         productSizes = getItemsResponse["data"]["sizes"]
-            .map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e))
+            .map<ProductVariantSizeModel>((e) => ProductVariantSizeModel.fromJason(e))
             .toList();
         isSizesLoading = false;
         isSizesHomeLoading = false;
@@ -102,7 +102,7 @@ class ProductSizesViewModel with ChangeNotifier {
       if (getItemsResponse["status"] == "success") {
         clearItems();
         productSizes = getItemsResponse["data"]["sizes"]
-            .map<ProductSizeModel>((e) => ProductSizeModel.fromJason(e))
+            .map<ProductVariantSizeModel>((e) => ProductVariantSizeModel.fromJason(e))
             .toList();
         isSizesLoading = false;
         notifyListeners();

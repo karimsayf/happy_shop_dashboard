@@ -138,6 +138,26 @@ class _ProductsRecordState extends State<ProductsRecord> {
               maxLines: 1,
             ),
           ),
+          DataCell(
+            CustomTitle(
+              text: product.quantity,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          DataCell(
+            CustomTitle(
+              text: product.weight,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c016,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
           DataCell(CustomTitle(
             text: "${product.priceBefore} د.ع",
             fontSize: 14,
@@ -897,6 +917,26 @@ class _ProductsRecordState extends State<ProductsRecord> {
           DataColumn(
             label: CustomTitle(
               text: "المكونات",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الكمية",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الوزن",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,

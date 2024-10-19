@@ -174,13 +174,29 @@ class _AddProductColorDesktopViewState extends State<AddProductColorDesktopView>
                               hintTextColor: AppColors.c912,
                             )),
                       ],
-                    ))
+                    )),
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Text('يمكنك إضافة أحجام مختلفة ولكل حجم سعر مختلف لكل لون من الألوان التي ستتم إضافتها عن طريق التوجة إلى صفحة المنتج ومن ثم إلى صفحة التحكم في الألوان',style: TextStyle(color: AppColors.c912,),)
+                CustomTextField(
+                  controller: addProductColorViewModel.quantity,
+                  generalTextFieldValidator:
+                      (p0) {
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                  hintText: 'الكمية (اختياري)',
+                  suffixIcon: Tooltip(
+                    child: Icon(Icons.info_outline),
+                    message: 'سيتم اعتماد هذه الكمية كمخزون أساسي لهذا اللون بالتحديد في حالة (عدم) إضافة أحجام لهذا اللون. \nفي حالة إضافة أحجام سيتم اعتماد مجموع كميات الأحجام التي ستقوم بإضافتها.',
+                  ),
+                  hintTextColor: AppColors.c912,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
             _buildDivider(),

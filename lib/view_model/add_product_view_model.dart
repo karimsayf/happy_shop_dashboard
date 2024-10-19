@@ -18,6 +18,8 @@ class AddProductViewModel with ChangeNotifier {
   final TextEditingController finalPrice = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController components = TextEditingController();
+  final TextEditingController quantity = TextEditingController();
+  final TextEditingController weight = TextEditingController();
   PlatformFile? file;
   bool loading = false;
   String? sectionId;
@@ -29,6 +31,10 @@ class AddProductViewModel with ChangeNotifier {
     sectionId = null;
     finalPrice.clear();
     components.clear();
+    weight.clear();
+    description.clear();
+    quantity.clear();
+    priceBefore.clear();
     notifyListeners();
   }
 
@@ -67,6 +73,8 @@ class AddProductViewModel with ChangeNotifier {
                 "finalPrice" : finalPrice.text.trim(),
                 "priceBefore" : priceBefore.text.trim(),
                 "categoryId" : sectionId,
+                "quantity" : quantity.text,
+                "weight": weight.text
               })
               .then((getSubsectionsResponse) {
             print(getSubsectionsResponse);

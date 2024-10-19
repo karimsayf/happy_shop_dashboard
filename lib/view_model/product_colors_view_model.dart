@@ -4,7 +4,6 @@ import 'package:menu_dashboard/model/product_variant_model/product_variant_model
 import 'package:provider/provider.dart';
 
 import '../components/custom_toast.dart';
-import '../model/product_size_model/product_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';

@@ -1,24 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_dashboard/view_model/product_sizes_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../components/custom_circular_progress_indicator.dart';
-import '../components/custom_title.dart';
 import '../components/custom_toast.dart';
-import '../model/main_size_model/main_size_model.dart';
-import '../model/product_size_model/product_size_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
 import 'api_services_view_model.dart';
 import 'general_view_model.dart';
-import 'product_view_model.dart';
 import 'user_view_model.dart';
 
 class AddProductColorViewModel with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController productName = TextEditingController();
   final TextEditingController color = TextEditingController();
+  final TextEditingController quantity = TextEditingController();
   int totalSizes = 0;
   bool loading = false;
   bool loadingMainSizes = false;
@@ -30,6 +25,7 @@ class AddProductColorViewModel with ChangeNotifier {
     productName.clear();
     currentIndex = 1;
     totalSizes = 0;
+    quantity.text;
     notifyListeners();
   }
 
@@ -54,6 +50,7 @@ class AddProductColorViewModel with ChangeNotifier {
             Provider.of<UserViewModel>(context, listen: false).userToken
       }, data: {
         'color': color.text,
+        'quantity':quantity.text
       }).then((getSubsectionsResponse) {
         print(getSubsectionsResponse);
         if (getSubsectionsResponse["status"] == "success") {

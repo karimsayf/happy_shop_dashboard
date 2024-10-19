@@ -1,12 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_dashboard/model/product_variant_model/product_variant_model.dart';
+import 'package:menu_dashboard/model/product_variant_model/product_variant_size_model.dart';
 import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/custom_circular_progress_indicator.dart';
 import '../../../components/custom_dialog.dart';
 import '../../../components/custom_title.dart';
-import '../../../model/product_size_model/product_size_model.dart';
 import '../../../utilities/colors.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/size_utility.dart';
@@ -27,7 +28,7 @@ class ProductSizesRecord extends StatefulWidget {
 class _ProductSizesRecordState extends State<ProductSizesRecord> {
   late final productSizeViewModel = Provider.of<ProductSizesViewModel>(context);
   List<DataRow> getRows() {
-    List<ProductSizeModel> pageData = productSizeViewModel.productSizes;
+    List<ProductVariantSizeModel> pageData = productSizeViewModel.productSizes;
     return pageData.mapIndexed((index, productSize) {
       return DataRow(cells: [
         DataCell(CustomTitle(
@@ -41,6 +42,16 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
         DataCell(
           CustomTitle(
             text: productSize.size,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: AppColors.c016,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        DataCell(
+          CustomTitle(
+            text: productSize.quantity,
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: AppColors.c016,
@@ -547,6 +558,16 @@ class _ProductSizesRecordState extends State<ProductSizesRecord> {
           DataColumn(
             label: CustomTitle(
               text: "الحجم",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الكمية",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,
