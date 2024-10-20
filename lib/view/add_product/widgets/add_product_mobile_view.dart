@@ -85,6 +85,17 @@ class _AddProductMobileViewState extends State<AddProductMobileView> {
                           hintText: 'اسم المنتج',
                           hintTextColor: AppColors.c912,
                         )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: addProductViewModel.brand,
+                          generalTextFieldValidator:
+                          Validator(context).validateField,
+                          hintText: 'البراند / الماركة',
+                          hintTextColor: AppColors.c912,
+                        )),
                   ],
                 ),
                 const SizedBox(

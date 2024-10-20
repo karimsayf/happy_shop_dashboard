@@ -19,6 +19,9 @@ class EditProductViewModel with ChangeNotifier {
   final TextEditingController priceBefore = TextEditingController();
   final TextEditingController components = TextEditingController();
   final TextEditingController description = TextEditingController();
+  final TextEditingController quantity = TextEditingController();
+  final TextEditingController weight = TextEditingController();
+  final TextEditingController brand = TextEditingController();
   PlatformFile? file;
   bool loading = false;
   String? sectionId;
@@ -34,6 +37,11 @@ class EditProductViewModel with ChangeNotifier {
     finalPrice.clear();
     components.clear();
     productId = null;
+    quantity.clear();
+    description.clear();
+    priceBefore.clear();
+    weight.clear();
+    brand.clear();
     notifyListeners();
   }
 
@@ -47,6 +55,9 @@ class EditProductViewModel with ChangeNotifier {
     productId = product.id;
     finalPrice.text = product.finalPrice;
     priceBefore.text = product.priceBefore;
+    weight.text =product.weight;
+    quantity.text = product.quantity;
+    brand.text = product.brand;
     notifyListeners();
   }
 
@@ -80,7 +91,10 @@ class EditProductViewModel with ChangeNotifier {
                 "description":description.text,
                 "priceBefore" : priceBefore.text.trim(),
                 "finalPrice" : finalPrice.text.trim(),
-                "photo" : photoResponse['data']['filePath']
+                'quantity': quantity.text,
+                'weight': weight.text,
+                'brand' : brand.text,
+                "photo" : photoResponse['data']['filePath'],
               },)
                 .then((getSubsectionsResponse) {
               print(getSubsectionsResponse);
@@ -157,6 +171,9 @@ class EditProductViewModel with ChangeNotifier {
             "description":description.text,
             "priceBefore" : priceBefore.text.trim(),
             "finalPrice" : finalPrice.text.trim(),
+            'quantity': quantity.text,
+            'weight': weight.text,
+            'brand' : brand.text,
             "photo" : photoNetwork
           },)
             .then((getSubsectionsResponse) {

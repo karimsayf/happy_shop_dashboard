@@ -3,6 +3,7 @@ class ProductModel {
   final String name;
   final String photo;
   final String finalPrice;
+  final String brand;
   final String priceBefore;
   final String components;
   final String description;
@@ -24,7 +25,8 @@ class ProductModel {
       required this.categoryId,
       required this.variants,
         required this.quantity,
-        required this.weight
+        required this.weight,
+        required this.brand
       });
 
   factory ProductModel.fromJason(Map<String, dynamic> product) {
@@ -39,6 +41,7 @@ class ProductModel {
     categoryName: product["categoryName"] ?? "",
       categoryId: product["categoryId"] ?? "",
       variants: product["variants"],
+      brand: product['brand'] ??"-",
       weight: product['weight'] == null ? "-" :product['weight'].toString(),
       quantity: product['quantity'] == null ? "-" :product['quantity'].toString()
     );

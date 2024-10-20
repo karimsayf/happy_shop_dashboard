@@ -83,6 +83,17 @@ class _EditProductMobileViewState extends State<EditProductMobileView> {
                           hintText: 'اسم المنتج',
                           hintTextColor: AppColors.c912,
                         )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.brand,
+                          generalTextFieldValidator:
+                          Validator(context).validateField,
+                          hintText: 'البراند / الماركة',
+                          hintTextColor: AppColors.c912,
+                        )),
                   ],
                 ),
                 const SizedBox(
@@ -92,10 +103,86 @@ class _EditProductMobileViewState extends State<EditProductMobileView> {
                   children: [
                     Expanded(
                         child: CustomTextField(
+                          controller: editProductViewModel.description,
+                          generalTextFieldValidator: Validator(context).validateField,
+
+                          hintText: 'الوصف',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
                           controller: editProductViewModel.components,
                           generalTextFieldValidator:
-                          Validator(context).validateField,
-                          hintText: 'المكونات',
+                              (p0) {
+                            return null;
+                          },
+                          hintText: 'المكونات (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.weight,
+                          generalTextFieldValidator: (p0) {
+
+                          },
+                          hintText: 'الوزن (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.quantity,
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          hintText: 'الكمية (اختياري)',
+                          suffixIcon: Tooltip(
+                            child: Icon(Icons.info_outline),
+                            message: 'سيتم اعتماد هذه الكمية كمخزون أساسي للمنتج في حالة (عدم) إضافة أحجام وألوان. \nفي حالة إضافة أحجام وألوان سيتم اعتماد مجموع كميات الأحجام والألوان التي ستقوم بإضافتها.',
+                          ),
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          controller: editProductViewModel.priceBefore,
+                          suffixIcon: const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              ' د . ع',
+                              style: TextStyle(color: AppColors.c912),
+                            ),
+                          ),
+                          hintText: 'السعر قبل الخصم (اختياري)',
                           hintTextColor: AppColors.c912,
                         )),
                     const SizedBox(
@@ -114,7 +201,7 @@ class _EditProductMobileViewState extends State<EditProductMobileView> {
                               style: TextStyle(color: AppColors.c912),
                             ),
                           ),
-                          hintText: 'السعر',
+                          hintText: 'السعر النهائي',
                           hintTextColor: AppColors.c912,
                         )),
                   ],

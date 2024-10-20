@@ -109,8 +109,21 @@ class _ProductsRecordState extends State<ProductsRecord> {
             ),
           ),
           DataCell(
+            SizedBox(
+              width: getSize(context).width * .1,
+              child: CustomTitle(
+                text: product.name,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.c016,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          DataCell(
             CustomTitle(
-              text: product.name,
+              text: product.brand,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -119,23 +132,29 @@ class _ProductsRecordState extends State<ProductsRecord> {
             ),
           ),
           DataCell(
-            CustomTitle(
-              text: product.description,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+            SizedBox(
+              width: getSize(context).width * .05,
+              child: CustomTitle(
+                text: product.description,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.c016,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
           ),
           DataCell(
-            CustomTitle(
-              text: product.components,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: AppColors.c016,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+            SizedBox(
+              width: getSize(context).width * .05,
+              child: CustomTitle(
+                text: product.components,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.c016,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
           ),
           DataCell(
@@ -897,6 +916,16 @@ class _ProductsRecordState extends State<ProductsRecord> {
           DataColumn(
             label: CustomTitle(
               text: "المنتج",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "الماركة",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,

@@ -83,6 +83,17 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                           hintText: 'اسم المنتج',
                           hintTextColor: AppColors.c912,
                         )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.brand,
+                          generalTextFieldValidator:
+                          Validator(context).validateField,
+                          hintText: 'البراند / الماركة',
+                          hintTextColor: AppColors.c912,
+                        )),
                   ],
                 ),
                 const SizedBox(
@@ -110,6 +121,42 @@ class _EditProductDesktopViewState extends State<EditProductDesktopView> {
                             return null;
                           },
                           hintText: 'المكونات (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.weight,
+                          generalTextFieldValidator: (p0) {
+
+                          },
+                          hintText: 'الوزن (اختياري)',
+                          hintTextColor: AppColors.c912,
+                        )),
+
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: CustomTextField(
+                          controller: editProductViewModel.quantity,
+                          generalTextFieldValidator:
+                              (p0) {
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          hintText: 'الكمية (اختياري)',
+                          suffixIcon: Tooltip(
+                            child: Icon(Icons.info_outline),
+                            message: 'سيتم اعتماد هذه الكمية كمخزون أساسي للمنتج في حالة (عدم) إضافة أحجام وألوان. \nفي حالة إضافة أحجام وألوان سيتم اعتماد مجموع كميات الأحجام والألوان التي ستقوم بإضافتها.',
+                          ),
                           hintTextColor: AppColors.c912,
                         )),
 
