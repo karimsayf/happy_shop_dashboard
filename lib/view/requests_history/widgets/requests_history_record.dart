@@ -93,6 +93,21 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
             ),
           ),
           DataCell(
+            GestureDetector(
+              onTap: (){
+                showCustomDialog(context,content: Text(request.address),contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 20));
+              },
+              child: const CustomTitle(
+                text: 'عرض العنوان',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.mainColor,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          DataCell(
              request.status == "DONE" ? Container(
                height: 30,
                width: 130,
@@ -447,6 +462,16 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
           DataColumn(
             label: CustomTitle(
               text: "السعر الاجمالي",
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.c912,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          DataColumn(
+            label: CustomTitle(
+              text: "عنوان التوصيل",
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.c912,
