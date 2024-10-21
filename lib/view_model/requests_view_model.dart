@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../components/custom_dialog.dart';
 import '../components/custom_title.dart';
 import '../components/custom_toast.dart';
-import '../model/product_details_model/product_details_model.dart';
 import '../model/request_model/request_model.dart';
 import '../utilities/colors.dart';
 import '../utilities/constants.dart';
@@ -16,7 +15,7 @@ import 'user_view_model.dart';
 
 class RequestsViewModel with ChangeNotifier {
   int selectedRequestRecord = 0;
-  List<RequestModel> requests = [];
+  List<Order> requests = [];
   int totalRequests = 0;
   bool isRequestsHomeLoading = true;
   bool isRequestsLoading = true;
@@ -33,7 +32,7 @@ class RequestsViewModel with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController reasonController = TextEditingController();
   bool loadingRequestDetails = false;
-  List<ProductDetailsModel> ordersDetails = [];
+  List<ProductOrder> ordersDetails = [];
 
   void setPage(int page) {
     currentPage = page;
@@ -114,7 +113,7 @@ class RequestsViewModel with ChangeNotifier {
         for (int i = 0;
             i < getSubsectionsResponse["data"]["orders"].length;
             i++) {
-          requests.add(RequestModel.fromJason(
+          requests.add(Order.fromJson(
               getSubsectionsResponse["data"]["orders"][i]));
         }
         if (requests.isEmpty) {
@@ -175,7 +174,7 @@ class RequestsViewModel with ChangeNotifier {
       if (getSubsectionsResponse["status"] == "success") {
         clearRequests();
         requests = getSubsectionsResponse["data"]["orders"]
-            .map<RequestModel>((e) => RequestModel.fromJason(e))
+            .map<Order>((e) => Order.fromJson(e))
             .toList();
         if (requests.isEmpty) {
           requestsEmpty = true;
@@ -307,12 +306,12 @@ class RequestsViewModel with ChangeNotifier {
     });
   }
 
-  Future getRequestDetails(BuildContext context, List<dynamic> products) async {
+  Future getRequestDetails(BuildContext context, List<ProductOrder> products) async {
     loadingRequestDetails = true;
     await Future.delayed(const Duration(milliseconds: 350));
     ordersDetails = [];
     ordersDetails =
-        products.map((e) => ProductDetailsModel.fromJason(e)).toList();
+        products.map((e) =>e).toList();
     loadingRequestDetails = false;
     notifyListeners();
     showCustomDialog(context, content: StatefulBuilder(
@@ -471,7 +470,31 @@ class RequestsViewModel with ChangeNotifier {
                             height: 5,
                           ),
                           CustomTitle(
-                            text: product.productComponent,
+                            text: product.productComponents,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                            color: AppColors.c016,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CustomTitle(
+                                text: "وصف المنتج :",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.c912,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CustomTitle(
+                            text: product.productDesc,
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: AppColors.c016,
@@ -495,7 +518,7 @@ class RequestsViewModel with ChangeNotifier {
                               ),
                               Flexible(
                                 child: CustomTitle(
-                                  text: product.quantity,
+                                  text: product.quantity.toString(),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,
@@ -521,7 +544,7 @@ class RequestsViewModel with ChangeNotifier {
                               ),
                               Flexible(
                                 child: CustomTitle(
-                                  text: product.sizeName == "Regular" ? "طبيعي" :  product.sizeName,
+                                  text: product.productSize ??"لا يوجد حجم",
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,
@@ -537,7 +560,7 @@ class RequestsViewModel with ChangeNotifier {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const CustomTitle(
-                                text: "السعر الوحدة :",
+                                text: "اللون :",
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.c912,
@@ -547,7 +570,7 @@ class RequestsViewModel with ChangeNotifier {
                               ),
                               Flexible(
                                 child: CustomTitle(
-                                  text: product.pricePerOne,
+                                  text: product.productColor ??"لا يوجد لون",
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,
@@ -558,6 +581,7 @@ class RequestsViewModel with ChangeNotifier {
                           const SizedBox(
                             height: 10,
                           ),
+
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -573,7 +597,7 @@ class RequestsViewModel with ChangeNotifier {
                               ),
                               Flexible(
                                 child: CustomTitle(
-                                  text: product.totalPrice,
+                                  text: product.totalPrice.toString(),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,

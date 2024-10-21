@@ -23,4 +23,8 @@ const int ADDBANNERS_INDEX = 19;
 const int EDITBANNERS_INDEX = 20;
 const int COLORS_INDEX = 21;
 const int ADDCOLOR_INDEX = 22;
+const int CITY_INDEX = 23;
+const int ADDCITY_INDEX = 24;
+
+
 

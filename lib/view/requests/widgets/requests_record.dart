@@ -52,7 +52,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
     }
 
     List<DataRow> getRows() {
-      List<RequestModel> pageData = requestViewModel.requests;
+      List<Order> pageData = requestViewModel.requests;
       return pageData.mapIndexed((index, request) {
         return DataRow(cells: [
           DataCell(CustomTitle(
@@ -65,7 +65,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           )),
           DataCell(
             CustomTitle(
-              text: request.captainName,
+              text: request.userPhone,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -75,7 +75,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataCell(
             CustomTitle(
-              text: request.tableNumber,
+              text: request.shippingPrice,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c016,
@@ -912,7 +912,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "اسم الكابتن",
+              text: "تليفون العميل",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,
@@ -922,7 +922,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
           ),
           DataColumn(
             label: CustomTitle(
-              text: "رقم الطاولة",
+              text: "سعر التوصيل",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: AppColors.c912,

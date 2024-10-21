@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import 'package:menu_dashboard/view_model/add_banner_view_model.dart';
+import 'package:menu_dashboard/view_model/add_city_view_model.dart';
 import 'package:menu_dashboard/view_model/add_product_color_view_model.dart';
 import 'package:menu_dashboard/view_model/add_product_size_view_model.dart';
 import 'package:menu_dashboard/view_model/add_product_view_model.dart';
 import 'package:menu_dashboard/view_model/add_section_view_model.dart';
 import 'package:menu_dashboard/view_model/banners_view_model.dart';
+import 'package:menu_dashboard/view_model/city_view_model.dart';
 import 'package:menu_dashboard/view_model/edit_banner_view_model.dart';
 import 'package:menu_dashboard/view_model/edit_section_view_model.dart';
 import 'package:menu_dashboard/view_model/product_colors_view_model.dart';
@@ -58,6 +60,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => AddBannerViewModel()),
         ChangeNotifierProvider(create: (_) => EditBannerViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => CityViewModel()),
+        ChangeNotifierProvider(create: (_) => AddCityViewModel()),
       ],
       child: const MyApp(),
     ),

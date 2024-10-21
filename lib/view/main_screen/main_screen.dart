@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:menu_dashboard/view/add_banner/add_banner.dart';
+import 'package:menu_dashboard/view/add_city/add_city.dart';
 import 'package:menu_dashboard/view/add_prodcut_color/add_product_color.dart';
 import 'package:menu_dashboard/view/add_product_size/add_product_size.dart';
 import 'package:menu_dashboard/view/banners/banners.dart';
+import 'package:menu_dashboard/view/city/city.dart';
 import 'package:menu_dashboard/view/edit_banner/edit_banner.dart';
 import 'package:menu_dashboard/view/product_colors/product_colors.dart';
 import 'package:menu_dashboard/view/products/products.dart';
@@ -132,6 +134,14 @@ class _MainScreenState extends State<MainScreen> {
         .selectedIndex ==
         ADDCOLOR_INDEX) {
       return AddProductColor(pageState: pageState);
+    }else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        CITY_INDEX) {
+      return Cities(pageState: pageState);
+    }else if (Provider.of<GeneralViewModel>(context, listen: true)
+        .selectedIndex ==
+        ADDCITY_INDEX) {
+      return AddCity(pageState: pageState);
     }
     return const SizedBox();
   }

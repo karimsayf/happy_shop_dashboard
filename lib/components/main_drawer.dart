@@ -313,6 +313,64 @@ class _MainDrawerState extends State<MainDrawer> {
                     child: GestureDetector(
                       onTap: () {
                         Provider.of<GeneralViewModel>(context, listen: false)
+                            .updateMainScreen(CITY_INDEX, "مدن التوصيل");
+                      },
+                      child: Container(
+                        height: 40,
+                        width: getSize(context).width,
+                        margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Provider.of<GeneralViewModel>(context,
+                              listen: true)
+                              .selectedIndex ==
+                              CITY_INDEX
+                              ? AppColors.mainColor.withOpacity(0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/icons/layer.webp",
+                              scale: 4.5,
+                              color: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  CITY_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            CustomTitle(
+                              text: "التوصيل",
+                              fontSize: 18,
+                              fontWeight: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  CITY_INDEX
+                                  ? FontWeight.w700
+                                  : FontWeight.w400,
+                              color: Provider.of<GeneralViewModel>(context,
+                                  listen: true)
+                                  .selectedIndex ==
+                                  CITY_INDEX
+                                  ? AppColors.mainColor
+                                  : AppColors.c912,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Provider.of<GeneralViewModel>(context, listen: false)
                             .updateMainScreen(EMPLOYEES_INDEX, "الموظفين");
                       },
                       child: Container(
