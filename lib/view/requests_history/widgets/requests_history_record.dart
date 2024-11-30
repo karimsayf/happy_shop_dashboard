@@ -117,7 +117,7 @@ class _RequestsHistoryRecordState extends State<RequestsHistoryRecord> {
                    border: Border.all(width: 1, color: AppColors.c368)),
                child: const Center(
                  child: CustomTitle(
-                   text: "تم اكمال الطلب",
+                   text: "تم قبول الطلب",
                    fontSize: 14,
                    fontWeight: FontWeight.w400,
                    color: AppColors.c368,

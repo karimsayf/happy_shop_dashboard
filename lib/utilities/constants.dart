@@ -1,6 +1,6 @@
 const String stcFontStr = 'STC';
 
-//const String baseUrl = 'https://menu-demo-back.technolanes.com';
+//const String baseUrl = 'https://happy-shop-demo.technolanes.com';
 
 const String baseUrl = 'http://localhost:3000';
 

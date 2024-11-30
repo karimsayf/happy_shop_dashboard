@@ -421,7 +421,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                       height: 10,
                                     ),
                                     const CustomTitle(
-                                      text: "حذف الطلب",
+                                      text: "رفض الطلب",
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.c016,
@@ -431,7 +431,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                     ),
                                     const CustomTitle(
                                       text:
-                                      "هل أنت متأكد أنك تريد حذف هذا الطلب ؟ لا يمكن التراجع عن هذا الإجراء.",
+                                      "هل أنت متأكد أنك تريد رفض هذا الطلب ؟ لا يمكن التراجع عن هذا الإجراء.",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.c912,
@@ -526,7 +526,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
                                                       AppColors
                                                           .c555)
                                                       : const CustomTitle(
-                                                    text: "حذف",
+                                                    text: "رفض",
                                                     fontSize:
                                                     20,
                                                     fontWeight:
@@ -685,7 +685,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomTitle(
-                  text: "سجل الطلبات الحالية",
+                  text: "سجل الطلبات الحالية ( طلبات تحت المراجعة )",
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.c016,
@@ -890,7 +890,7 @@ class _RequestsRecordState extends State<RequestsRecord> {
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: CustomTitle(
-                text: "لا توجد طلبات",
+                text: "لا توجد طلبات تحت المراجعة",
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
                 color: AppColors.c912,

@@ -275,7 +275,7 @@ class RequestsViewModel with ChangeNotifier {
       if (updateOrderStatusResponse["status"] == "success") {
         setApproveLoading(false);
         Navigator.pop(context);
-        showCustomToast(context, "تم تاكيد الطلب بنجاح",
+        showCustomToast(context, "تم تأكيد الطلب بنجاح ، ستجد الطلب في سجل الطلبات",
             "assets/icons/check_c.webp", AppColors.c368);
         getRequests(context, "status=PROGRESSING", "0", true);
       } else {
@@ -569,11 +569,14 @@ class RequestsViewModel with ChangeNotifier {
                                 width: 20,
                               ),
                               Flexible(
-                                child: CustomTitle(
-                                  text: product.productColor ??"لا يوجد لون",
+                                child: product.productColor == null ? const CustomTitle(
+                                  text: "لا يوجد لون",
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.c016,
+                                ) : CircleAvatar(
+
+                                  backgroundColor: Color(int.parse(product.productColor.toString())),
                                 ),
                               ),
                             ],
